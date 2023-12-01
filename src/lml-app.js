@@ -1,29 +1,42 @@
 import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
-import  './main-menu/main-menu';
+import './main-menu/main-menu';
 
 // Configuration is loaded
 const configLoaderPromise = configLoader();
 
-configLoaderPromise.then(config => {
-    // LearningML is initialized with the configuration
+class LMLApp extends LitElement {
 
-    class LMLApp extends LitElement {
-        constructor() {
-            super();
-            this.config = config;
-        }
+    static properties = {
+        loading: { type: Boolean },
+    };
 
-        render() {
-            return html`
-                <main-menu .config=${this.config}></main-menu>
-            `;
-        }
+    constructor() {
+        super();
+        this.loading = true;
+        this.config = null;
 
-        createRenderRoot(){
-            return this;
-        }
+        configLoaderPromise.then(config => {
+            setTimeout(() => {
+                this.config = config;
+                this.loading = false;
+            }, 1000)
 
+        });
     }
-    customElements.define('lml-app', LMLApp);
-});
+
+    render() {
+        return html`
+        ${this.loading ? 
+            html`Cargando ...` 
+            :
+            html`<main-menu .config=${this.config}></main-menu>`}
+        `;
+    }
+
+    createRenderRoot() {
+        return this;
+    }
+
+}
+customElements.define('lml-app', LMLApp);
