@@ -1,8 +1,14 @@
 import { LitElement, html } from 'lit'
+import './language-menu';
 
 export class MainMenu extends LitElement {
 
+    static properties = {
+        config: {type: Object}
+    }
+
     render() {
+        console.log(this.config);
         return html`
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
@@ -20,9 +26,7 @@ export class MainMenu extends LitElement {
             <a class="navbar-item">
                 Home
             </a>
-                <language-menu class="navbar-item"></language-menu>
-                <language-menu></language-menu>
-                <language-menu></language-menu>
+                <language-menu .config=${this.config} class="navbar-item"></language-menu>
             </div>
         </nav>
     `
