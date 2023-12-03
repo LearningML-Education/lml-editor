@@ -1,0 +1,315 @@
+{
+	"model.step1.text": " Em primeiro lugar preciso de alguns exemplos de texto ",
+
+
+	"model.step1.image": " Em primeiro lugar  preciso de alguns exemplos de imagens ",
+
+	"model.step2.text": "Agora, chegou o momento de aprender a classificar textos",
+
+	"model.step2.image": "Agora, chegou o momento de aprender a classificar imagens ",
+
+	"model.step3.text": "E finalmente vamos escrever código ",
+
+	"model.step3.image": "E finalmente vamos escrever código ",
+
+	"model.step1.title": "1. Praticar",
+
+	"model.step2.title": "2. Aprender ",
+
+	"model.step1.hint": "Cria um novo conjunto para acrescentar textos relacionados com o exemplo. Estes textos serão os utilizados pela LearningML para ensinar o computador a reconhecer textos semelhantes",
+
+	"model.step2.hint.text": "Utilizando a amostra de texto que adicionou no passo anterior, o computador aprenderá a reconhecer textos semelhantes",
+
+
+	"model.step2.hint.image": "Utilizando as imagens de exemplo que adicionou no passo anterior, o computador aprenderá a reconhecer imagens semelhantes",
+
+	"model.step1.numerical": "Primeiro preciso de alguns números de exemplo",
+    "model.step2.numerical": "Agora é a hora de aprender a classificar os números",
+
+	"model.addLabel.text": "Acrescentar uma nova classe de textos",
+
+
+	"model.addLabel.image": "Acrescentar uma nova classe de imagens",
+
+	"model.add-example.text": "Acrescentar mais exemplos de textos",
+
+
+	"model.add-example.image": "Acrescentar mais exemplos de imagens",
+
+	"model.button.learn.text": "Aprender a reconhecer texto",
+
+
+	"model.button.learn.image": "Aprender a reconhecer imagens",
+
+
+	"model.turn-on.camera": "Usar a webcam ",
+
+	"model.turn-off.camera": "Desligar a webcam ",
+
+
+	"model.confirm": "Tem a certeza que quer remover esta tag?",
+
+
+	"model.confirm.cancel": "Cancelar",
+
+
+	"model.confirm.ok": "Okay",
+
+
+	"model.addlabel": "Introduza a etiqueta",
+
+
+
+	"model.loadingdata": "Carregamento de amostras de dados ...",
+
+
+	"model.init_sesion.title": "Iniciar a sessão",
+
+
+
+	"model.init_sesion.message": "Tem de iniciar a sessão antes de guardar os dados no servidor",
+
+
+	"model.train_no_data.title": "Não tenho dados para aprender",
+
+
+
+	"model.train_no_data.message": "É preciso acrescentar alguns dados para se poder aprender",
+
+
+
+	"model.train_new_data.title": "Já aprendi tudo o que podia",
+
+
+	"model.train_new_data.message": "É necessário acrescentar novos dados para saber mais",
+
+
+
+	"model.learning_from_data": "Aprender a partir de dados",
+
+
+
+	"model.learned": "Eu já aprendi",
+
+
+
+	"model.ready_to_be_used": "Pode agora utilizar o modelo",
+
+
+
+	"model.wait": "aguarde por favor",
+
+
+	"model.label_created.message": "Agora pode acrescentar novos textos relacionados com ",
+
+
+	"model.label_created.title": "A etiqueta foi adicionada",
+
+
+
+	"model.label_deleted": "A etiqueta foi removida",
+
+
+
+	"model.text_added": "O texto foi adicionado",
+
+
+
+	"model.text_deleted": " O texto foi removido",
+
+
+	"model.loading_mobilenet": "Espere um momento, estou a carregar os avançados algoritmos que me permitem reconhecer imagens...",
+
+
+	"model.choose_language": "Linguagem dos textos",
+
+	"model.choose_algorithm": "Escolha o algoritmo de ML para construir o modelo",
+    "model.algorithm_naive-bayes": "Naive-Bayes",
+    "model.algorithm_knn": "KNN",
+    "model.algorithm_neural_network": "neural network",
+    "model.knn.number_of_neighbors": "No. de vizinhos",
+    "model.neural-network.epochs": "Épocas",
+    "model.neural-network.batchSize": "Tamanho do lote",
+    "model.neural-network.learningRate": "Ritmo de aprendizagem",
+    "model.neural-network.validationSplit": "Porcentagem de amostras para validação",
+
+	"test-model.title": "3.Experimente",
+
+
+	"test-model.subtitle": "Introduz novos termos e verifica se estão correctamente classificados",
+
+
+	"test-model.test": "Verificar ",
+
+
+
+
+	"test-model.test.hint": "Avalia o modelo gerado utilizando um novo texto",
+
+
+
+	"test-model.testImage.hint": "Carregue uma imagem de teste",
+
+
+	"test-model.testWebcam.hint": "Carregar uma imagem de teste usando a webcam",
+
+
+	"test-model.makeScratch.hint": "Escreva um programa em Scratch que seja capaz de reconhecer textos semelhantes mas diferentes daqueles que utilizou para ensinar o computador",
+
+
+	"label-container.addtext.hint": "adicionar texto",
+
+
+	"label-container.addtext": "adicionar texto",
+
+
+	"label-container.addimage": "Adicionar imagens",
+
+	"label-container.addwebcam": "Adicionar imagens da webcam",
+
+
+	"label-container.deletelabel": "remover tag",
+
+	"test-model.term": "Expressão",
+
+
+	"projects.noproject": "Ainda não tem projeto nenhum . Criar um (Ficheiro - Novo>) e guardar (Ficheiro -> Guardar)",
+
+
+	"projects.mystuff": "As minhas coisas",
+
+
+	"projects.classes": "Aulas modelo",
+
+	"projects.shared": "Projeto Partilhado",
+	"projects.load": "Carregue o projeto",
+	"projects.edit": "Edite o projeto",
+	"projects.share": "Partilhe o projeto",
+	"projects.notshare": "Não partilhar projeto",
+	"projects.delete": "Apague o projeto",
+	"projects.dialog.name": "Nome",
+	"projects.dialog.description": "Descrição",
+	"projects.dialog.description.hint": "Descreva o projeto",
+
+	"sharedprojects.author": "Autor",
+	"sharedprojects.reinventions": "Reinvenções",
+	"sharedprojects.classes": "Aulas Modelo",
+	"sharedprojects.load": "Carregue projeto",
+	"sharedprojects.reinvent": "Reinvente",
+	"sharedprojects.title": "Projetos partilhados",
+
+	"confidence_text.very_low": "Penso que pertence à classe {{ etiqueta }}, mas para ser honesto, não tenho a certeza de nada",
+	"confidence_text.low": "Acredito que pertence à classe {{ etiqueta }}, mas não tenho a certeza",
+	"confidence_text.normal": "Penso que pertence à classe {{ etiqueta }}, não é?",
+	"confidence_text.high": "Provavelmente pertence à classe {{ etiqueta }}",
+	"confidence_text.very_high": "Tenho a certeza de que pertence à classe {{{ etiqueta }}",
+
+	"filemenu.new": "Novo",
+	"filemenu.save": "Guarde a sua conta",
+	"filemenu.saveascopy": "Guarde uma cópia na sua conta",
+	"filemenu.savelocal": "Guarde no seu computador",
+	"filemenu.loadlocal": "Carregue a partir do seu computador",
+	"filemenu.title": "Arquive",
+	"filemenu.init_session.message": "Tem de iniciar a sessão antes de guardar no servidor",
+	"filemenu.init_session.title": "Iniciar Sessão",
+	"filemenu.save_project.title": "Tudo bem!",
+
+	"filemenu.save_project.message": "O projeto foi guardado no servidor",
+	"filemenu.loading": "Carregando ...",
+	"filemenu.loaded": "Ficheiro carregado",
+
+	"toolbar.select_language": "Escolha Língua",
+	"toolbar.spanish": "Espanhol",
+	"toolbar.english": "Inglês",
+	"toolbar.galician": "Galego",
+	"toolbar.catalan": "Catalão",
+	"toolbar.italian": "italiano",
+	"toolbar.open.hint": "Abrir os meus projetos",
+	"toolbar.openshared.hint": "Abrir projetos partilhados",
+	"toolbar.learn": "Learn LML",
+	"toolbar.tutorials": "Tutorials",
+	"toolbar.manual": "LearningML Manual",
+	"toolbar.about": "About",
+	"toolbar.about.subtitle": "Learn Machine Learning the easy and fun way",
+	
+	"toolbar.mode-off": "Modo avanzado desactivado",
+    "toolbar.mode-on": "Modo avanzado activado",
+	
+	"login.join": "Join us",
+	"login.mystuff": "My things",
+	"login.sharedprojects": "shared projects",
+	"login.closesession": "Sign off",
+	"login.initsession": "Log in",
+	"login.sendbug": "Submit a bug or improvement",
+
+	"signup.usernameexists": "That username is already taken",
+	"signup.selectusername": "Choose a username",
+	"signup.nouserreal": "do not use your real name",
+	"signup.next": "Following",
+	"signup.back": "Behind",
+	"signup.month.hint": "Month",
+	"signup.year.hint": "Year",
+	"signup.birthdate": "When you were born?",
+	"signup.sex": "Girl or boy?",
+	"signup.sex.hint": "gender",
+	"signup.ready": "Ready!",
+	"signup.wizard": "The genius of LML",
+	"signup.startusinglml": "Start with LML!",
+	"signup.youremail": "Your email address",
+	"signup.helpingcard.username.title": "Username and password",
+	"signup.helpingcard.username.text": "Choose a username and password to create your account. Make sure it doesn't match your real name.",
+	"signup.helpingcard.email.title": "Email address.",
+	"signup.helpingcard.email.text": "We'll send a message to the email address you specify to verify it's really you who created the account. In that message you'll see a link to activate the account. You can not save your projects in the LearningML cloud until you activate your account.",
+	"signup.helpingcard.birthdate.title": "When you were born",
+	"signup.helpingcard.birthdate.text": "LearningML is a new educational tool with which we aim to contribute to the development of computational thinking through the use of artificial intelligence. We are interested to know the age of users for research and statistical purposes.",
+	"signup.helpingcard.gender.title": "Boy or girl",
+	"signup.helpingcard.gender.text": "As well as your age, we are interested to know if you're a boy or girl for research and statistical purposes.",
+	"signup.helpingcard.end.title": "And that's all my friends!",
+	"signup.helpingcard.end.text": "Don't forget to check your email for a message with the link to activate your account. Click the Start button with LML and build your first model of Machine Learning!",
+	"signup.girl": "Girl",
+	"signup.boy": "Boy",
+	"signup.nowanttosay": "Prefer not to say",
+	"signup.january": "January",
+	"signup.february": "February",
+	"signup.march": "March",
+	"signup.april": "April",
+	"signup.may": "May",
+	"signup.june": "June",
+	"signup.july": "July",
+	"signup.august": "August",
+	"signup.september": "September",
+	"signup.october": "October",
+	"signup.november": "November",
+	"signup.december": "December",
+
+	"home.text.title": "Texts",
+	"home.text.subtitle": "Teach the computer to recognize text",
+	"home.text.button": "recognize text",
+	"home.image.title": "Images",
+	"home.image.subtitle": "Teach your computer to recognize images",
+	"home.image.button": "recognize images",
+
+	"home.numerical.title": "Números",
+    "home.numerical.subtitle": "Ensine o computador a reconhecer números",
+
+	"labelcontainer.dialog.confirm": "Are you sure you want to delete this item?",
+	"labelcontainer.dialog.introducetext": "Enter the text (in english)",
+
+	"modelstate.state": "State model",
+
+	"webcam.add": "Add",
+	"webcam.closeandback": "Close and Return",
+
+	"report.title": "Have you found a bug?",
+	"report.subtitle": "If you have found a bug or have an idea that would improve the application, tell us by filling out this form",
+	"report.form-title": "What problems have you found?",
+	"report.form-title-hint": "Briefly describe what you want to tell us",
+	"report.form-description": "Describe it",
+	"report.form-description-hint": "Tell us about the problem you encountered or your improvement idea. Describe what you did in sufficient detail so that we are able to reproduce it.",
+	"report.send": "Send",
+
+	"test-model.feature-dimension": "Numero de colunas",
+	"model.numerical_input_bad_dimension": "Número incorreto de colunas",
+    "model.numerical_input_wrong": "Entrada numérica incorreta",
+	"model.addLabel.numerical": "Adicionar nova classe de números"
+}
