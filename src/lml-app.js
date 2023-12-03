@@ -1,7 +1,7 @@
 import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider }  from '@lit/context';
-import { appContext } from './appContext';
+import { appContext } from './contexts';
 import './main-menu/main-menu';
 
 // Configuration is loaded

@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { ContextConsumer }  from '@lit/context';
-import { appContext } from '../appContext';
+import { appContext } from '../contexts';
 import './language-menu';
 
 export class MainMenu extends LitElement {
@@ -8,7 +8,6 @@ export class MainMenu extends LitElement {
   _consumer = new ContextConsumer(this, { context: appContext });
 
     render() {
-        console.log(this.config);
         return html`
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">

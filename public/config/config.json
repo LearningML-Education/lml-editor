@@ -1,3 +1,4 @@
 {
-    "defaultLanguage": "es"
+    "defaultLanguage": "es",
+    "languages": ["es", "en", "ca"]
 }

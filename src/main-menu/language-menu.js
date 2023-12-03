@@ -1,13 +1,24 @@
 import { LitElement, html } from 'lit';
-import { ContextConsumer }  from '@lit/context';
-import { appContext } from '../appContext';
+import { ContextConsumer, ContextProvider } from '@lit/context';
+import { appContext, langContext } from '../contexts';
+import { LangController } from './langController';
 
 export class LanguageMenu extends LitElement {
 
   _consumer = new ContextConsumer(this, { context: appContext });
 
+  constructor() {
+    super();
+    this.contextProvider = new ContextProvider(this, { context: langContext });
+  }
+
+  firstUpdated(){
+    this.contextProvider.setValue(new LangController(this._consumer.value.defaultLanguage));
+  }
+
   render() {
-    console.log(this.config);
+
+    const languages = this._consumer.value.languages;
 
     return html`
 <div class="navbar-item has-dropdown is-hoverable">
