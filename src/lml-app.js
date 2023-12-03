@@ -1,5 +1,7 @@
 import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
+import { ContextProvider }  from '@lit/context';
+import { appContext } from './appContext';
 import './main-menu/main-menu';
 
 // Configuration is loaded
@@ -14,12 +16,12 @@ class LMLApp extends LitElement {
     constructor() {
         super();
         this.loading = true;
-        this.config = null;
+        this.contextProvider = new ContextProvider(this, {context: appContext});
 
         configLoaderPromise.then(config => {
             setTimeout(() => {
-                this.config = config;
                 this.loading = false;
+                this.contextProvider.setValue(config);
             }, 1000)
 
         });
@@ -30,7 +32,7 @@ class LMLApp extends LitElement {
         ${this.loading ? 
             html`Cargando ...` 
             :
-            html`<main-menu .config=${this.config}></main-menu>`}
+            html`<main-menu></main-menu>`}
         `;
     }
 

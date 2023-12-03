@@ -1,11 +1,11 @@
-import { LitElement, html } from 'lit'
+import { LitElement, html } from 'lit';
+import { ContextConsumer }  from '@lit/context';
+import { appContext } from '../appContext';
 import './language-menu';
 
 export class MainMenu extends LitElement {
 
-    static properties = {
-        config: {type: Object}
-    }
+  _consumer = new ContextConsumer(this, { context: appContext });
 
     render() {
         console.log(this.config);
@@ -26,7 +26,7 @@ export class MainMenu extends LitElement {
             <a class="navbar-item">
                 Home
             </a>
-                <language-menu .config=${this.config} class="navbar-item"></language-menu>
+                <language-menu class="navbar-item"></language-menu>
             </div>
         </nav>
     `

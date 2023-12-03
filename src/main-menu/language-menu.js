@@ -1,10 +1,10 @@
-import { LitElement, html } from 'lit'
+import { LitElement, html } from 'lit';
+import { ContextConsumer }  from '@lit/context';
+import { appContext } from '../appContext';
 
 export class LanguageMenu extends LitElement {
 
-  static properties = {
-    config: { type: Object }
-  }
+  _consumer = new ContextConsumer(this, { context: appContext });
 
   render() {
     console.log(this.config);
@@ -12,6 +12,7 @@ export class LanguageMenu extends LitElement {
     return html`
 <div class="navbar-item has-dropdown is-hoverable">
     <a class="navbar-link">
+      ${this._consumer.value.defaultLanguage}
       <i class="fa-solid fa-globe"></i>
     </a>
 

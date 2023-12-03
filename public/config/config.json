@@ -1,4 +1,3 @@
 {
-    "apiKey": "tuClaveSecreta",
-    "apiUrl": "https://api.ejemplo.com"
+    "defaultLanguage": "es"
 }
