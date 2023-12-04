@@ -1,7 +1,8 @@
 import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider }  from '@lit/context';
-import { appContext } from './contexts';
+import { configContext, langContext } from './contexts';
+import { LangController } from './main-menu/langController';
 import './main-menu/main-menu';
 
 // Configuration is loaded
@@ -16,12 +17,14 @@ class LMLApp extends LitElement {
     constructor() {
         super();
         this.loading = true;
-        this.contextProvider = new ContextProvider(this, {context: appContext});
-
+        this.configProvider = new ContextProvider(this, {context: configContext});
+        this.langProvider = new ContextProvider(this, { context: langContext});
+        
         configLoaderPromise.then(config => {
             setTimeout(() => {
                 this.loading = false;
-                this.contextProvider.setValue(config);
+                this.configProvider.setValue(config);
+                this.langProvider.setValue(new LangController(config.defaultLanguage));
             }, 1000)
 
         });

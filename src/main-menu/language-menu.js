@@ -1,42 +1,36 @@
 import { LitElement, html } from 'lit';
-import { ContextConsumer, ContextProvider } from '@lit/context';
-import { appContext, langContext } from '../contexts';
-import { LangController } from './langController';
+import { ContextConsumer } from '@lit/context';
+import { configContext, langContext } from '../contexts';
 
 export class LanguageMenu extends LitElement {
 
-  _consumer = new ContextConsumer(this, { context: appContext });
+  _configConsumer = new ContextConsumer(this, { context: configContext });
+  _langConsumer = new ContextConsumer(this, { context: langContext});
 
-  constructor() {
-    super();
-    this.contextProvider = new ContextProvider(this, { context: langContext });
-  }
+  setLanguage(event){
+    let lang = event.target.getAttribute('lang');
+    this._langConsumer.value.language = lang
 
-  firstUpdated(){
-    this.contextProvider.setValue(new LangController(this._consumer.value.defaultLanguage));
+    console.log( this._langConsumer.value.language);
   }
 
   render() {
-
-    const languages = this._consumer.value.languages;
-
+    const languages = this._configConsumer.value.languages;
+    
     return html`
 <div class="navbar-item has-dropdown is-hoverable">
     <a class="navbar-link">
-      ${this._consumer.value.defaultLanguage}
       <i class="fa-solid fa-globe"></i>
     </a>
 
     <div class="navbar-dropdown">
-        <a class="navbar-item">
-            Español
-        </a>
-        <a class="navbar-item">
-            English
-        </a>
-        <a class="navbar-item">
-            Galego
-        </a>
+        ${Object.keys(languages).map(lang => {
+          return html`
+          <a @click=${this.setLanguage} lang=${lang} class="navbar-item">
+            ${languages[lang]}
+          </a>`
+        })}
+        
     </div>
 </div>
     `

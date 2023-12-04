@@ -1,4 +1,8 @@
 {
     "defaultLanguage": "es",
-    "languages": ["es", "en", "ca"]
+    "languages": {
+        "es": "Español",
+        "en": "English",
+        "ca": "Català"
+    }
 }

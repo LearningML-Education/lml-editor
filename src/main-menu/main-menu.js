@@ -1,11 +1,11 @@
 import { LitElement, html } from 'lit';
 import { ContextConsumer }  from '@lit/context';
-import { appContext } from '../contexts';
+import { configContext } from '../contexts';
 import './language-menu';
 
 export class MainMenu extends LitElement {
 
-  _consumer = new ContextConsumer(this, { context: appContext });
+  _configConsumer = new ContextConsumer(this, { context: configContext });
 
     render() {
         return html`
