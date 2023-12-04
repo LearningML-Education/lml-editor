@@ -2,7 +2,6 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { configContext } from '../contexts';
-import '../locale-picker';
 import './language-menu';
 
 export class MainMenu extends LitElement {
@@ -35,9 +34,6 @@ export class MainMenu extends LitElement {
                 <language-menu class="navbar-item"></language-menu>
             </div>
         </nav>
-
-        <locale-picker></locale-picker>
-
     `
     }
 

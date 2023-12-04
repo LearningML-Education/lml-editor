@@ -1,22 +1,46 @@
 import { LitElement, html } from 'lit';
+import { getLocale, setLocaleFromUrl } from './localization.js';
+import { allLocales } from './locale-codes.js';
+import { updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { configContext, langContext } from '../contexts';
+
+const localeNames = {
+  en: 'English',
+  'es': 'Español',
+  'ca': 'Catalá',
+};
 
 export class LanguageMenu extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext });
-  _langConsumer = new ContextConsumer(this, { context: langContext});
+  _langConsumer = new ContextConsumer(this, { context: langContext });
 
-  setLanguage(event){
+  constructor() {
+    super();
+    updateWhenLocaleChanges(this);
+  }
+
+  setLanguage(event) {
     let lang = event.target.getAttribute('lang');
     this._langConsumer.value.language = lang
 
-    console.log( this._langConsumer.value.language);
+    console.log(this._langConsumer.value.language);
   }
+
+  localeChanged(event) {
+    const newLocale = event.target.getAttribute('locale');
+    if (newLocale !== getLocale()) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('locale', newLocale);
+        window.history.pushState(null, '', url.toString());
+        setLocaleFromUrl();
+    }
+}
 
   render() {
     const languages = this._configConsumer.value.languages;
-    
+
     return html`
 <div class="navbar-item has-dropdown is-hoverable">
     <a class="navbar-link">
@@ -24,12 +48,14 @@ export class LanguageMenu extends LitElement {
     </a>
 
     <div class="navbar-dropdown">
-        ${Object.keys(languages).map(lang => {
-          return html`
-          <a @click=${this.setLanguage} lang=${lang} class="navbar-item">
-            ${languages[lang]}
-          </a>`
-        })}
+       
+        ${allLocales.map(
+            (locale) => html`<a class="navbar-item" @click=${this.localeChanged} locale=${locale} ?selected=${locale === getLocale()
+                }>
+              ${localeNames[locale]}
+              </a>`
+        )}
+      
         
     </div>
 </div>
