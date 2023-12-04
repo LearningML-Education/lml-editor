@@ -9,6 +9,7 @@
     /* eslint-disable @typescript-eslint/no-explicit-any */
 
     export const templates = {
-      's6abb1cd87fe0114e': `Home`,
+      's74cb3d66f6a668e1': `Documentation`,
+'s6abb1cd87fe0114e': `Home`,
     };
   

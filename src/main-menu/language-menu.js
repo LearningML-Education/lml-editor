@@ -42,8 +42,7 @@ export class LanguageMenu extends LitElement {
     <div class="navbar-dropdown">
        
         ${allLocales.map(
-            (locale) => html`<a class="navbar-item" @click=${this.localeChanged} locale=${locale} ?selected=${locale === getLocale()
-                }>
+            (locale) => html`<a class="navbar-item" @click=${this.localeChanged} locale=${locale}>
               ${localeNames[locale]}
               </a>`
         )}

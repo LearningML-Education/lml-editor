@@ -1,8 +1,13 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { configContext } from '../contexts';
 import './language-menu';
+import './file-menu';
+import './input-menu';
+import './learn-menu';
+import './mode-toggle-menu';
+import './about-menu';
 
 export class MainMenu extends LitElement {
 
@@ -28,10 +33,16 @@ export class MainMenu extends LitElement {
                 </a>
             </div>
             <div class="navbar-menu">
-            <a class="navbar-item">
-                ${msg('Home')}
-            </a>
-                <language-menu class="navbar-item"></language-menu>
+                <div class="navbar-start">                            
+                    <language-menu class="component"></language-menu>                
+                    <file-menu class="component"></file-menu>                
+                    <input-menu class="component"></input-menu>
+                    <learn-menu class="component"></learn-menu>
+                    <mode-toggle-menu class="component"></mode-toggle-menu>                
+                </div>
+                <div class="navbar-end">                    
+                    <about-menu class="component"></about-menu>
+                </div>
             </div>
         </nav>
     `

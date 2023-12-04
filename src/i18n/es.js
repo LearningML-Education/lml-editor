@@ -1,14 +1,14 @@
 
-    // Do not modify this file by hand!
-    // Re-generate this file by running lit-localize
+// Do not modify this file by hand!
+// Re-generate this file by running lit-localize
 
-    
-    
 
-    /* eslint-disable no-irregular-whitespace */
-    /* eslint-disable @typescript-eslint/no-explicit-any */
 
-    export const templates = {
-      's6abb1cd87fe0114e': `Inicio`,
-    };
-  
+
+/* eslint-disable no-irregular-whitespace */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+export const templates = {
+  's6abb1cd87fe0114e': `Inicio`,
+  's74cb3d66f6a668e1': `Documentación`,
+};
