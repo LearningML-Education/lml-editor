@@ -1,11 +1,18 @@
 import { LitElement, html } from 'lit';
-import { ContextConsumer }  from '@lit/context';
+import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import { ContextConsumer } from '@lit/context';
 import { configContext } from '../contexts';
+import '../locale-picker';
 import './language-menu';
 
 export class MainMenu extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
+    _configConsumer = new ContextConsumer(this, { context: configContext });
+
+    constructor(){
+        super();
+        updateWhenLocaleChanges(this);
+    }
 
     render() {
         return html`
@@ -23,11 +30,14 @@ export class MainMenu extends LitElement {
             </div>
             <div class="navbar-menu">
             <a class="navbar-item">
-                Home
+                ${msg('Home')}
             </a>
                 <language-menu class="navbar-item"></language-menu>
             </div>
         </nav>
+
+        <locale-picker></locale-picker>
+
     `
     }
 
