@@ -3,7 +3,7 @@ import { getLocale, setLocaleFromUrl } from './localization.js';
 import { allLocales } from './locale-codes.js';
 import { updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, langContext } from '../contexts';
+import { configContext } from '../contexts';
 
 const localeNames = {
   en: 'English',
@@ -14,18 +14,10 @@ const localeNames = {
 export class LanguageMenu extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext });
-  _langConsumer = new ContextConsumer(this, { context: langContext });
 
   constructor() {
     super();
     updateWhenLocaleChanges(this);
-  }
-
-  setLanguage(event) {
-    let lang = event.target.getAttribute('lang');
-    this._langConsumer.value.language = lang
-
-    console.log(this._langConsumer.value.language);
   }
 
   localeChanged(event) {
