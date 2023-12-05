@@ -35,6 +35,27 @@
 <trans-unit id="s6c41f2a55b0c049e">
   <source>Advanced mode</source>
 </trans-unit>
+<trans-unit id="s9b304c813c8dabba">
+  <source>Start!</source>
+</trans-unit>
+<trans-unit id="sffcc465055a84a01">
+  <source>Text recognition</source>
+</trans-unit>
+<trans-unit id="s50f886add783ff02">
+  <source>Teach the computer to recognize text</source>
+</trans-unit>
+<trans-unit id="s9edd996e35665cd5">
+  <source>Image recognition</source>
+</trans-unit>
+<trans-unit id="s4290eb5362fee3cf">
+  <source>Teach the computer to recognize images</source>
+</trans-unit>
+<trans-unit id="s1ec86aed43519f5f">
+  <source>Number recognition</source>
+</trans-unit>
+<trans-unit id="s53525dd5bbd77b5d">
+  <source>Teach the computer to recognize number sets</source>
+</trans-unit>
 </body>
 </file>
 </xliff>

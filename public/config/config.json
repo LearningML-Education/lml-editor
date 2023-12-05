@@ -1,8 +1,8 @@
 {
     "defaultLanguage": "es",
-    "languages": {
-        "es": "Español",
-        "en": "English",
-        "ca": "Català"
+    "initMessage": {
+        "show": true,
+        "title": "Atención",
+        "message": "LearningML necesita tu ayuda."
     }
 }

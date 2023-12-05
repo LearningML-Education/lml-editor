@@ -46,6 +46,34 @@
   <source>Advanced mode</source>
   <target state="translated">Modo avanzado</target>
 </trans-unit>
+<trans-unit id="s9b304c813c8dabba">
+  <source>Start!</source>
+  <target state="translated">¡Comenzar!</target>
+</trans-unit>
+<trans-unit id="sffcc465055a84a01">
+  <source>Text recognition</source>
+  <target state="translated">Reconocimiento de textos</target>
+</trans-unit>
+<trans-unit id="s50f886add783ff02">
+  <source>Teach the computer to recognize text</source>
+  <target state="translated">Enseña al ordenador a reconocer textos</target>
+</trans-unit>
+<trans-unit id="s9edd996e35665cd5">
+  <source>Image recognition</source>
+  <target state="translated">Reconocimiento de imágenes</target>
+</trans-unit>
+<trans-unit id="s4290eb5362fee3cf">
+  <source>Teach the computer to recognize images</source>
+  <target state="translated">Enseña al ordenador a reconocer imágenes</target>
+</trans-unit>
+<trans-unit id="s1ec86aed43519f5f">
+  <source>Number recognition</source>
+  <target state="translated">Reconocimiento de números</target>
+</trans-unit>
+<trans-unit id="s53525dd5bbd77b5d">
+  <source>Teach the computer to recognize number sets</source>
+  <target state="translated">Enseña al ordenador a reconocer conjuntos numéricos</target>
+</trans-unit>
 </body>
 </file>
 </xliff>

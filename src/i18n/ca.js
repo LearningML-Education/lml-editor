@@ -18,7 +18,14 @@
 's5eedf01beec54734': `Tutorials`,
 's3174fde5275589a0': `LearningML Manual`,
 's0487f33d9ddaabde': `About`,
-'s4a2fb24906957fc0': `Basic mode`,
 's6c41f2a55b0c049e': `Advanced mode`,
+'s4a2fb24906957fc0': `Basic mode`,
+'s9b304c813c8dabba': `Start!`,
+'sffcc465055a84a01': `Text recognition`,
+'s50f886add783ff02': `Teach the computer to recognize text`,
+'s9edd996e35665cd5': `Image recognition`,
+'s4290eb5362fee3cf': `Teach the computer to recognize images`,
+'s1ec86aed43519f5f': `Number recognition`,
+'s53525dd5bbd77b5d': `Teach the computer to recognize number sets`,
     };
   

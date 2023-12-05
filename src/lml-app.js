@@ -1,9 +1,12 @@
 import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
-import { ContextProvider }  from '@lit/context';
+import { ContextProvider } from '@lit/context';
 import { configContext } from './contexts';
 import './main-menu/main-menu';
-import './model-selector/model-selector'
+import './model-selector/model-selector';
+import './footers/footer-copyright';
+import './footers/footer-sponsors';
+import './init-message/init-message';
 
 // Configuration is loaded
 const configLoaderPromise = configLoader();
@@ -17,8 +20,8 @@ class LMLApp extends LitElement {
     constructor() {
         super();
         this.loading = true;
-        this.configProvider = new ContextProvider(this, {context: configContext});
-        
+        this.configProvider = new ContextProvider(this, { context: configContext });
+
         configLoaderPromise.then(config => {
             setTimeout(() => {
                 this.loading = false;
@@ -28,20 +31,61 @@ class LMLApp extends LitElement {
         });
     }
 
-    render() {
+    loadingTemplate() {
+        return html`${msg("Loading ...")}`;
+    }
+
+    initMessageTemplate() {
         return html`
-        ${this.loading ? 
-            html`Cargando ...` 
-            :
-            html`
-            <div class="container is-fluid mb-2">
-                <main-menu></main-menu>
-            </div>
-            <div class="container is-fluid mb-2">
-                <model-selector></model-selector>
-            </div>
-            `}
+        <div class="container is-fluid mb-2">
+            <init-message></init-message>
+        </div>
         `;
+    }
+
+    mainMenuTemplate() {
+        return html`
+        <div class="container is-fluid mb-2">
+            <main-menu></main-menu>
+        </div>`;
+    }
+
+    modelSelectorTemplate(){
+        return html`
+        <div class="container is-fluid mb-5">
+            <model-selector></model-selector>
+        </div>
+        `;
+    }
+
+    footerCopyrigthTemplate(){
+        return html`
+        <div class="container is-fluid mb-2">
+            <footer-copyright></footer-copyright>
+        </div>
+        `;
+    }
+
+    footerSponsorsTemplate(){
+        return html`
+        <div class="container is-fluid mb-2">
+            <footer-sponsors></footer-sponsors>
+        </div>
+        `;
+    }
+
+    render() {
+        if(this.loading){
+            return this.loadingTemplate();
+        } else {
+            let app = html`
+            ${this.mainMenuTemplate()}
+            ${this.modelSelectorTemplate()}
+            ${this.footerCopyrigthTemplate()}
+            ${this.footerSponsorsTemplate()}
+            `;
+            return app;
+        }
     }
 
     createRenderRoot() {
