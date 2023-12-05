@@ -20,13 +20,25 @@ export class ModelSelector extends LitElement {
     return html`
 <div class="columns">
   <div class="column">
-    <model-card .title="Kakakak"></model-card>
+    <model-card 
+      title="${msg('Text recognition')}"
+      description="${msg('Teach the computer to recognize text')}"
+      image="dalle-text.png">
+    </model-card>
   </div>
   <div class="column">
-    <model-card></model-card>
+    <model-card 
+      title="${msg('Image recognition')}"
+      description="${msg('Teach the computer to recognize images')}"
+      image="dalle-images.png">
+    </model-card>
   </div>
   <div class="column">
-    <model-card></model-card>
+    <model-card 
+      title="${msg('Number recognition')}"
+      description="${msg('Teach the computer to recognize number sets')}"
+      image="dalle-numbers.png">
+    </model-card>
   </div>
 </div>
     `
