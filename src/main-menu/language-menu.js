@@ -31,7 +31,6 @@ export class LanguageMenu extends LitElement {
 }
 
   render() {
-    const languages = this._configConsumer.value.languages;
 
     return html`
 <div class="navbar-item has-dropdown is-hoverable">
