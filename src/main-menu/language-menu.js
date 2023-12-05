@@ -35,7 +35,9 @@ export class LanguageMenu extends LitElement {
     return html`
 <div class="navbar-item has-dropdown is-hoverable">
     <a class="navbar-link">
-      <i class="fa-solid fa-globe"></i>
+      <span class="icon">
+        <i class="fa-solid fa-globe"></i>
+      </span>
     </a>
 
     <div class="navbar-dropdown">
