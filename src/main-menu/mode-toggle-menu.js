@@ -10,21 +10,18 @@ export class ModeToggleMenu extends LitElement {
 
   static properties = {
     modeClass: { String },
-    buttonText: { String }
   }
 
   constructor() {
     super();
     this.advanced = false;
     this.modeClass = "";
-    this.buttonText = msg("Basic mode");
     updateWhenLocaleChanges(this);
   }
 
   handleToggleClick() {
     this.advanced = !this.advanced;
     this.modeClass = this.advanced ? "is-success" : "";
-    this.buttonText = this.advanced ? msg("Advanced mode") : msg("Basic mode")
   }
 
   render() {
@@ -32,7 +29,7 @@ export class ModeToggleMenu extends LitElement {
     return html`
     <div class="navbar-item">
       <button class="button is-rounded ${this.modeClass}" @click="${this.handleToggleClick}">
-      ${this.buttonText}
+      ${this.advanced ? msg("Advanced mode") : msg("Basic mode")}
       </button>
     </div>
         `

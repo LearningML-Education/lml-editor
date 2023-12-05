@@ -8,7 +8,7 @@
   "output": {
     "mode": "runtime",
     "outputDir": "./src/i18n",
-    "localeCodesModule": "./src/i18n/locale-codes.js"
+    "localeCodesModule": "./src/main-menu/locale-codes.js"
   },
   "interchange": {
     "format": "xliff",
