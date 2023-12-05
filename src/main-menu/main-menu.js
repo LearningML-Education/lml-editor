@@ -22,8 +22,8 @@ export class MainMenu extends LitElement {
         return html`
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="https://bulma.io">
-                <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="112" height="28">
+                <a class="navbar-item" href="https://web.learningml.org">
+                <img src="/src/assets/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
                 </a>
 
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
