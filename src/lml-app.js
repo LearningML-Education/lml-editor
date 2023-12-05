@@ -3,6 +3,7 @@ import { LitElement, html } from 'lit';
 import { ContextProvider }  from '@lit/context';
 import { configContext } from './contexts';
 import './main-menu/main-menu';
+import './model-selector/model-selector'
 
 // Configuration is loaded
 const configLoaderPromise = configLoader();
@@ -32,7 +33,14 @@ class LMLApp extends LitElement {
         ${this.loading ? 
             html`Cargando ...` 
             :
-            html`<main-menu></main-menu>`}
+            html`
+            <div class="container is-fluid mb-2">
+                <main-menu></main-menu>
+            </div>
+            <div class="container is-fluid mb-2">
+                <model-selector></model-selector>
+            </div>
+            `}
         `;
     }
 
