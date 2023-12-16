@@ -2,6 +2,7 @@ import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
 import { configContext } from './contexts';
+import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
 import './footers/footer-copyright';
@@ -21,6 +22,7 @@ class LMLApp extends LitElement {
         super();
         this.loading = true;
         this.configProvider = new ContextProvider(this, { context: configContext });
+        updateWhenLocaleChanges(this);
 
         configLoaderPromise.then(config => {
             setTimeout(() => {
