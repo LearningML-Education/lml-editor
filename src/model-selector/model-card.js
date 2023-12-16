@@ -22,6 +22,10 @@ export class ModelCard extends LitElement {
     updateWhenLocaleChanges(this);
   }
 
+  loadEditor(){
+    alert("Editorrrrr!!");
+  }
+
   render() {
 
     console.log(this.title);
@@ -37,7 +41,7 @@ export class ModelCard extends LitElement {
         <h3 class="has-text-centered">${this.title}</h3>
         <p class="has-text-centered">${this.description}</p>
         <div class="buttons">
-          <button class="button is-success is-fullwidth">${msg("Start!")}</button>
+          <button @click=${this.loadEditor} class="button is-success is-fullwidth">${msg("Start!")}</button>
         </div>
       </div>
     </div>
