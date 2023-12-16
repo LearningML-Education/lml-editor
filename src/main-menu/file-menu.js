@@ -8,6 +8,10 @@ export class FileMenu extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext });
 
+  static properties = {
+    showSave: { type: Boolean }
+  }
+
   constructor() {
     super();
     updateWhenLocaleChanges(this);
@@ -22,9 +26,13 @@ export class FileMenu extends LitElement {
         </a>
     
         <div class="navbar-dropdown">
+          
           <a class="navbar-item">${msg("New")}</a>
           <a class="navbar-item">${msg("Upload from your computer")}</a>
-          <a class="navbar-item">${msg("Save to your computer")}</a>
+          ${this.showSave 
+          ? html `<a class="navbar-item">${msg("Save to your computer")}</a>`
+          : html ``
+        }
         </div>
     </div>
         `

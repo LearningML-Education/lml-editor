@@ -4,15 +4,13 @@ import { ContextProvider } from '@lit/context';
 import { configContext } from './contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
-import './model-selector/model-selector';
 import './footers/footer-copyright';
 import './footers/footer-sponsors';
-import './init-message/init-message';
 
 // Configuration is loaded
 const configLoaderPromise = configLoader();
 
-class LMLApp extends LitElement {
+class LMLModelText extends LitElement {
 
     static properties = {
         loading: { type: Boolean },
@@ -34,16 +32,9 @@ class LMLApp extends LitElement {
     }
 
     loadingTemplate() {
-        return html`${msg("Loading ...")}`;
+        return html`${msg("Loading ModelText ...")}`;
     }
 
-    initMessageTemplate() {
-        return html`
-        <div class="container is-fluid mb-2">
-            <init-message></init-message>
-        </div>
-        `;
-    }
 
     mainMenuTemplate() {
         return html`
@@ -52,10 +43,10 @@ class LMLApp extends LitElement {
         </div>`;
     }
 
-    modelSelectorTemplate(){
+    modelEditorTemplate(){
         return html`
         <div class="container is-fluid mb-5">
-            <model-selector></model-selector>
+            loadEditor
         </div>
         `;
     }
@@ -82,7 +73,7 @@ class LMLApp extends LitElement {
         } else {
             let app = html`
             ${this.mainMenuTemplate()}
-            ${this.modelSelectorTemplate()}
+            ${this.modelEditorTemplate()}
             ${this.footerCopyrigthTemplate()}
             ${this.footerSponsorsTemplate()}
             `;
@@ -95,4 +86,4 @@ class LMLApp extends LitElement {
     }
 
 }
-customElements.define('lml-app', LMLApp);
+customElements.define('lml-model-text', LMLModelText);

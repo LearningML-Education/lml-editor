@@ -23,7 +23,7 @@ export class ModelCard extends LitElement {
   }
 
   loadEditor(){
-    alert("Editorrrrr!!");
+    window.location.href = "/model-text";
   }
 
   render() {

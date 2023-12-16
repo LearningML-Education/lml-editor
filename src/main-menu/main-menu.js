@@ -13,9 +13,31 @@ export class MainMenu extends LitElement {
 
     _configConsumer = new ContextConsumer(this, { context: configContext });
 
+    static properties = {
+        menu: {type: String}
+    }
+
     constructor(){
         super();
         updateWhenLocaleChanges(this);
+    }
+
+    templateMenu(){
+        if(this.menu == 'home'){
+            return html`
+                <language-menu class="component"></language-menu>                
+                <file-menu class="component"></file-menu>                
+                <learn-menu class="component"></learn-menu>   
+            `;
+        }else{
+            return html`
+            <language-menu class="component"></language-menu>                
+            <file-menu showSave class="component"></file-menu>  
+            <input-menu class="component"></input-menu>              
+            <learn-menu class="component"></learn-menu>
+            <mode-toggle-menu class="component"></mode-toggle-menu> 
+            `;
+        }
     }
 
     render() {
@@ -34,11 +56,7 @@ export class MainMenu extends LitElement {
             </div>
             <div class="navbar-menu">
                 <div class="navbar-start">                            
-                    <language-menu class="component"></language-menu>                
-                    <file-menu class="component"></file-menu>                
-                    <input-menu class="component"></input-menu>
-                    <learn-menu class="component"></learn-menu>
-                    <mode-toggle-menu class="component"></mode-toggle-menu>                
+                    ${this.templateMenu()}               
                 </div>
                 <div class="navbar-end">                    
                     <about-menu class="component"></about-menu>
