@@ -52,7 +52,7 @@ class LMLApp extends LitElement {
         </div>`;
     }
 
-    modelSelectorTemplate(){
+    modelSelectorTemplate() {
         return html`
         <div class="container is-fluid mb-5">
             <model-selector></model-selector>
@@ -60,7 +60,7 @@ class LMLApp extends LitElement {
         `;
     }
 
-    footerCopyrigthTemplate(){
+    footerCopyrigthTemplate() {
         return html`
         <div class="container is-fluid mb-2">
             <footer-copyright></footer-copyright>
@@ -68,7 +68,7 @@ class LMLApp extends LitElement {
         `;
     }
 
-    footerSponsorsTemplate(){
+    footerSponsorsTemplate() {
         return html`
         <div class="container is-fluid mb-2">
             <footer-sponsors></footer-sponsors>
@@ -77,10 +77,14 @@ class LMLApp extends LitElement {
     }
 
     render() {
-        if(this.loading){
+        if (this.loading) {
             return this.loadingTemplate();
-        } else {
+        } else  {
             let app = html`
+            ${this.configProvider.value.initMessage.show
+                ? this.initMessageTemplate()
+                : html``
+            }
             ${this.mainMenuTemplate()}
             ${this.modelSelectorTemplate()}
             ${this.footerCopyrigthTemplate()}

@@ -1,7 +1,7 @@
 {
     "defaultLanguage": "es",
     "initMessage": {
-        "show": true,
+        "show": false,
         "title": "Atención",
         "message": "LearningML necesita tu ayuda."
     }
