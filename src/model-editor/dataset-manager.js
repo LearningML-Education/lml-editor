@@ -22,7 +22,7 @@ export class DatasetManager extends LitElement {
     return html`
 <nav class="panel mb-3">
   <p class="panel-heading">
-    Repositories
+    <input class="input" type="text" placeholder="Text input">
     <a class="m-4"><i class="fa-solid fa-pen-to-square" data-tooltip="Tooltip Text"></i></a>
     <a><i class="fa-regular fa-trash-can"></i></a> 
     <button class="button is-small is-rounded is-primary ml-4">
