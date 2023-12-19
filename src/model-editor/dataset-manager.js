@@ -17,6 +17,63 @@ export class DatasetManager extends LitElement {
     alert ("vamooooo");
   }
 
+  templateTextButtons(){
+    return html`
+    <div class="panel-block">
+      <button class="button mr-1 is-primary is-fullwidth">
+        <span class="icon">
+        <i class="fa-regular fa-keyboard"></i>
+        </span>
+        <span>${msg('Add new text')}</span>
+      </button>
+      <button class="button mr-1 is-primary is-fullwidth">
+        <span class="icon">
+        <i class="fa-solid fa-upload"></i>
+        </span>
+        <span>${msg('Load texts from file')}</span>
+      </button>
+    </div>
+    `;
+  }
+
+  templateImageButtons(){
+    return html`
+    <div class="panel-block">
+      <button class="button mr-1 is-primary is-fullwidth">
+        <span class="icon">
+        <i class="fa-solid fa-images"></i>
+        </span>
+        <span>${msg('Upload images')}</span>
+      </button>
+      <button class="button mr-1 is-primary is-fullwidth">
+        <span class="icon">
+        <i class="fa-solid fa-camera"></i>
+        </span>
+        <span>${msg('Take from camera')}</span>
+      </button>
+    </div>
+    `;
+  }
+
+  templateNumberButtons(){
+    return html`
+    <div class="panel-block">
+      <button class="button mr-1 is-primary is-fullwidth">
+        <span class="icon">
+        <i class="fa-regular fa-keyboard"></i>
+        </span>
+        <span>${msg('Add numbers')}</span>
+      </button>
+      <button class="button mr-1 is-primary is-fullwidth">
+        <span class="icon">
+        <i class="fa-solid fa-upload"></i>
+        </span>
+        <span>${msg('Load numbers from file')}</span>
+      </button>
+    </div>
+    `;
+  }
+
   render() {
 
     return html`
@@ -26,11 +83,8 @@ export class DatasetManager extends LitElement {
         Clase 1
         <a class="m-2"><i class="fa-solid fa-pen-to-square" data-tooltip="Tooltip Text"></i></a>
         <a class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
-        <a class="m-2"><i class="fa-solid fa-square-plus"></i></a>
-        
       </div>
     </div>
-  
   </p>
   
   <div class="container p-3">
@@ -71,6 +125,8 @@ export class DatasetManager extends LitElement {
       </table>
     </div>
   </div>
+
+  ${this.templateNumberButtons()}
    
 </nav>
     `

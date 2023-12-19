@@ -11,21 +11,24 @@ export class ModelCard extends LitElement {
   static properties = {
     title: { type: String },
     description: { type: String },
-    image: {type: String}
+    image: { type: String },
+    code: { type: String }
   }
 
   constructor() {
     super();
     this.title = "Mising title";
     this.description = "Missing description";
-    this.image = "cabeza_genio.png"
+    this.image = "cabeza_genio.png";
+    this.code = "no-code";
     updateWhenLocaleChanges(this);
   }
 
-  loadEditor(){
+  loadEditor() {
     const event = new CustomEvent('load-model-editor', {
       bubbles: true,
       composed: true,
+      detail: this.code
     });
 
     this.dispatchEvent(event);

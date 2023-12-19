@@ -23,21 +23,24 @@ export class ModelSelector extends LitElement {
     <model-card 
       title="${msg('Text recognition')}"
       description="${msg('Teach the computer to recognize text')}"
-      image="dalle-text.png">
+      image="dalle-text.png"
+      code="model-editor-text">
     </model-card>
   </div>
   <div class="column">
     <model-card 
       title="${msg('Image recognition')}"
       description="${msg('Teach the computer to recognize images')}"
-      image="dalle-images.png">
+      image="dalle-images.png"
+      code="model-editor-image">
     </model-card>
   </div>
   <div class="column">
     <model-card 
       title="${msg('Number recognition')}"
       description="${msg('Teach the computer to recognize number sets')}"
-      image="dalle-numbers.png">
+      image="dalle-numbers.png"
+      code="model-editor-number">
     </model-card>
   </div>
 </div>

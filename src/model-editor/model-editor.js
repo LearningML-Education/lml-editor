@@ -9,7 +9,6 @@ export class ModelEditor extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext });
 
-
   constructor() {
     super();
     updateWhenLocaleChanges(this);

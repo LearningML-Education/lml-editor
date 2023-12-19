@@ -25,7 +25,7 @@ class LMLApp extends LitElement {
         super();
 
         this.loading = true;
-        this.page = 'model-editor';
+        this.page = 'home';
         this.configProvider = new ContextProvider(this, { context: configContext });
         updateWhenLocaleChanges(this);
 
@@ -42,7 +42,9 @@ class LMLApp extends LitElement {
         super.connectedCallback();
 
         this.addEventListener("load-model-editor", (e) => {
+            console.log(e);
             this.page = 'model-editor';
+            this.editor = e.detail;
         });
     }
 
