@@ -3,12 +3,13 @@ import { ContextConsumer } from '@lit/context';
 import { configContext } from './contexts';
 import { updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
-import './model-selector/model-selector';
 import './footers/footer-copyright';
 import './footers/footer-sponsors';
 import './init-message/init-message';
+import './model-editor/model-editor';
 
-class LMLHome extends LitElement {
+
+class LMLModel extends LitElement {
 
     constructor() {
         super();
@@ -31,12 +32,11 @@ class LMLHome extends LitElement {
         </div>`;
     }
 
-    modelSelectorTemplate() {
+    editorTemplate() {
         return html`
-        <div class="container is-fluid mb-5">
-            <model-selector></model-selector>
-        </div>
-        `;
+        <div class="container is-fluid mb-2">
+            <model-editor></model-editor>
+        </div>`;
     }
 
     footerCopyrigthTemplate() {
@@ -56,18 +56,16 @@ class LMLHome extends LitElement {
     }
 
     render() {
-
         return html`
             ${this._configConsumer.value.initMessage.show
                 ? this.initMessageTemplate()
                 : html``
             }
             ${this.mainMenuTemplate()}
-            ${this.modelSelectorTemplate()}
+            ${this.editorTemplate()}
             ${this.footerCopyrigthTemplate()}
             ${this.footerSponsorsTemplate()}
             `;
-
     }
 
     createRenderRoot() {
@@ -75,4 +73,4 @@ class LMLHome extends LitElement {
     }
 
 }
-customElements.define('lml-home', LMLHome);
+customElements.define('lml-model', LMLModel);
