@@ -22,15 +22,14 @@ export class DatasetManager extends LitElement {
     return html`
 <nav class="panel mb-3">
   <p class="panel-heading">
-    <input class="input" type="text" placeholder="Text input">
-    <a class="m-4"><i class="fa-solid fa-pen-to-square" data-tooltip="Tooltip Text"></i></a>
-    <a><i class="fa-regular fa-trash-can"></i></a> 
-    <button class="button is-small is-rounded is-primary ml-4">
-      <span class="icon">
-        <i class="fa-solid fa-square-plus"></i>
-      </span>
-      <span>Añadir texto</span>  
-    </button>
+        <!-- <input style="width: 200px;" class="input" type="text" placeholder="Text input"> -->
+        Clase 1
+        <a class="m-2"><i class="fa-solid fa-pen-to-square" data-tooltip="Tooltip Text"></i></a>
+        <a class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
+        <a class="m-2"><i class="fa-solid fa-square-plus"></i></a>
+        
+      </div>
+    </div>
   
   </p>
   
@@ -43,20 +42,17 @@ export class DatasetManager extends LitElement {
   </div>
 
   <div class="container p-3">
-    <img @click=${this.dale} width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
-    <img width="50px" src="/src/assets/images/cabeza_genio.png"/>
+    <img @click=${this.dale} width="50px" src="/images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+    <img width="50px" src="images/cabeza_genio.png"/>
+   
+    
   </div>
 
   <div class="container p-3">
