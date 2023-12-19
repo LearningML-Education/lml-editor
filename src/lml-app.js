@@ -18,14 +18,14 @@ class LMLApp extends LitElement {
 
     static properties = {
         loading: { type: Boolean },
-        page: 'home'
+        page: {type: String}
     };
 
     constructor() {
         super();
 
         this.loading = true;
-        this.page = 'home';
+        this.page = 'model-editor';
         this.configProvider = new ContextProvider(this, { context: configContext });
         this.statusProvider = new ContextProvider(this, { context: statusContext });
         this.statusProvider.setValue({

@@ -8,17 +8,37 @@ export class DatasetManager extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext });
 
+  static properties = {
+    className: {type: String}
+  };
+
   constructor() {
     super();
+    this.editingClassName = false;
+    this.className = "Unnamed";
     updateWhenLocaleChanges(this);
   }
 
-  dale(){
-    alert ("vamooooo");
+  editClassName() {
+    console.log("editClassName");
+    if(this.editingClassName){
+      this.className =this.querySelector("#inputClassName").value;
+      this.querySelector("#className").innerHTML = this.className;
+      this.querySelector("#editClassName").innerHTML = '<i class="fa-solid fa-pen-to-square">';
+    } else {
+      this.querySelector("#className").innerHTML = '<input id="inputClassName" style="width: 200px;" class="input" type="text" placeholder="Text input">';
+      this.querySelector("#editClassName").innerHTML = '<i class="fa-solid fa-check"></i>';
+    }
+    
+    this.editingClassName = !this.editingClassName;
   }
 
-  templateButtons(editorType){
-    switch (editorType){
+  removeClass() {
+    alert("remove class");
+  }
+
+  templateButtons(editorType) {
+    switch (editorType) {
       case 'text':
         return this.templateTextButtons();
       case 'image':
@@ -28,8 +48,8 @@ export class DatasetManager extends LitElement {
     }
   }
 
-  templateData(editorType){
-    switch (editorType){
+  templateData(editorType) {
+    switch (editorType) {
       case 'text':
         return this.templateTextData();
       case 'image':
@@ -39,7 +59,7 @@ export class DatasetManager extends LitElement {
     }
   }
 
-  templateTextButtons(){
+  templateTextButtons() {
     return html`
     <div class="panel-block">
       <button class="button mr-1 is-primary is-fullwidth">
@@ -58,7 +78,7 @@ export class DatasetManager extends LitElement {
     `;
   }
 
-  templateImageButtons(){
+  templateImageButtons() {
     return html`
     <div class="panel-block">
       <button class="button mr-1 is-primary is-fullwidth">
@@ -77,7 +97,7 @@ export class DatasetManager extends LitElement {
     `;
   }
 
-  templateNumberButtons(){
+  templateNumberButtons() {
     return html`
     <div class="panel-block">
       <button class="button mr-1 is-primary is-fullwidth">
@@ -96,7 +116,7 @@ export class DatasetManager extends LitElement {
     `;
   }
 
-  templateTextData(){
+  templateTextData() {
     return html`
       <div class="container p-3">
         <p> <span class="truncate">El Parque Nacional de Doñana es desde hace dos semanas la primera reserva ecológica expulsada de la lista verde de la Unión Internacional para la Conservación de la Naturaleza (UICN), la mayor organización ambiental del mundo. La salida del espacio protegido de este prestigioso sello verde se debe a la mala gestión de la Junta de Andalucía (PP), responsable de ejecutar medidas para revertir el deterioro de su biodiversidad, en caída libre por culpa de la agricultura intensiva, el turismo y la extrema sequía. Hasta ahora, ninguno de los 77 enclaves en 60 países había abandonado esta distinción de sostenibilidad.</p>
@@ -107,7 +127,7 @@ export class DatasetManager extends LitElement {
     `;
   }
 
-  templateImageData(){
+  templateImageData() {
     return html`
       <div class="container p-3">
       <img @click=${this.dale} width="50px" src="/images/cabeza_genio.png"/>
@@ -123,7 +143,7 @@ export class DatasetManager extends LitElement {
     `;
   }
 
-  templateNumberData(){
+  templateNumberData() {
     return html`
       <div class="container p-3">
         <div class="table-container">
@@ -148,10 +168,12 @@ export class DatasetManager extends LitElement {
     return html`
 <nav class="panel mb-3">
   <p class="panel-heading">
-        <!-- <input style="width: 200px;" class="input" type="text" placeholder="Text input"> -->
-        Clase 1
-        <a class="m-2"><i class="fa-solid fa-pen-to-square" data-tooltip="Tooltip Text"></i></a>
-        <a class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
+        ${this.editingClassName
+          ? html`<input style="width: 200px;" class="input" type="text" placeholder="Text input">`
+          : html`<span id="className">${this.className}</span>`}
+        
+        <a id="editClassName" @click=${this.editClassName} class="m-2"><i class="fa-solid fa-pen-to-square"></i></a>
+        <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
       </div>
     </div>
   </p>
