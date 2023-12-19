@@ -1,7 +1,7 @@
 import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
-import { configContext } from './contexts';
+import { configContext, statusContext } from './contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
@@ -27,6 +27,11 @@ class LMLApp extends LitElement {
         this.loading = true;
         this.page = 'home';
         this.configProvider = new ContextProvider(this, { context: configContext });
+        this.statusProvider = new ContextProvider(this, { context: statusContext });
+        this.statusProvider.setValue({
+            modelEditor: 'text'
+        });
+
         updateWhenLocaleChanges(this);
 
         configLoaderPromise.then(config => {
@@ -44,7 +49,9 @@ class LMLApp extends LitElement {
         this.addEventListener("load-model-editor", (e) => {
             console.log(e);
             this.page = 'model-editor';
-            this.editor = e.detail;
+            this.statusProvider.setValue({
+                modelEditor: e.detail
+            })
         });
     }
 

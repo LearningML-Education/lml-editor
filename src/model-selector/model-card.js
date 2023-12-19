@@ -1,18 +1,14 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import { ContextConsumer } from '@lit/context';
-import { configContext } from '../contexts.js';
-
 
 export class ModelCard extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
 
   static properties = {
     title: { type: String },
     description: { type: String },
     image: { type: String },
-    code: { type: String }
+    type: {type: String}
   }
 
   constructor() {
@@ -20,7 +16,6 @@ export class ModelCard extends LitElement {
     this.title = "Mising title";
     this.description = "Missing description";
     this.image = "cabeza_genio.png";
-    this.code = "no-code";
     updateWhenLocaleChanges(this);
   }
 
@@ -28,7 +23,7 @@ export class ModelCard extends LitElement {
     const event = new CustomEvent('load-model-editor', {
       bubbles: true,
       composed: true,
-      detail: this.code
+      detail: this.type
     });
 
     this.dispatchEvent(event);
