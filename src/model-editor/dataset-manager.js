@@ -1,7 +1,8 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { statusContext } from '../contexts.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 
 export class DatasetManager extends LitElement {
@@ -9,32 +10,35 @@ export class DatasetManager extends LitElement {
   _statusConsumer = new ContextConsumer(this, { context: statusContext });
 
   static properties = {
-    className: {type: String}
+    editinglabelName: { type: Boolean },
+    labelName: { type: String },
+    faCheck: { type: Boolean },
+    faPenToSquare: { type: Boolean }
   };
 
   constructor() {
     super();
-    this.editingClassName = false;
-    this.className = "Unnamed";
+    this.editinglabelName = false;
+    this.labelName = "Unnamed";
+    this.faCheck = false;
+    this.faPenToSquare = true;
     updateWhenLocaleChanges(this);
   }
 
-  editClassName() {
-    console.log("editClassName");
-    if(this.editingClassName){
-      this.className =this.querySelector("#inputClassName").value;
-      this.querySelector("#className").innerHTML = this.className;
-      this.querySelector("#editClassName").innerHTML = '<i class="fa-solid fa-pen-to-square">';
-    } else {
-      this.querySelector("#className").innerHTML = '<input id="inputClassName" style="width: 200px;" class="input" type="text" placeholder="Text input">';
-      this.querySelector("#editClassName").innerHTML = '<i class="fa-solid fa-check"></i>';
-    }
-    
-    this.editingClassName = !this.editingClassName;
+  editlabelName() {
+    if (this.editinglabelName) this.labelName = this.querySelector("#inputlabelName").value;
+    this.faCheck = this.editlabelName;
+    this.faPenToSquare = !this.faCheck;
+    this.editinglabelName = !this.editinglabelName;
+
   }
 
   removeClass() {
-    alert("remove class");
+    if (confirm(msg("Are you sure?")) == true) {
+      console.log("confirm");
+    } else {
+      console.log("cancelled");
+    }
   }
 
   templateButtons(editorType) {
@@ -62,18 +66,20 @@ export class DatasetManager extends LitElement {
   templateTextButtons() {
     return html`
     <div class="panel-block">
-      <button class="button mr-1 is-primary is-fullwidth">
-        <span class="icon">
-        <i class="fa-regular fa-keyboard"></i>
-        </span>
-        <span>${msg('Add new text')}</span>
-      </button>
-      <button class="button mr-1 is-primary is-fullwidth">
-        <span class="icon">
-        <i class="fa-solid fa-upload"></i>
-        </span>
-        <span>${msg('Load texts from file')}</span>
-      </button>
+      <div class="buttons">
+        <button class="button  is-primary is-fullwidth">
+          <span class="icon">
+          <i class="fa-regular fa-keyboard"></i>
+          </span>
+          <span>${msg('Add new text')}</span>
+        </button>
+        <button class="button  is-primary is-fullwidth">
+          <span class="icon">
+          <i class="fa-solid fa-upload"></i>
+          </span>
+          <span>${msg('Load texts from file')}</span>
+        </button>
+        </div>
     </div>
     `;
   }
@@ -100,18 +106,20 @@ export class DatasetManager extends LitElement {
   templateNumberButtons() {
     return html`
     <div class="panel-block">
-      <button class="button mr-1 is-primary is-fullwidth">
-        <span class="icon">
-        <i class="fa-regular fa-keyboard"></i>
-        </span>
-        <span>${msg('Add numbers')}</span>
-      </button>
-      <button class="button mr-1 is-primary is-fullwidth">
-        <span class="icon">
-        <i class="fa-solid fa-upload"></i>
-        </span>
-        <span>${msg('Load numbers from file')}</span>
-      </button>
+      <div class="buttons">
+        <button class="button is-primary is-fullwidth">
+          <span class="icon">
+          <i class="fa-regular fa-keyboard"></i>
+          </span>
+          <span>${msg('Add numbers')}</span>
+        </button>
+        <button class="button  is-primary is-fullwidth">
+          <span class="icon">
+          <i class="fa-solid fa-upload"></i>
+          </span>
+          <span>${msg('Load numbers from file')}</span>
+        </button>
+      </div>
     </div>
     `;
   }
@@ -168,11 +176,12 @@ export class DatasetManager extends LitElement {
     return html`
 <nav class="panel mb-3">
   <p class="panel-heading">
-        ${this.editingClassName
-          ? html`<input style="width: 200px;" class="input" type="text" placeholder="Text input">`
-          : html`<span id="className">${this.className}</span>`}
+        ${this.editinglabelName
+        ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
+        : html`<span id="labelName">${this.labelName}</span>`
+      }
+        <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>
         
-        <a id="editClassName" @click=${this.editClassName} class="m-2"><i class="fa-solid fa-pen-to-square"></i></a>
         <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
       </div>
     </div>

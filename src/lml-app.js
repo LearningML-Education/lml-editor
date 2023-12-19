@@ -1,7 +1,7 @@
 import configLoader from './config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
-import { configContext, statusContext } from './contexts';
+import { configContext, statusContext, datasetContext } from './contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
@@ -18,7 +18,7 @@ class LMLApp extends LitElement {
 
     static properties = {
         loading: { type: Boolean },
-        page: {type: String}
+        page: { type: String }
     };
 
     constructor() {
@@ -28,9 +28,17 @@ class LMLApp extends LitElement {
         this.page = 'model-editor';
         this.configProvider = new ContextProvider(this, { context: configContext });
         this.statusProvider = new ContextProvider(this, { context: statusContext });
+        this.datasetProvider = new ContextProvider(this, { context: datasetContext });
+
         this.statusProvider.setValue({
             modelEditor: 'text'
         });
+
+        /**
+         * este proveedor contendrá un mapa en el que las claves son el nombre de las
+         * clases y los valores asociados serán arrays de textos, imágenes o números.
+         */
+        this.datasetProvider.setValue(new Map());
 
         updateWhenLocaleChanges(this);
 
@@ -46,12 +54,36 @@ class LMLApp extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener("load-model-editor", (e) => {
+        this.addEventListener("load-model-editor", e => {
             console.log(e);
             this.page = 'model-editor';
             this.statusProvider.setValue({
                 modelEditor: e.detail
             })
+        });
+
+        this.addEventListener("add-label", e => {
+            if (!this.datasetProvider.value.has(e.detail.label)) {
+                this.datasetProvider.value.set(label, new Set());
+            }
+        });
+
+        this.addEventListener('remove.label', e => {
+            if (this.datasetProvider.value.has(e.detail.label)) {
+                this.datasetProvider.value.delete(e.detail.label);
+            }
+        });
+
+        this.addEventListener('add-data-to-label', e => {
+            if (this.datasetProvider.value.has(e.detail.label)) {
+                this.datasetProvider.value.get(e.detail.label).add(e.detail.element);
+            }
+        });
+
+        this.addEventListener('remove-data-from-label', e => {
+            if (this.datasetProvider.value.has(e.detail.label)) {
+                this.datasetProvider.value.get(e.detail.label).delete(e.detail.element);
+            }
         });
     }
 
