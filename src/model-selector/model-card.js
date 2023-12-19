@@ -23,7 +23,12 @@ export class ModelCard extends LitElement {
   }
 
   loadEditor(){
-    window.location.href = "/model";
+    const event = new CustomEvent('load-model-editor', {
+      bubbles: true,
+      composed: true,
+    });
+
+    this.dispatchEvent(event);
   }
 
   render() {

@@ -3,28 +3,29 @@ import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
 import { configContext } from './contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import { Router } from '@lit-labs/router';
-import './lml-home';
-import './lml-model';
+import './main-menu/main-menu';
+import './model-selector/model-selector';
+import './footers/footer-copyright';
+import './footers/footer-sponsors';
+import './init-message/init-message';
+import './model-editor/model-editor';
+
 
 // Configuration is loaded
 const configLoaderPromise = configLoader();
 
 class LMLApp extends LitElement {
-   
+
     static properties = {
         loading: { type: Boolean },
+        page: 'home'
     };
 
     constructor() {
         super();
-        this._routes = new Router(this, [
-            { path: '/', render: () => html`<lml-home></lml-home>` },
-            { path: '/projects', render: () => html`<h1>Projects</h1>` },
-            { path: '/model', render: () => html`<lml-model></lml-model>` },
-        ]);
-        
+
         this.loading = true;
+        this.page = 'home';
         this.configProvider = new ContextProvider(this, { context: configContext });
         updateWhenLocaleChanges(this);
 
@@ -37,15 +38,86 @@ class LMLApp extends LitElement {
         });
     }
 
+    connectedCallback() {
+        super.connectedCallback();
+
+        this.addEventListener("load-model-editor", (e) => {
+            this.page = 'model-editor';
+        });
+    }
+
     loadingTemplate() {
         return html`${msg("Loading ...")}`;
-    }    
+    }
+
+    initMessageTemplate() {
+        return html`
+        <div class="container is-fluid mb-2">
+            <init-message></init-message>
+        </div>
+        `;
+    }
+
+    mainMenuTemplate() {
+        return html`
+        <div class="container is-fluid mb-2">
+            <main-menu></main-menu>
+        </div>`;
+    }
+
+    modelSelectorTemplate() {
+        return html`
+        <div class="container is-fluid mb-5">
+            <model-selector></model-selector>
+        </div>
+        `;
+    }
+
+    editorTemplate() {
+        return html`
+        <div class="container is-fluid mb-2">
+            <model-editor></model-editor>
+        </div>`;
+    }
+
+    footerCopyrigthTemplate() {
+        return html`
+        <div class="container is-fluid mb-2">
+            <footer-copyright></footer-copyright>
+        </div>
+        `;
+    }
+
+    footerSponsorsTemplate() {
+        return html`
+        <div class="container is-fluid mb-2">
+            <footer-sponsors></footer-sponsors>
+        </div>
+        `;
+    }
 
     render() {
         if (this.loading) {
             return this.loadingTemplate();
         } else {
-            return html`${this._routes.outlet()}`;
+            return html`
+            ${this.configProvider.value.initMessage.show
+                    ? this.initMessageTemplate()
+                    : html``
+                }
+            ${this.mainMenuTemplate()}
+            ${this.page == 'home'
+                    ? this.modelSelectorTemplate()
+                    : html``
+                }
+            ${this.page == 'model-editor'
+                    ? this.editorTemplate()
+                    : html``
+                }  
+        
+            ${this.footerCopyrigthTemplate()}
+            ${this.footerSponsorsTemplate()}
+            `;
         }
     }
 
