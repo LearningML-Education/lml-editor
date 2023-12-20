@@ -22,6 +22,11 @@ export class ModelEditor extends LitElement {
     super.connectedCallback();
     
     this.dataset = this._datasetConsumer.value;
+
+    this.addEventListener('remove-label', e => {
+      this.requestUpdate();
+    });
+
     console.log(this.dataset);
   }
 

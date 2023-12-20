@@ -68,7 +68,7 @@ class LMLApp extends LitElement {
             console.log(this.datasetProvider.value);
         });
 
-        this.addEventListener('remove.label', e => {
+        this.addEventListener('remove-label', e => {
             if (this.datasetProvider.value.has(e.detail.label)) {
                 this.datasetProvider.value.delete(e.detail.label);
             }

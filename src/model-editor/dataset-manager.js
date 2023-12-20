@@ -7,7 +7,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 export class DatasetManager extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
   static properties = {
     editinglabelName: { type: Boolean },
