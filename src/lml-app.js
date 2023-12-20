@@ -39,7 +39,12 @@ class LMLApp extends LitElement {
          * este proveedor contendrá un mapa en el que las claves son el nombre de las
          * clases y los valores asociados serán arrays de textos, imágenes o números.
          */
-        this.datasetProvider.setValue(new Map());
+        let m = new Map();
+        m.set("kaka", new Set(['hola caracola', 'adios caracol']))
+        m.set("keke", new Set(['Del salón en el ángulo', 'oscuro de su deuño']))
+        this.datasetProvider.setValue(m);
+
+        //this.datasetProvider.setValue(new Map());
 
         updateWhenLocaleChanges(this);
 

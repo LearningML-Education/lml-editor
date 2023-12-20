@@ -1,19 +1,21 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext } from '../contexts.js';
+import { statusContext, datasetContext } from '../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 
 export class DatasetManager extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
 
   static properties = {
     editinglabelName: { type: Boolean },
     labelName: { type: String },
     faCheck: { type: Boolean },
-    faPenToSquare: { type: Boolean }
+    faPenToSquare: { type: Boolean },
+    dataset: { type: Set }
   };
 
   constructor() {
@@ -22,7 +24,13 @@ export class DatasetManager extends LitElement {
     this.labelName = "Unnamed";
     this.faCheck = false;
     this.faPenToSquare = true;
+    this.dataset = this._datasetConsumer.value;
     updateWhenLocaleChanges(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.dataset = this._datasetConsumer.value;
   }
 
   editlabelName() {
@@ -161,10 +169,12 @@ export class DatasetManager extends LitElement {
   templateTextData() {
     return html`
       <div class="container p-3">
-        <p> <span class="truncate">El Parque Nacional de Doñana es desde hace dos semanas la primera reserva ecológica expulsada de la lista verde de la Unión Internacional para la Conservación de la Naturaleza (UICN), la mayor organización ambiental del mundo. La salida del espacio protegido de este prestigioso sello verde se debe a la mala gestión de la Junta de Andalucía (PP), responsable de ejecutar medidas para revertir el deterioro de su biodiversidad, en caída libre por culpa de la agricultura intensiva, el turismo y la extrema sequía. Hasta ahora, ninguno de los 77 enclaves en 60 países había abandonado esta distinción de sostenibilidad.</p>
-        <p> <span class="truncate">El Parque Nacional de Doñana es desde hace dos semanas la primera reserva ecológica expulsada de la lista verde de la Unión Internacional para la Conservación de la Naturaleza (UICN), la mayor organización ambiental del mundo. La salida del espacio protegido de este prestigioso sello verde se debe a la mala gestión de la Junta de Andalucía (PP), responsable de ejecutar medidas para revertir el deterioro de su biodiversidad, en caída libre por culpa de la agricultura intensiva, el turismo y la extrema sequía. Hasta ahora, ninguno de los 77 enclaves en 60 países había abandonado esta distinción de sostenibilidad.</p>
-        <p> <span class="truncate">El Parque Nacional de Doñana es desde hace dos semanas la primera reserva ecológica expulsada de la lista verde de la Unión Internacional para la Conservación de la Naturaleza (UICN), la mayor organización ambiental del mundo. La salida del espacio protegido de este prestigioso sello verde se debe a la mala gestión de la Junta de Andalucía (PP), responsable de ejecutar medidas para revertir el deterioro de su biodiversidad, en caída libre por culpa de la agricultura intensiva, el turismo y la extrema sequía. Hasta ahora, ninguno de los 77 enclaves en 60 países había abandonado esta distinción de sostenibilidad.</p>
-        <p> <span class="truncate">El Parque Nacional de Doñana es desde hace dos semanas la primera reserva ecológica expulsada de la lista verde de la Unión Internacional para la Conservación de la Naturaleza (UICN), la mayor organización ambiental del mundo. La salida del espacio protegido de este prestigioso sello verde se debe a la mala gestión de la Junta de Andalucía (PP), responsable de ejecutar medidas para revertir el deterioro de su biodiversidad, en caída libre por culpa de la agricultura intensiva, el turismo y la extrema sequía. Hasta ahora, ninguno de los 77 enclaves en 60 países había abandonado esta distinción de sostenibilidad.</p>
+        ${this.dataset.get(this.labelName)
+          ? Array.from(this.dataset.get(this.labelName)).map(entry => 
+          html`<p> <span class="truncate">${entry}</p>`
+          )
+          : html``
+        }        
     </div>
     `;
   }
