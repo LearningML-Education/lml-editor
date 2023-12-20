@@ -57,10 +57,10 @@ export class ModelEditor extends LitElement {
   <div class="column">
     <h4 class="title is-4">${msg('Training')}</h4>
     <h6 class="subtitle is-6">${msg('First I need some text examples')}</h6>
-      <div class="field has-addons">
-        <div class="control">
-          <input id="inputLabelName" class="input" type="text" placeholder="${msg('New class name')}">
-        </div>
+    <div class="field has-addons">
+      <div class="control">
+        <input id="inputLabelName" class="input" type="text" placeholder="${msg('New class name')}">
+      </div>
       <div class="control">
         <button @click=${this.addNewLabel} class="button is-primary is-fullwidth mb-4">
           <span class="icon">
@@ -68,9 +68,8 @@ export class ModelEditor extends LitElement {
           </span>
           <span>${msg('Add new class')}</span>
         </button>
-    
-  </div>
-</div>
+      </div>
+    </div>
 
     ${Array.from(this.dataset).toReversed().map((entry) =>
       html`<dataset-manager labelName=${entry[0]}></dataset-manager>`

@@ -15,7 +15,8 @@ export class DatasetManager extends LitElement {
     labelName: { type: String },
     faCheck: { type: Boolean },
     faPenToSquare: { type: Boolean },
-    dataset: { type: Set }
+    dataset: { type: Set },
+    addTextsWindowOpen: { type: Boolean }
   };
 
   constructor() {
@@ -25,6 +26,7 @@ export class DatasetManager extends LitElement {
     this.faCheck = false;
     this.faPenToSquare = true;
     this.dataset = this._datasetConsumer.value;
+    this.addTextsWindowOpen = false;
     updateWhenLocaleChanges(this);
   }
 
@@ -67,6 +69,46 @@ export class DatasetManager extends LitElement {
     }
   }
 
+  closeAddTextWindow() {
+    this.addTextsWindowOpen = false;
+    this.querySelector("#inputTexts").value = "";
+  }
+
+  openAddTextWindow() {
+    this.addTextsWindowOpen = true;
+  }
+
+  addTexts() {
+    let texts = this.querySelector("#inputTexts").value;
+
+    const event = new CustomEvent('add-texts-to-label', {
+      bubbles: true,
+      composed: true,
+      detail: { label: this.labelName, texts: texts }
+    });
+
+    this.dispatchEvent(event);
+    console.log(texts);
+
+    this.closeAddTextWindow();
+  }
+
+  removeEntry(e) {
+    console.log(e);
+    if (confirm(msg("Surely you want to delete this item?"))) {
+      let entry = e.currentTarget.textContent;
+      const event = new CustomEvent('remove-data-from-label', {
+        bubbles: true,
+        composed: true,
+        detail: { label: this.labelName, element: entry }
+      });
+
+      this.dispatchEvent(event);
+      this.requestUpdate();
+    }
+
+  }
+
   templateButtons(editorType) {
     switch (editorType) {
       case 'text':
@@ -94,11 +136,11 @@ export class DatasetManager extends LitElement {
     <div class="panel-block">    
       <div class="field is-grouped">
         <p class="control">      
-          <button class="button  is-primary is-fullwidth">
+          <button @click=${this.openAddTextWindow} class="button  is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-regular fa-keyboard"></i>
             </span>
-            <span>${msg('Add new text')}</span>
+            <span>${msg('Add new texts')}</span>
           </button>
         </p>
         <p class="control">
@@ -168,14 +210,36 @@ export class DatasetManager extends LitElement {
 
   templateTextData() {
     return html`
-      <div class="container p-3">
+      <div class="container textdata p-3">
         ${this.dataset.get(this.labelName)
-          ? Array.from(this.dataset.get(this.labelName)).map(entry => 
-          html`<p> <span class="truncate">${entry}</p>`
-          )
-          : html``
-        }        
-    </div>
+        ? Array.from(this.dataset.get(this.labelName)).map((entry, index) =>
+          html`<p> <span @click=${this.removeEntry} id=${"entry_" + index} class="truncate is-clickable">${entry}</p>`
+        )
+        : html``
+      }        
+      </div>
+
+      <div class=${classMap({ "modal": true, "is-active": this.addTextsWindowOpen })}>
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <nav class="panel has-background-warning">
+            <p class="panel-heading has-background-warning">
+              ${msg("Add one or more text examples")}
+            </p>
+            
+            <div class="panel-block">
+              <textarea id="inputTexts" class="textarea" placeholder="${msg("Separate each text by a line break")}" rows="10"></textarea>
+            </div>
+            
+            <div class="panel-block">
+              <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
+                ${msg("Add text examples")}
+              </button>
+            </div>
+          </nav>          
+        </div>
+        <button @click=${this.closeAddTextWindow} class="modal-close is-large" aria-label="close"></button>
+      </div>
     `;
   }
 
