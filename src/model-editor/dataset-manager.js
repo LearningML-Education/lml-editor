@@ -26,7 +26,21 @@ export class DatasetManager extends LitElement {
   }
 
   editlabelName() {
-    if (this.editinglabelName) this.labelName = this.querySelector("#inputlabelName").value;
+
+    if (this.editinglabelName) {
+      let oldLabel = this.labelName;
+      this.labelName = this.querySelector("#inputlabelName").value;
+      const event = new CustomEvent('edit-label', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          oldLabel: oldLabel,
+          newLabel: this.labelName
+        }
+      });
+
+      this.dispatchEvent(event);
+    }
     this.faCheck = this.editlabelName;
     this.faPenToSquare = !this.faCheck;
     this.editinglabelName = !this.editinglabelName;
@@ -69,21 +83,25 @@ export class DatasetManager extends LitElement {
 
   templateTextButtons() {
     return html`
-    <div class="panel-block">
-      <div class="buttons">
-        <button class="button  is-primary is-fullwidth">
-          <span class="icon">
-          <i class="fa-regular fa-keyboard"></i>
-          </span>
-          <span>${msg('Add new text')}</span>
-        </button>
-        <button class="button  is-primary is-fullwidth">
-          <span class="icon">
-          <i class="fa-solid fa-upload"></i>
-          </span>
-          <span>${msg('Load texts from file')}</span>
-        </button>
-        </div>
+    <div class="panel-block">    
+      <div class="field is-grouped">
+        <p class="control">      
+          <button class="button  is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-regular fa-keyboard"></i>
+            </span>
+            <span>${msg('Add new text')}</span>
+          </button>
+        </p>
+        <p class="control">
+          <button class="button  is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-solid fa-upload"></i>
+            </span>
+            <span>${msg('Load texts from file')}</span>
+          </button>
+        </p>
+      </div>
     </div>
     `;
   }
@@ -91,18 +109,24 @@ export class DatasetManager extends LitElement {
   templateImageButtons() {
     return html`
     <div class="panel-block">
-      <button class="button mr-1 is-primary is-fullwidth">
-        <span class="icon">
-        <i class="fa-solid fa-images"></i>
-        </span>
-        <span>${msg('Upload images')}</span>
-      </button>
-      <button class="button mr-1 is-primary is-fullwidth">
-        <span class="icon">
-        <i class="fa-solid fa-camera"></i>
-        </span>
-        <span>${msg('Take from camera')}</span>
-      </button>
+      <div class="field is-grouped">
+        <p class="control">      
+          <button class="button mr-1 is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-solid fa-images"></i>
+            </span>
+            <span>${msg('Upload images')}</span>
+          </button>
+        </p>
+        <p class="control"> 
+          <button class="button mr-1 is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-solid fa-camera"></i>
+            </span>
+            <span>${msg('Take from camera')}</span>
+          </button>
+        </p>
+      </div>
     </div>
     `;
   }
@@ -110,20 +134,26 @@ export class DatasetManager extends LitElement {
   templateNumberButtons() {
     return html`
     <div class="panel-block">
-      <div class="buttons">
-        <button class="button is-primary is-fullwidth">
-          <span class="icon">
-          <i class="fa-regular fa-keyboard"></i>
-          </span>
-          <span>${msg('Add numbers')}</span>
-        </button>
-        <button class="button  is-primary is-fullwidth">
-          <span class="icon">
-          <i class="fa-solid fa-upload"></i>
-          </span>
-          <span>${msg('Load numbers from file')}</span>
-        </button>
+      <div class="field is-grouped">
+        <p class="control">
+          <button class="button is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-regular fa-keyboard"></i>
+            </span>
+            <span>${msg('Add numbers')}</span>
+          </button>
+        </p>
+        <p class="control">
+          <button class="button  is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-solid fa-upload"></i>
+            </span>
+            <span>${msg('Load numbers from file')}</span>
+          </button>
+        </p>
       </div>
+    </div>
+
     </div>
     `;
   }

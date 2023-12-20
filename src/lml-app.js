@@ -25,6 +25,7 @@ class LMLApp extends LitElement {
         super();
 
         this.loading = true;
+        //this.page = 'home';
         this.page = 'model-editor';
         this.configProvider = new ContextProvider(this, { context: configContext });
         this.statusProvider = new ContextProvider(this, { context: statusContext });
@@ -54,7 +55,7 @@ class LMLApp extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener("load-model-editor", e => {            
+        this.addEventListener("load-model-editor", e => {
             this.page = 'model-editor';
             this.statusProvider.setValue({
                 modelEditor: e.detail
@@ -71,6 +72,15 @@ class LMLApp extends LitElement {
         this.addEventListener('remove-label', e => {
             if (this.datasetProvider.value.has(e.detail.label)) {
                 this.datasetProvider.value.delete(e.detail.label);
+            }
+            console.log(this.datasetProvider.value);
+        });
+
+        this.addEventListener('edit-label', e => {
+            if (this.datasetProvider.value.has(e.detail.oldLabel)) {
+                this.datasetProvider.value.set(e.detail.newLabel,
+                    this.datasetProvider.value.get(e.detail.oldLabel));
+                this.datasetProvider.value.delete(e.detail.oldLabel);
             }
             console.log(this.datasetProvider.value);
         });
