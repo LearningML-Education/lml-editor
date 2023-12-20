@@ -7,13 +7,10 @@ import './dataset-manager.js';
 
 export class ModelEditor extends LitElement {
 
-  _datasetConsumer = new ContextConsumer(this, { 
-    context: datasetContext,
-    subscribe: true
-   });
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
 
   static properties = {
-    labels: { type: Array }
+    dataset: { type: Set }
   }
 
   constructor() {
@@ -24,22 +21,23 @@ export class ModelEditor extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     
-    this.labels = Array.from(this._datasetConsumer.value.keys());
-    console.log(this.labels);
+    this.dataset = this._datasetConsumer.value;
+    console.log(this.dataset);
   }
 
   addNewLabel() {
     let labelName = this.querySelector("#inputLabelName").value;
-    if (labelName != "" && this.labels.indexOf(labelName) == -1) {
-      //this.labels.push(labelName);
-
+    if (labelName != "") {
       const event = new CustomEvent('add-label', {
         bubbles: true,
         composed: true,
         detail: { label: labelName }
       });
       this.dispatchEvent(event);
-      
+      // Esta llamada a requestUpdate es imprescindible para que la 
+      // propiedad this.dataset se actualice.
+      // https://lit.dev/docs/v1/components/lifecycle/#requestupdate
+      // https://stackoverflow.com/questions/60842652/how-can-i-reflect-changes-on-an-array-to-my-rendered-html-in-lit-element
       this.requestUpdate();
     }
     this.querySelector("#inputLabelName").value = "";
@@ -69,8 +67,8 @@ export class ModelEditor extends LitElement {
   </div>
 </div>
 
-    ${this.labels.toReversed().map((label) =>
-      html`<dataset-manager labelName=${label}></dataset-manager>`
+    ${Array.from(this.dataset).toReversed().map((entry) =>
+      html`<dataset-manager labelName=${entry[0]}></dataset-manager>`
     )}
   </div>
 
