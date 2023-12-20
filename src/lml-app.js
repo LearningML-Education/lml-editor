@@ -54,8 +54,7 @@ class LMLApp extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener("load-model-editor", e => {
-            console.log(e);
+        this.addEventListener("load-model-editor", e => {            
             this.page = 'model-editor';
             this.statusProvider.setValue({
                 modelEditor: e.detail
@@ -64,14 +63,16 @@ class LMLApp extends LitElement {
 
         this.addEventListener("add-label", e => {
             if (!this.datasetProvider.value.has(e.detail.label)) {
-                this.datasetProvider.value.set(label, new Set());
+                this.datasetProvider.value.set(e.detail.label, new Set());
             }
+            console.log(this.datasetProvider.value);
         });
 
         this.addEventListener('remove.label', e => {
             if (this.datasetProvider.value.has(e.detail.label)) {
                 this.datasetProvider.value.delete(e.detail.label);
             }
+            console.log(this.datasetProvider.value);
         });
 
         this.addEventListener('add-data-to-label', e => {

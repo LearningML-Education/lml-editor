@@ -34,10 +34,14 @@ export class DatasetManager extends LitElement {
   }
 
   removeClass() {
-    if (confirm(msg("Are you sure?")) == true) {
-      console.log("confirm");
-    } else {
-      console.log("cancelled");
+    if (confirm(msg("Are you sure?"))) {
+      const event = new CustomEvent('remove-label', {
+        bubbles: true,
+        composed: true,
+        detail: { label: this.labelName }
+      });
+
+      this.dispatchEvent(event);
     }
   }
 

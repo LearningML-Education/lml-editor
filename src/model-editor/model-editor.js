@@ -1,33 +1,50 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext } from '../contexts.js';
+import { datasetContext } from '../contexts.js';
 import './dataset-manager.js';
 
 
 export class ModelEditor extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
+  _datasetConsumer = new ContextConsumer(this, { 
+    context: datasetContext,
+    subscribe: true
+   });
 
   static properties = {
-    labels: {type: Array}
+    labels: { type: Array }
   }
 
   constructor() {
     super();
-    this.labels = [];
     updateWhenLocaleChanges(this);
   }
 
-  addNewLabel(){
+  connectedCallback() {
+    super.connectedCallback();
+    
+    this.labels = Array.from(this._datasetConsumer.value.keys());
+    console.log(this.labels);
+  }
+
+  addNewLabel() {
     let labelName = this.querySelector("#inputLabelName").value;
-    if(labelName != ""){
-      this.labels.push(labelName);
+    if (labelName != "" && this.labels.indexOf(labelName) == -1) {
+      //this.labels.push(labelName);
+
+      const event = new CustomEvent('add-label', {
+        bubbles: true,
+        composed: true,
+        detail: { label: labelName }
+      });
+      this.dispatchEvent(event);
+      
       this.requestUpdate();
     }
+    this.querySelector("#inputLabelName").value = "";
+    this.querySelector("#inputLabelName").focus();
 
-    console.log(this.labels);
-    
   }
 
   render() {
