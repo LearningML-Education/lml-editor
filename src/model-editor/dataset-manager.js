@@ -304,8 +304,6 @@ templateTextData() {
           <nav class="panel has-background-warning">
             <p class="panel-heading has-background-warning">
               ${msg("Add one or more text examples")}
-              <h1 ?hidden=${this.editText}>KJJKHHJK</h1>
-
             </p>
             
             <div class="panel-block">
@@ -313,17 +311,16 @@ templateTextData() {
             </div>
             
             <div class="panel-block">
-              <span ?hidden=${this.editText}>
-                <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
-                  ${msg("Add text examples")}
-                </button>
-              </span>
-              <span ?hidden=${!this.editText}>
-                <button ?hidden=${this.editText} @click=${this.editTexts} class="button is-primary  is-fullwidth">
-                  ${msg("Edit text examples")}
-                </button>
-              </span>
-              
+                ${this.editText
+                  ?html`
+                    <button @click=${this.editTexts} class="button is-primary  is-fullwidth">
+                      ${msg("Edit text examples")}
+                    </button>`
+                  : html`
+                    <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
+                      ${msg("Add text examples")}
+                    </button>`                  
+              }
             </div>
           </nav>          
         </div>
