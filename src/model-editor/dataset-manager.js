@@ -16,6 +16,7 @@ export class DatasetManager extends LitElement {
     faCheck: { type: Boolean },
     faPenToSquare: { type: Boolean },
     dataset: { type: Set },
+    textEntry: { type: String },
     addTextsWindowOpen: { type: Boolean },
   };
 
@@ -26,6 +27,7 @@ export class DatasetManager extends LitElement {
     this.faCheck = false;
     this.faPenToSquare = true;
     this.dataset = this._datasetConsumer.value;
+    this.textEntry = "";
     this.addTextsWindowOpen = false;
     updateWhenLocaleChanges(this);
   }
@@ -78,8 +80,21 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpen = true;
   }
 
+  /**
+   * Ver `editTextEntry()`
+   */
   addTexts() {
     let texts = this.querySelector("#inputTexts").value;
+
+    if (this.textEntry != texts) {
+      const event = new CustomEvent('remove-data-from-label', {
+        bubbles: true,
+        composed: true,
+        detail: { label: this.labelName, element: this.textEntry }
+      });
+      this.textEntry = texts;
+      this.dispatchEvent(event);
+    }
 
     const event = new CustomEvent('add-texts-to-label', {
       bubbles: true,
@@ -93,9 +108,9 @@ export class DatasetManager extends LitElement {
     this.closeAddTextWindow();
   }
 
-  removeEntry(e) {
+  removeTextEntry(e) {
     if (confirm(msg("Surely you want to delete this item?"))) {
-      let entry = e.target.parentElement.getAttribute("textoo");
+      let entry = e.target.parentElement.getAttribute("text-entry");
       const event = new CustomEvent('remove-data-from-label', {
         bubbles: true,
         composed: true,
@@ -105,7 +120,30 @@ export class DatasetManager extends LitElement {
       this.dispatchEvent(event);
       this.requestUpdate();
     }
+  }
 
+  /**
+   * Esta función merece una explicación pues la forma de editar es un pelín enrevesada
+   * 
+   * Se ha definido una property denominada this.textEntry, que a la que se le asigna el
+   * valor que haya en la caja de edición `text-entry`. De esa manera se pone en la caja
+   * modal para añadir textos el texto seleccionado para editar. 
+   * 
+   * Si el usuario hace clic en el botón `añadir texto` se ejecutará `addTexts` y ahí
+   * se comprobará si this.textEntry coincide con la entrada de la caja de edición. Si no 
+   * coincide es porque el usuario la ha modificado, entonces se borra la entrada 
+   * correspondiente a this.textEntry (valor antiguo) y se añade el nuevo valor introducido 
+   * por el usuario.
+   * 
+   * @param {CustomEvent} e 
+   */
+  editTextEntry(e) {
+    let entry = e.target.parentElement.getAttribute("text-entry");
+    this.textEntry = entry;
+    console.log(entry);
+
+    this.addTextsWindowOpen = true;
+    this.querySelector("#inputTexts").value = entry;
   }
 
   templateButtons(editorType) {
@@ -215,7 +253,10 @@ export class DatasetManager extends LitElement {
         ? Array.from(this.dataset.get(this.labelName)).map((entry, index) =>
           html`
           <div class="panel-block">
-            <span @click=${this.removeEntry} textoo=${entry} class="panel-icon is-clickable">
+            <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </span>
+            <span @click=${this.removeTextEntry} text-entry=${entry} class="panel-icon is-clickable">
               <i class="fa-solid fa-trash-can"></i>
             </span>
             <p> <span class="truncate">${entry}</p>
