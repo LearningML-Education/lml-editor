@@ -16,7 +16,7 @@ export class DatasetManager extends LitElement {
     faCheck: { type: Boolean },
     faPenToSquare: { type: Boolean },
     dataset: { type: Set },
-    addTextsWindowOpen: { type: Boolean }
+    addTextsWindowOpen: { type: Boolean },
   };
 
   constructor() {
@@ -94,9 +94,8 @@ export class DatasetManager extends LitElement {
   }
 
   removeEntry(e) {
-    console.log(e);
     if (confirm(msg("Surely you want to delete this item?"))) {
-      let entry = e.currentTarget.textContent;
+      let entry = e.target.parentElement.getAttribute("textoo");
       const event = new CustomEvent('remove-data-from-label', {
         bubbles: true,
         composed: true,
@@ -210,10 +209,18 @@ export class DatasetManager extends LitElement {
 
   templateTextData() {
     return html`
+      
       <div class="container textdata p-3">
         ${this.dataset.get(this.labelName)
         ? Array.from(this.dataset.get(this.labelName)).map((entry, index) =>
-          html`<p> <span @click=${this.removeEntry} id=${"entry_" + index} class="truncate is-clickable">${entry}</p>`
+          html`
+          <div class="panel-block">
+            <span @click=${this.removeEntry} textoo=${entry} class="panel-icon is-clickable">
+              <i class="fa-solid fa-trash-can"></i>
+            </span>
+            <p> <span class="truncate">${entry}</p>
+          </div>
+          `
         )
         : html``
       }        
