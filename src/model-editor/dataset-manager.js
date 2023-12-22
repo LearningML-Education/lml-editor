@@ -82,9 +82,6 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpen = true;
   }
 
-  /**
-   * Ver `editTextEntry()`
-   */
   addTexts() {
     this.editText = false;
     let texts = this.querySelector("#inputTexts").value;
@@ -102,6 +99,8 @@ export class DatasetManager extends LitElement {
   editTexts(e) {
     let texts = this.querySelector("#inputTexts").value;
 
+    // Si el texto ha sido cambiado por el usuario, es decir `texts` no coincide 
+    // con el atributo this.textEntry, hay que borrar el valor que tenía ...
     if (this.textEntry != texts) {
       const event = new CustomEvent('remove-data-from-label', {
         bubbles: true,
@@ -112,9 +111,10 @@ export class DatasetManager extends LitElement {
       this.dispatchEvent(event);
     }
 
+    // Y añadir el nuevo valor (cambiado por el usuario), es decir, conseguimos
+    // la edición borrando la entrada y añadiendo la nueva entrada modificada.
     this.addTexts();
   }
-
 
 removeTextEntry(e) {
   this.editText = true;
@@ -131,21 +131,6 @@ removeTextEntry(e) {
   }
 }
 
-/**
- * Esta función merece una explicación pues la forma de editar es un pelín enrevesada
- * 
- * Se ha definido una property denominada this.textEntry, que a la que se le asigna el
- * valor que haya en la caja de edición `text-entry`. De esa manera se pone en la caja
- * modal para añadir textos el texto seleccionado para editar. 
- * 
- * Si el usuario hace clic en el botón `añadir texto` se ejecutará `addTexts` y ahí
- * se comprobará si this.textEntry coincide con la entrada de la caja de edición. Si no 
- * coincide es porque el usuario la ha modificado, entonces se borra la entrada 
- * correspondiente a this.textEntry (valor antiguo) y se añade el nuevo valor introducido 
- * por el usuario.
- * 
- * @param {CustomEvent} e 
- */
 editTextEntry(e) {
   let entry = e.target.parentElement.getAttribute("text-entry");
   this.textEntry = entry;
