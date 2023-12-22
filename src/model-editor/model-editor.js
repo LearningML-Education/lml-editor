@@ -1,13 +1,15 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { datasetContext } from '../contexts.js';
+import { datasetContext, statusContext } from '../contexts.js';
 import './dataset-manager.js';
 
 
 export class ModelEditor extends LitElement {
 
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+
 
   static properties = {
     dataset: { type: Set }
@@ -50,13 +52,25 @@ export class ModelEditor extends LitElement {
 
   }
 
+  trainingText(editorType){
+    switch(editorType){
+      case 'text':
+        return msg('first I need some example texts');
+      case 'image':
+        return msg('First I need some sample images');
+      case 'number':
+        return msg('first I need some example vectors');
+    }
+    return "";
+  }
+
   render() {
 
     return html`
 <div class="columns">
   <div class="column">
     <h4 class="title is-4">${msg('Training')}</h4>
-    <h6 class="subtitle is-6">${msg('First I need some text examples')}</h6>
+    <h6 class="subtitle is-6">${this.trainingText(this._statusConsumer.value.modelEditor)}</h6>
     <div class="field has-addons">
       <div class="control">
         <input id="inputLabelName" class="input" type="text" placeholder="${msg('New class name')}">

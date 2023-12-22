@@ -17,7 +17,7 @@ export class DatasetManager extends LitElement {
     faPenToSquare: { type: Boolean },
     dataset: { type: Set },
     textEntry: { type: String },
-    editText: {type: Boolean },
+    editText: { type: Boolean },
     addTextsWindowOpen: { type: Boolean },
   };
 
@@ -40,7 +40,6 @@ export class DatasetManager extends LitElement {
   }
 
   editlabelName() {
-
     if (this.editinglabelName) {
       let oldLabel = this.labelName;
       this.labelName = this.querySelector("#inputlabelName").value;
@@ -73,6 +72,9 @@ export class DatasetManager extends LitElement {
     }
   }
 
+  ////
+  // Funciones para manejar los datasets de textos
+  ///
   closeAddTextWindow() {
     this.addTextsWindowOpen = false;
     this.querySelector("#inputTexts").value = "";
@@ -116,91 +118,99 @@ export class DatasetManager extends LitElement {
     this.addTexts();
   }
 
-removeTextEntry(e) {
-  this.editText = true;
-  if (confirm(msg("Surely you want to delete this item?"))) {
-    let entry = e.target.parentElement.getAttribute("text-entry");
-    const event = new CustomEvent('remove-data-from-label', {
-      bubbles: true,
-      composed: true,
-      detail: { label: this.labelName, element: entry }
-    });
+  removeTextEntry(e) {
+    this.editText = true;
+    if (confirm(msg("Surely you want to delete this item?"))) {
+      let entry = e.target.parentElement.getAttribute("text-entry");
+      const event = new CustomEvent('remove-data-from-label', {
+        bubbles: true,
+        composed: true,
+        detail: { label: this.labelName, element: entry }
+      });
 
-    this.dispatchEvent(event);
-    this.requestUpdate();
+      this.dispatchEvent(event);
+      this.requestUpdate();
+    }
   }
-}
 
-editTextEntry(e) {
-  let entry = e.target.parentElement.getAttribute("text-entry");
-  this.textEntry = entry;
-  this.editText = true;
-  console.log(entry);
+  editTextEntry(e) {
+    let entry = e.target.parentElement.getAttribute("text-entry");
+    this.textEntry = entry;
+    this.editText = true;
+    console.log(entry);
 
-  this.addTextsWindowOpen = true;
-  this.querySelector("#inputTexts").value = entry;
-}
+    this.addTextsWindowOpen = true;
+    this.querySelector("#inputTexts").value = entry;
+  }
 
   async loadTextFromFile(e) {
-  const pickerOpts = {
-    types: [
-      {
-        description: "Texts",
-        accept: {
-          "text/*": [".txt"],
+    const pickerOpts = {
+      types: [
+        {
+          description: "Texts",
+          accept: {
+            "text/*": [".txt"],
+          },
         },
-      },
-    ],
-    excludeAcceptAllOption: true,
-    multiple: false,
-  };
+      ],
+      excludeAcceptAllOption: true,
+      multiple: false,
+    };
 
-  const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+    const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
 
-  const file = await fileHandle.getFile();
-  const reader = new FileReader();
-  let that = this;
-  reader.onload = function (e) {
-    const textContent = e.target.result;
-    // Mostrar el contenido del archivo en un elemento div
-    const event = new CustomEvent('add-texts-to-label', {
-      bubbles: true,
-      composed: true,
-      detail: { label: that.labelName, texts: textContent }
-    });
+    const file = await fileHandle.getFile();
+    const reader = new FileReader();
+    let that = this;
+    reader.onload = function (e) {
+      const textContent = e.target.result;
+      // Mostrar el contenido del archivo en un elemento div
+      const event = new CustomEvent('add-texts-to-label', {
+        bubbles: true,
+        composed: true,
+        detail: { label: that.labelName, texts: textContent }
+      });
 
-    that.dispatchEvent(event);
-    that.requestUpdate();
-  };
+      that.dispatchEvent(event);
+      that.requestUpdate();
+    };
 
-  reader.readAsText(file);
+    reader.readAsText(file);
 
-}
-
-templateButtons(editorType) {
-  switch (editorType) {
-    case 'text':
-      return this.templateTextButtons();
-    case 'image':
-      return this.templateImageButtons();
-    case 'number':
-      return this.templateNumberButtons();
   }
-}
 
-templateData(editorType) {
-  switch (editorType) {
-    case 'text':
-      return this.templateTextData();
-    case 'image':
-      return this.templateImageData();
-    case 'number':
-      return this.templateNumberData();
+  ////
+  // Funciones para manejar los datasets de imágenes
+  ///
+
+  uploadImages(){
+    
   }
-}
 
-templateTextButtons() {
-  return html`
+  templateButtons(editorType) {
+    switch (editorType) {
+      case 'text':
+        return this.templateTextButtons();
+      case 'image':
+        return this.templateImageButtons();
+      case 'number':
+        return this.templateNumberButtons();
+    }
+  }
+
+  templateData(editorType) {
+    switch (editorType) {
+      case 'text':
+        return this.templateTextData();
+      case 'image':
+        return this.templateImageData();
+      case 'number':
+        return this.templateNumberData();
+    }
+  }
+
+  templateTextButtons() {
+    return html`
     <div class="panel-block">    
       <div class="field is-grouped">
         <p class="control">      
@@ -222,14 +232,14 @@ templateTextButtons() {
       </div>
     </div>
     `;
-}
+  }
 
-templateImageButtons() {
-  return html`
+  templateImageButtons() {
+    return html`
     <div class="panel-block">
       <div class="field is-grouped">
         <p class="control">      
-          <button class="button mr-1 is-primary is-fullwidth">
+          <button @click=${this.uploadImages} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-solid fa-images"></i>
             </span>
@@ -247,10 +257,10 @@ templateImageButtons() {
       </div>
     </div>
     `;
-}
+  }
 
-templateNumberButtons() {
-  return html`
+  templateNumberButtons() {
+    return html`
     <div class="panel-block">
       <div class="field is-grouped">
         <p class="control">
@@ -274,15 +284,15 @@ templateNumberButtons() {
 
     </div>
     `;
-}
+  }
 
-templateTextData() {
-  return html`
+  templateTextData() {
+    return html`
       
       <div class="container textdata p-3">
         ${this.dataset.get(this.labelName)
-      ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
-        html`
+        ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
+          html`
           <div class="panel-block">
             <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2">
               <i class="fa-solid fa-pen-to-square"></i>
@@ -293,9 +303,9 @@ templateTextData() {
             <p> <span class="truncate">${entry}</p>
           </div>
           `
-      )
-      : html``
-    }        
+        )
+        : html``
+      }        
       </div>
 
       <div class=${classMap({ "modal": true, "is-active": this.addTextsWindowOpen })}>
@@ -312,25 +322,25 @@ templateTextData() {
             
             <div class="panel-block">
                 ${this.editText
-                  ?html`
+        ? html`
                     <button @click=${this.editTexts} class="button is-primary  is-fullwidth">
                       ${msg("Edit text examples")}
                     </button>`
-                  : html`
+        : html`
                     <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
                       ${msg("Add text examples")}
-                    </button>`                  
-              }
+                    </button>`
+      }
             </div>
           </nav>          
         </div>
         <button @click=${this.closeAddTextWindow} class="modal-close is-large" aria-label="close"></button>
       </div>
     `;
-}
+  }
 
-templateImageData() {
-  return html`
+  templateImageData() {
+    return html`
       <div class="container p-3">
       <img @click=${this.dale} width="50px" src="/images/cabeza_genio.png"/>
       <img width="50px" src="images/cabeza_genio.png"/>
@@ -343,10 +353,10 @@ templateImageData() {
       <img width="50px" src="images/cabeza_genio.png"/>      
     </div>
     `;
-}
+  }
 
-templateNumberData() {
-  return html`
+  templateNumberData() {
+    return html`
       <div class="container p-3">
         <div class="table-container">
           <table class="table is-bordered">
@@ -364,16 +374,16 @@ templateNumberData() {
         </div>
       </div>
     `;
-}
+  }
 
-render() {
-  return html`
+  render() {
+    return html`
 <nav class="panel mb-3">
   <p class="panel-heading">
         ${this.editinglabelName
-      ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
-      : html`<span id="labelName">${this.labelName}</span>`
-    }
+        ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
+        : html`<span id="labelName">${this.labelName}</span>`
+      }
         <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>
         
         <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
@@ -387,11 +397,11 @@ render() {
    
 </nav>
     `
-}
+  }
 
-createRenderRoot() {
-  return this;
-}
+  createRenderRoot() {
+    return this;
+  }
 }
 
 window.customElements.define('dataset-manager', DatasetManager);

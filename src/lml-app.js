@@ -32,7 +32,8 @@ class LMLApp extends LitElement {
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
 
         this.statusProvider.setValue({
-            modelEditor: 'text'
+            //modelEditor: 'text'
+            modelEditor: 'image'
         });
 
         /**
@@ -40,8 +41,6 @@ class LMLApp extends LitElement {
          * clases y los valores asociados serán arrays de textos, imágenes o números.
          */
         this.datasetProvider.setValue(new Map());
-
-        //this.datasetProvider.setValue(new Map());
 
         updateWhenLocaleChanges(this);
 
