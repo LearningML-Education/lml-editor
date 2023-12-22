@@ -17,6 +17,7 @@ export class DatasetManager extends LitElement {
     faPenToSquare: { type: Boolean },
     dataset: { type: Set },
     textEntry: { type: String },
+    editText: {type: Boolean },
     addTextsWindowOpen: { type: Boolean },
   };
 
@@ -28,6 +29,7 @@ export class DatasetManager extends LitElement {
     this.faPenToSquare = true;
     this.dataset = this._datasetConsumer.value;
     this.textEntry = "";
+    this.editText = false;
     this.addTextsWindowOpen = false;
     updateWhenLocaleChanges(this);
   }
@@ -84,6 +86,20 @@ export class DatasetManager extends LitElement {
    * Ver `editTextEntry()`
    */
   addTexts() {
+    this.editText = false;
+    let texts = this.querySelector("#inputTexts").value;
+
+    const event = new CustomEvent('add-texts-to-label', {
+      bubbles: true,
+      composed: true,
+      detail: { label: this.labelName, texts: texts }
+    });
+
+    this.dispatchEvent(event);
+    this.closeAddTextWindow();
+  }
+
+  editTexts(e) {
     let texts = this.querySelector("#inputTexts").value;
 
     if (this.textEntry != texts) {
@@ -96,80 +112,110 @@ export class DatasetManager extends LitElement {
       this.dispatchEvent(event);
     }
 
-    const event = new CustomEvent('add-texts-to-label', {
+    this.addTexts();
+  }
+
+
+removeTextEntry(e) {
+  this.editText = true;
+  if (confirm(msg("Surely you want to delete this item?"))) {
+    let entry = e.target.parentElement.getAttribute("text-entry");
+    const event = new CustomEvent('remove-data-from-label', {
       bubbles: true,
       composed: true,
-      detail: { label: this.labelName, texts: texts }
+      detail: { label: this.labelName, element: entry }
     });
 
     this.dispatchEvent(event);
-    console.log(texts);
-
-    this.closeAddTextWindow();
+    this.requestUpdate();
   }
+}
 
-  removeTextEntry(e) {
-    if (confirm(msg("Surely you want to delete this item?"))) {
-      let entry = e.target.parentElement.getAttribute("text-entry");
-      const event = new CustomEvent('remove-data-from-label', {
-        bubbles: true,
-        composed: true,
-        detail: { label: this.labelName, element: entry }
-      });
+/**
+ * Esta función merece una explicación pues la forma de editar es un pelín enrevesada
+ * 
+ * Se ha definido una property denominada this.textEntry, que a la que se le asigna el
+ * valor que haya en la caja de edición `text-entry`. De esa manera se pone en la caja
+ * modal para añadir textos el texto seleccionado para editar. 
+ * 
+ * Si el usuario hace clic en el botón `añadir texto` se ejecutará `addTexts` y ahí
+ * se comprobará si this.textEntry coincide con la entrada de la caja de edición. Si no 
+ * coincide es porque el usuario la ha modificado, entonces se borra la entrada 
+ * correspondiente a this.textEntry (valor antiguo) y se añade el nuevo valor introducido 
+ * por el usuario.
+ * 
+ * @param {CustomEvent} e 
+ */
+editTextEntry(e) {
+  let entry = e.target.parentElement.getAttribute("text-entry");
+  this.textEntry = entry;
+  this.editText = true;
+  console.log(entry);
 
-      this.dispatchEvent(event);
-      this.requestUpdate();
-    }
+  this.addTextsWindowOpen = true;
+  this.querySelector("#inputTexts").value = entry;
+}
+
+  async loadTextFromFile(e) {
+  const pickerOpts = {
+    types: [
+      {
+        description: "Texts",
+        accept: {
+          "text/*": [".txt"],
+        },
+      },
+    ],
+    excludeAcceptAllOption: true,
+    multiple: false,
+  };
+
+  const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+
+  const file = await fileHandle.getFile();
+  const reader = new FileReader();
+  let that = this;
+  reader.onload = function (e) {
+    const textContent = e.target.result;
+    // Mostrar el contenido del archivo en un elemento div
+    const event = new CustomEvent('add-texts-to-label', {
+      bubbles: true,
+      composed: true,
+      detail: { label: that.labelName, texts: textContent }
+    });
+
+    that.dispatchEvent(event);
+    that.requestUpdate();
+  };
+
+  reader.readAsText(file);
+
+}
+
+templateButtons(editorType) {
+  switch (editorType) {
+    case 'text':
+      return this.templateTextButtons();
+    case 'image':
+      return this.templateImageButtons();
+    case 'number':
+      return this.templateNumberButtons();
   }
+}
 
-  /**
-   * Esta función merece una explicación pues la forma de editar es un pelín enrevesada
-   * 
-   * Se ha definido una property denominada this.textEntry, que a la que se le asigna el
-   * valor que haya en la caja de edición `text-entry`. De esa manera se pone en la caja
-   * modal para añadir textos el texto seleccionado para editar. 
-   * 
-   * Si el usuario hace clic en el botón `añadir texto` se ejecutará `addTexts` y ahí
-   * se comprobará si this.textEntry coincide con la entrada de la caja de edición. Si no 
-   * coincide es porque el usuario la ha modificado, entonces se borra la entrada 
-   * correspondiente a this.textEntry (valor antiguo) y se añade el nuevo valor introducido 
-   * por el usuario.
-   * 
-   * @param {CustomEvent} e 
-   */
-  editTextEntry(e) {
-    let entry = e.target.parentElement.getAttribute("text-entry");
-    this.textEntry = entry;
-    console.log(entry);
-
-    this.addTextsWindowOpen = true;
-    this.querySelector("#inputTexts").value = entry;
+templateData(editorType) {
+  switch (editorType) {
+    case 'text':
+      return this.templateTextData();
+    case 'image':
+      return this.templateImageData();
+    case 'number':
+      return this.templateNumberData();
   }
+}
 
-  templateButtons(editorType) {
-    switch (editorType) {
-      case 'text':
-        return this.templateTextButtons();
-      case 'image':
-        return this.templateImageButtons();
-      case 'number':
-        return this.templateNumberButtons();
-    }
-  }
-
-  templateData(editorType) {
-    switch (editorType) {
-      case 'text':
-        return this.templateTextData();
-      case 'image':
-        return this.templateImageData();
-      case 'number':
-        return this.templateNumberData();
-    }
-  }
-
-  templateTextButtons() {
-    return html`
+templateTextButtons() {
+  return html`
     <div class="panel-block">    
       <div class="field is-grouped">
         <p class="control">      
@@ -181,7 +227,7 @@ export class DatasetManager extends LitElement {
           </button>
         </p>
         <p class="control">
-          <button class="button  is-primary is-fullwidth">
+          <button @click=${this.loadTextFromFile} class="button  is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-solid fa-upload"></i>
             </span>
@@ -191,10 +237,10 @@ export class DatasetManager extends LitElement {
       </div>
     </div>
     `;
-  }
+}
 
-  templateImageButtons() {
-    return html`
+templateImageButtons() {
+  return html`
     <div class="panel-block">
       <div class="field is-grouped">
         <p class="control">      
@@ -216,10 +262,10 @@ export class DatasetManager extends LitElement {
       </div>
     </div>
     `;
-  }
+}
 
-  templateNumberButtons() {
-    return html`
+templateNumberButtons() {
+  return html`
     <div class="panel-block">
       <div class="field is-grouped">
         <p class="control">
@@ -243,15 +289,15 @@ export class DatasetManager extends LitElement {
 
     </div>
     `;
-  }
+}
 
-  templateTextData() {
-    return html`
+templateTextData() {
+  return html`
       
       <div class="container textdata p-3">
         ${this.dataset.get(this.labelName)
-        ? Array.from(this.dataset.get(this.labelName)).map((entry, index) =>
-          html`
+      ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
+        html`
           <div class="panel-block">
             <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2">
               <i class="fa-solid fa-pen-to-square"></i>
@@ -262,9 +308,9 @@ export class DatasetManager extends LitElement {
             <p> <span class="truncate">${entry}</p>
           </div>
           `
-        )
-        : html``
-      }        
+      )
+      : html``
+    }        
       </div>
 
       <div class=${classMap({ "modal": true, "is-active": this.addTextsWindowOpen })}>
@@ -273,6 +319,8 @@ export class DatasetManager extends LitElement {
           <nav class="panel has-background-warning">
             <p class="panel-heading has-background-warning">
               ${msg("Add one or more text examples")}
+              <h1 ?hidden=${this.editText}>KJJKHHJK</h1>
+
             </p>
             
             <div class="panel-block">
@@ -280,19 +328,27 @@ export class DatasetManager extends LitElement {
             </div>
             
             <div class="panel-block">
-              <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
-                ${msg("Add text examples")}
-              </button>
+              <span ?hidden=${this.editText}>
+                <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
+                  ${msg("Add text examples")}
+                </button>
+              </span>
+              <span ?hidden=${!this.editText}>
+                <button ?hidden=${this.editText} @click=${this.editTexts} class="button is-primary  is-fullwidth">
+                  ${msg("Edit text examples")}
+                </button>
+              </span>
+              
             </div>
           </nav>          
         </div>
         <button @click=${this.closeAddTextWindow} class="modal-close is-large" aria-label="close"></button>
       </div>
     `;
-  }
+}
 
-  templateImageData() {
-    return html`
+templateImageData() {
+  return html`
       <div class="container p-3">
       <img @click=${this.dale} width="50px" src="/images/cabeza_genio.png"/>
       <img width="50px" src="images/cabeza_genio.png"/>
@@ -305,10 +361,10 @@ export class DatasetManager extends LitElement {
       <img width="50px" src="images/cabeza_genio.png"/>      
     </div>
     `;
-  }
+}
 
-  templateNumberData() {
-    return html`
+templateNumberData() {
+  return html`
       <div class="container p-3">
         <div class="table-container">
           <table class="table is-bordered">
@@ -326,16 +382,16 @@ export class DatasetManager extends LitElement {
         </div>
       </div>
     `;
-  }
+}
 
-  render() {
-    return html`
+render() {
+  return html`
 <nav class="panel mb-3">
   <p class="panel-heading">
         ${this.editinglabelName
-        ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
-        : html`<span id="labelName">${this.labelName}</span>`
-      }
+      ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
+      : html`<span id="labelName">${this.labelName}</span>`
+    }
         <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>
         
         <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
@@ -349,11 +405,11 @@ export class DatasetManager extends LitElement {
    
 </nav>
     `
-  }
+}
 
-  createRenderRoot() {
-    return this;
-  }
+createRenderRoot() {
+  return this;
+}
 }
 
 window.customElements.define('dataset-manager', DatasetManager);
