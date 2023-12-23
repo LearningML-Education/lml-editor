@@ -97,6 +97,14 @@ class LMLApp extends LitElement {
             console.log(this.datasetProvider.value);
         });
 
+        this.addEventListener('add-image-to-label', e => {
+            if (this.datasetProvider.value.has(e.detail.label)) {
+                this.datasetProvider.value.set(e.detail.label,
+                    this.datasetProvider.value.get(e.detail.label).add(e.detail.image));
+            }
+            console.log(this.datasetProvider.value);
+        });
+
         this.addEventListener('remove-data-from-label', e => {
             if (this.datasetProvider.value.has(e.detail.label)) {
                 this.datasetProvider.value.get(e.detail.label).delete(e.detail.element);

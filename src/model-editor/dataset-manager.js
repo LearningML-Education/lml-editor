@@ -183,8 +183,85 @@ export class DatasetManager extends LitElement {
   // Funciones para manejar los datasets de imágenes
   ///
 
-  uploadImages(){
-    
+  async uploadImages() {
+    const pickerOpts = {
+      types: [
+        {
+          description: "Images",
+          accept: {
+            "images/*": [".jpg", ".png"],
+          },
+        },
+      ],
+      excludeAcceptAllOption: true,
+      multiple: true,
+    };
+
+    const filesHandle = await window.showOpenFilePicker(pickerOpts);
+
+    filesHandle.forEach(async (fileHandle) => {
+      const file = await fileHandle.getFile();
+      const reader = new FileReader();
+
+      // Definir la función de devolución de llamada cuando la lectura se complete
+      let that = this;
+      reader.onload = function (e) {
+        console.log(e);
+        // Convertir el contenido a base64
+        //const base64String = e.target.result.split(',')[1];
+        const base64String = e.target.result
+
+
+        const event = new CustomEvent('add-image-to-label', {
+          bubbles: true,
+          composed: true,
+          detail: { label: that.labelName, image: base64String }
+        });
+
+        that.dispatchEvent(event);
+        that.requestUpdate();
+      };
+
+      // Leer el contenido del archivo como base64
+      reader.readAsDataURL(file);
+    });
+
+  }
+
+  async takeImagesFromCamera() {
+    let video = this.querySelector("#video");
+    try {
+      // Obtener acceso a la webcam
+      this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+      // Mostrar el flujo de video en el elemento video
+      video.srcObject = this.stream;
+    } catch (error) {
+      console.error('Error al iniciar la webcam:', error);
+    }
+  }
+
+  kaka(){
+    if (this.stream) {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.width;
+      canvas.height = video.height;
+      const context = canvas.getContext('2d');
+
+      // Dibujar el fotograma actual en el lienzo
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Obtener el contenido del lienzo como datos base64
+      const base64String = canvas.toDataURL('image/png');
+      const event = new CustomEvent('add-image-to-label', {
+        bubbles: true,
+        composed: true,
+        detail: { label: this.labelName, image: base64String }
+      });
+
+      this.dispatchEvent(event);
+      this.requestUpdate();
+    }
   }
 
   templateButtons(editorType) {
@@ -247,7 +324,16 @@ export class DatasetManager extends LitElement {
           </button>
         </p>
         <p class="control"> 
-          <button class="button mr-1 is-primary is-fullwidth">
+          <button @click=${this.takeImagesFromCamera} class="button mr-1 is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-solid fa-camera"></i>
+            </span>
+            <span>${msg('Take from camera')}</span>
+          </button>
+        </p>
+
+        <p class="control"> 
+          <button @click=${this.kaka} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-solid fa-camera"></i>
             </span>
@@ -289,7 +375,7 @@ export class DatasetManager extends LitElement {
   templateTextData() {
     return html`
       
-      <div class="container textdata p-3">
+      <div class="container itemdata p-3">
         ${this.dataset.get(this.labelName)
         ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
           html`
@@ -341,16 +427,16 @@ export class DatasetManager extends LitElement {
 
   templateImageData() {
     return html`
-      <div class="container p-3">
-      <img @click=${this.dale} width="50px" src="/images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>
-      <img width="50px" src="images/cabeza_genio.png"/>      
+      <video id="video" width="400px" height="300px" autoplay></video>
+      <div class="container itemdata p-3">
+      ${this.dataset.get(this.labelName)
+        ? Array.from(this.dataset.get(this.labelName)).reverse().map((image, index) =>
+          html`
+            <img class="image-item" src=${image}/>
+          `
+        )
+        : html``
+      }     
     </div>
     `;
   }
