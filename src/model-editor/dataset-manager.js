@@ -18,7 +18,9 @@ export class DatasetManager extends LitElement {
     dataset: { type: Set },
     textEntry: { type: String },
     editText: { type: Boolean },
-    addTextsWindowOpen: { type: Boolean },
+    addTextsWindowOpened: { type: Boolean },
+    cameraOpened: { type: Boolean},
+    numberOfItems: {type: Number}
   };
 
   constructor() {
@@ -30,7 +32,9 @@ export class DatasetManager extends LitElement {
     this.dataset = this._datasetConsumer.value;
     this.textEntry = "";
     this.editText = false;
-    this.addTextsWindowOpen = false;
+    this.addTextsWindowOpened = false;
+    this.cameraOpened = false;
+    this.numberOfItems = 0;
     updateWhenLocaleChanges(this);
   }
 
@@ -68,6 +72,7 @@ export class DatasetManager extends LitElement {
         detail: { label: this.labelName }
       });
 
+      this.numberOfItems = 0;
       this.dispatchEvent(event);
     }
   }
@@ -76,12 +81,12 @@ export class DatasetManager extends LitElement {
   // Funciones para manejar los datasets de textos
   ///
   closeAddTextWindow() {
-    this.addTextsWindowOpen = false;
+    this.addTextsWindowOpened = false;
     this.querySelector("#inputTexts").value = "";
   }
 
   openAddTextWindow() {
-    this.addTextsWindowOpen = true;
+    this.addTextsWindowOpened = true;
   }
 
   addTexts() {
@@ -94,6 +99,7 @@ export class DatasetManager extends LitElement {
       detail: { label: this.labelName, texts: texts }
     });
 
+    this.numberOfItems ++;
     this.dispatchEvent(event);
     this.closeAddTextWindow();
   }
@@ -109,6 +115,8 @@ export class DatasetManager extends LitElement {
         composed: true,
         detail: { label: this.labelName, element: this.textEntry }
       });
+
+      this.numberOfItems--;
       this.textEntry = texts;
       this.dispatchEvent(event);
     }
@@ -128,6 +136,7 @@ export class DatasetManager extends LitElement {
         detail: { label: this.labelName, element: entry }
       });
 
+      this.numberOfItems--;
       this.dispatchEvent(event);
       this.requestUpdate();
     }
@@ -139,7 +148,7 @@ export class DatasetManager extends LitElement {
     this.editText = true;
     console.log(entry);
 
-    this.addTextsWindowOpen = true;
+    this.addTextsWindowOpened = true;
     this.querySelector("#inputTexts").value = entry;
   }
 
@@ -171,6 +180,7 @@ export class DatasetManager extends LitElement {
         detail: { label: that.labelName, texts: textContent }
       });
 
+      this.numberOfItems++;
       that.dispatchEvent(event);
       that.requestUpdate();
     };
@@ -218,6 +228,7 @@ export class DatasetManager extends LitElement {
           detail: { label: that.labelName, image: base64String }
         });
 
+        that.numberOfItems++;
         that.dispatchEvent(event);
         that.requestUpdate();
       };
@@ -228,7 +239,7 @@ export class DatasetManager extends LitElement {
 
   }
 
-  async takeImagesFromCamera() {
+  async openCamera() {
     let video = this.querySelector("#video");
     try {
       // Obtener acceso a la webcam
@@ -236,12 +247,21 @@ export class DatasetManager extends LitElement {
 
       // Mostrar el flujo de video en el elemento video
       video.srcObject = this.stream;
+      this.cameraOpened = true;
     } catch (error) {
       console.error('Error al iniciar la webcam:', error);
     }
   }
 
-  kaka(){
+  closeCamera(){
+    this.cameraOpened = false;
+    this.stream.getTracks().forEach(track => {
+      track.stop();
+    })
+    this.stream = null;
+  }
+
+  takePictureFromCamera(){
     if (this.stream) {
       const canvas = document.createElement('canvas');
       canvas.width = video.width;
@@ -259,6 +279,7 @@ export class DatasetManager extends LitElement {
         detail: { label: this.labelName, image: base64String }
       });
 
+      this.numberOfItems++;
       this.dispatchEvent(event);
       this.requestUpdate();
     }
@@ -315,31 +336,44 @@ export class DatasetManager extends LitElement {
     return html`
     <div class="panel-block">
       <div class="field is-grouped">
-        <p class="control">      
-          <button @click=${this.uploadImages} class="button mr-1 is-primary is-fullwidth">
-            <span class="icon">
-            <i class="fa-solid fa-images"></i>
-            </span>
-            <span>${msg('Upload images')}</span>
-          </button>
-        </p>
-        <p class="control"> 
-          <button @click=${this.takeImagesFromCamera} class="button mr-1 is-primary is-fullwidth">
-            <span class="icon">
-            <i class="fa-solid fa-camera"></i>
-            </span>
-            <span>${msg('Take from camera')}</span>
-          </button>
-        </p>
-
-        <p class="control"> 
-          <button @click=${this.kaka} class="button mr-1 is-primary is-fullwidth">
-            <span class="icon">
-            <i class="fa-solid fa-camera"></i>
-            </span>
-            <span>${msg('Take from camera')}</span>
-          </button>
-        </p>
+      ${!this.cameraOpened
+        ? html`
+          <p class="control">      
+            <button @click=${this.uploadImages} class="button mr-1 is-primary is-fullwidth">
+              <span class="icon">
+              <i class="fa-solid fa-images"></i>
+              </span>
+              <span>${msg('Upload images')}</span>
+            </button>
+          </p>
+          <p class="control"> 
+            <button @click=${this.openCamera} class="button mr-1 is-primary is-fullwidth">
+              <span class="icon">
+              <i class="fa-solid fa-camera"></i>
+              </span>
+              <span>${msg('Take from camera')}</span>
+            </button>
+          </p>`
+        
+        : html`
+          <p class="control"> 
+            <button @click=${this.takePictureFromCamera} class="button mr-1 is-primary is-fullwidth">
+              <span class="icon">
+                <i class="fa-solid fa-camera"></i>
+              </span>
+              <span>${msg('Take picture')}</span>
+            </button>
+          </p>
+          <p class="control"> 
+            <button @click=${this.closeCamera} class="button mr-1 is-primary is-fullwidth">
+              <span class="icon">
+                <i class="fa-solid fa-xmark"></i>
+              </span>
+              <span>${msg('Close camera')}</span>
+            </button>
+          </p>`
+        
+      }
       </div>
     </div>
     `;
@@ -394,7 +428,7 @@ export class DatasetManager extends LitElement {
       }        
       </div>
 
-      <div class=${classMap({ "modal": true, "is-active": this.addTextsWindowOpen })}>
+      <div class=${classMap({ "modal": true, "is-active": this.addTextsWindowOpened })}>
         <div class="modal-background"></div>
         <div class="modal-content">
           <nav class="panel has-background-warning">
@@ -427,8 +461,9 @@ export class DatasetManager extends LitElement {
 
   templateImageData() {
     return html`
-      <video id="video" width="400px" height="300px" autoplay></video>
-      <div class="container itemdata p-3">
+      <div class="container itemdata p-3">    
+      <video id="video" ?hidden=${!this.cameraOpened} width="400px" height="300px" autoplay></video>
+      
       ${this.dataset.get(this.labelName)
         ? Array.from(this.dataset.get(this.labelName)).reverse().map((image, index) =>
           html`
@@ -468,13 +503,13 @@ export class DatasetManager extends LitElement {
   <p class="panel-heading">
         ${this.editinglabelName
         ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
-        : html`<span id="labelName">${this.labelName}</span>`
+        : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this.numberOfItems}</span>`
       }
-        <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>
+
+      <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>
+      
+      <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
         
-        <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
-      </div>
-    </div>
   </p>
   
   ${this.templateData(this._statusConsumer.value.modelEditor)}
