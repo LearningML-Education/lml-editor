@@ -178,7 +178,6 @@ export class DatasetManager extends LitElement {
   ////
   // Funciones para manejar los datasets de imágenes
   //
-
   addImageToDataset(imageB64) {
     if (this._datasetConsumer.value.has(this.labelName)) {
       this._datasetConsumer.value.set(this.labelName,
