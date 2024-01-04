@@ -22,7 +22,7 @@ export class ModelEditor extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    
+
     this.dataset = this._datasetConsumer.value;
 
     this.addEventListener('remove-label', e => {
@@ -35,12 +35,11 @@ export class ModelEditor extends LitElement {
   addNewLabel() {
     let labelName = this.querySelector("#inputLabelName").value;
     if (labelName != "") {
-      const event = new CustomEvent('add-label', {
-        bubbles: true,
-        composed: true,
-        detail: { label: labelName }
-      });
-      this.dispatchEvent(event);
+      if (!this._datasetConsumer.value.has(labelName)) {
+        this._datasetConsumer.value.set(labelName, new Set());
+      }
+      console.log(this._datasetConsumer.value);
+      
       // Esta llamada a requestUpdate es imprescindible para que la 
       // propiedad this.dataset se actualice.
       // https://lit.dev/docs/v1/components/lifecycle/#requestupdate
@@ -52,8 +51,8 @@ export class ModelEditor extends LitElement {
 
   }
 
-  trainingText(editorType){
-    switch(editorType){
+  trainingText(editorType) {
+    switch (editorType) {
       case 'text':
         return msg('first I need some example texts');
       case 'image':

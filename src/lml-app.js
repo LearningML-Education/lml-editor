@@ -62,29 +62,6 @@ class LMLApp extends LitElement {
                 modelEditor: e.detail
             })
         });
-
-        this.addEventListener("add-label", e => {
-            if (!this.datasetProvider.value.has(e.detail.label)) {
-                this.datasetProvider.value.set(e.detail.label, new Set());
-            }
-            console.log(this.datasetProvider.value);
-        });
-
-        this.addEventListener('remove-label', e => {
-            if (this.datasetProvider.value.has(e.detail.label)) {
-                this.datasetProvider.value.delete(e.detail.label);
-            }
-            console.log(this.datasetProvider.value);
-        });
-
-        this.addEventListener('edit-label', e => {
-            if (this.datasetProvider.value.has(e.detail.oldLabel)) {
-                this.datasetProvider.value.set(e.detail.newLabel,
-                    this.datasetProvider.value.get(e.detail.oldLabel));
-                this.datasetProvider.value.delete(e.detail.oldLabel);
-            }
-            console.log(this.datasetProvider.value);
-        });
     }
 
     loadingTemplate() {

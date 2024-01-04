@@ -47,33 +47,29 @@ export class DatasetManager extends LitElement {
     if (this.editinglabelName) {
       let oldLabel = this.labelName;
       this.labelName = this.querySelector("#inputlabelName").value;
-      const event = new CustomEvent('edit-label', {
-        bubbles: true,
-        composed: true,
-        detail: {
-          oldLabel: oldLabel,
-          newLabel: this.labelName
-        }
-      });
-
-      this.dispatchEvent(event);
+      if (this._datasetConsumer.value.has(oldLabel)) {
+        this._datasetConsumer.value.set(this.labelName,
+          this._datasetConsumer.value.get(oldLabel));
+        this._datasetConsumer.value.delete(oldLabel);
+      }
+      console.log(this._datasetConsumer.value);
     }
     this.faCheck = this.editlabelName;
     this.faPenToSquare = !this.faCheck;
     this.editinglabelName = !this.editinglabelName;
-
   }
 
   removeClass() {
     if (confirm(msg("Are you sure?"))) {
-      const event = new CustomEvent('remove-label', {
-        bubbles: true,
-        composed: true,
-        detail: { label: this.labelName }
-      });
+      if (this._datasetConsumer.value.has(this.labelName)) {
+        this._datasetConsumer.value.delete(this.labelName);
+      }
+      console.log(this._datasetConsumer.value);
 
       this.numberOfItems = 0;
-      this.dispatchEvent(event);
+      this.dispatchEvent(new CustomEvent('remove-label', {
+        bubbles: true
+      }));
     }
   }
 
@@ -264,7 +260,7 @@ export class DatasetManager extends LitElement {
       // Obtener el contenido del lienzo como datos base64
       const base64String = canvas.toDataURL('image/png');
       this.addImageToDataset(base64String);
-    
+
       this.numberOfItems++;
       this.dispatchEvent(event);
       this.requestUpdate();
