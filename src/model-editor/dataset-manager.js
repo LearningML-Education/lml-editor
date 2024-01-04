@@ -89,7 +89,7 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = true;
   }
 
-  addTextToDataset(texts){
+  addTextToDataset(texts) {
     texts.split("\n").forEach(entry => {
       if (entry == "") return;
       this._datasetConsumer.value.set(this.labelName,
@@ -172,11 +172,7 @@ export class DatasetManager extends LitElement {
     let that = this;
     reader.onload = function (e) {
       const textContent = e.target.result;
-      // Mostrar el contenido del archivo en un elemento div
       that.addTextToDataset(textContent);
-      // this.numberOfItems++;
-      // that.dispatchEvent(event);
-      // that.requestUpdate();
     };
 
     reader.readAsText(file);
@@ -185,7 +181,14 @@ export class DatasetManager extends LitElement {
 
   ////
   // Funciones para manejar los datasets de imágenes
-  ///
+  //
+
+  addImageToDataset(imageB64) {
+    if (this._datasetConsumer.value.has(this.labelName)) {
+      this._datasetConsumer.value.set(this.labelName,
+        this._datasetConsumer.value.get(this.labelName).add(imageB64));
+    }
+  }
 
   async uploadImages() {
     const pickerOpts = {
@@ -214,16 +217,9 @@ export class DatasetManager extends LitElement {
         // Convertir el contenido a base64
         //const base64String = e.target.result.split(',')[1];
         const base64String = e.target.result
-
-
-        const event = new CustomEvent('add-image-to-label', {
-          bubbles: true,
-          composed: true,
-          detail: { label: that.labelName, image: base64String }
-        });
-
+        that.addImageToDataset(base64String);
+        console.log(that._datasetConsumer.value);
         that.numberOfItems++;
-        that.dispatchEvent(event);
         that.requestUpdate();
       };
 
@@ -267,12 +263,8 @@ export class DatasetManager extends LitElement {
 
       // Obtener el contenido del lienzo como datos base64
       const base64String = canvas.toDataURL('image/png');
-      const event = new CustomEvent('add-image-to-label', {
-        bubbles: true,
-        composed: true,
-        detail: { label: this.labelName, image: base64String }
-      });
-
+      this.addImageToDataset(base64String);
+    
       this.numberOfItems++;
       this.dispatchEvent(event);
       this.requestUpdate();
@@ -458,7 +450,7 @@ export class DatasetManager extends LitElement {
       <div class="container itemdata p-3">    
       <video id="video" ?hidden=${!this.cameraOpened} width="400px" height="300px" autoplay></video>
       
-      ${this.dataset.get(this.labelName)
+      ${this.dataset.get(this.labelName) && !this.cameraOpened
         ? Array.from(this.dataset.get(this.labelName)).reverse().map((image, index) =>
           html`
             <img class="image-item" src=${image}/>
