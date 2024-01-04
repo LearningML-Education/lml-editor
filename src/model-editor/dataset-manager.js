@@ -89,31 +89,31 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = true;
   }
 
+  addTextToDataset(texts){
+    texts.split("\n").forEach(entry => {
+      if (entry == "") return;
+      this._datasetConsumer.value.set(this.labelName,
+        this._datasetConsumer.value.get(this.labelName).add(entry));
+      this.numberOfItems++;
+    });
+  }
+
   addTexts() {
     this.editText = false;
     let texts = this.querySelector("#inputTexts").value;
-
     if (this._datasetConsumer.value.has(this.labelName)) {
-      texts.split("\n").forEach(entry => {
-        if (entry == "") return;
-        this._datasetConsumer.value.set(this.labelName,
-          this._datasetConsumer.value.get(this.labelName).add(entry));
-        this.numberOfItems++;
-      });
+      this.addTextToDataset(texts);
     }
-
     console.log(this._datasetConsumer.value);
     this.closeAddTextWindow();
   }
 
   editTexts(e) {
     let texts = this.querySelector("#inputTexts").value;
-
     // Si el texto ha sido cambiado por el usuario, es decir `texts` no coincide 
     // con el atributo this.textEntry, hay que borrar el valor que tenía ...
     if (this.textEntry != texts) {
       this.removeTextEntry(this.textEntry, false);
-
       this.numberOfItems--;
       this.textEntry = texts;
     }
@@ -123,6 +123,8 @@ export class DatasetManager extends LitElement {
     this.addTexts();
   }
 
+  // Si se está editando un texto, se usa esta función sin mostrar la ventana
+  // de diálogo de confirmación.
   removeTextEntry(e, ask = true) {
     this.editText = true;
     if (ask && confirm(msg("Surely you want to delete this item?")) || !ask) {
@@ -171,7 +173,7 @@ export class DatasetManager extends LitElement {
     reader.onload = function (e) {
       const textContent = e.target.result;
       // Mostrar el contenido del archivo en un elemento div
-      that.addTexts();
+      that.addTextToDataset(textContent);
       // this.numberOfItems++;
       // that.dispatchEvent(event);
       // that.requestUpdate();
