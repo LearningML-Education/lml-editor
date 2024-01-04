@@ -88,9 +88,10 @@ export class DatasetManager extends LitElement {
   addTextToDataset(texts) {
     texts.split("\n").forEach(entry => {
       if (entry == "") return;
+      if (!this._datasetConsumer.value.get(this.labelName).has(entry)) this.numberOfItems++;
+
       this._datasetConsumer.value.set(this.labelName,
         this._datasetConsumer.value.get(this.labelName).add(entry));
-      this.numberOfItems++;
     });
   }
 
@@ -180,6 +181,7 @@ export class DatasetManager extends LitElement {
   //
   addImageToDataset(imageB64) {
     if (this._datasetConsumer.value.has(this.labelName)) {
+      if (!this._datasetConsumer.value.get(this.labelName).has(imageB64)) this.numberOfItems++;
       this._datasetConsumer.value.set(this.labelName,
         this._datasetConsumer.value.get(this.labelName).add(imageB64));
     }
@@ -214,7 +216,6 @@ export class DatasetManager extends LitElement {
         const base64String = e.target.result
         that.addImageToDataset(base64String);
         console.log(that._datasetConsumer.value);
-        that.numberOfItems++;
         that.requestUpdate();
       };
 
@@ -259,9 +260,6 @@ export class DatasetManager extends LitElement {
       // Obtener el contenido del lienzo como datos base64
       const base64String = canvas.toDataURL('image/png');
       this.addImageToDataset(base64String);
-
-      this.numberOfItems++;
-      this.dispatchEvent(event);
       this.requestUpdate();
     }
   }
