@@ -86,17 +86,6 @@ class LMLApp extends LitElement {
             console.log(this.datasetProvider.value);
         });
 
-        this.addEventListener('add-texts-to-label', e => {
-            if (this.datasetProvider.value.has(e.detail.label)) {
-                e.detail.texts.split("\n").forEach(entry => {
-                    if(entry == "") return;
-                    this.datasetProvider.value.set(e.detail.label,
-                        this.datasetProvider.value.get(e.detail.label).add(entry));
-                });
-            }
-            console.log(this.datasetProvider.value);
-        });
-
         this.addEventListener('add-image-to-label', e => {
             if (this.datasetProvider.value.has(e.detail.label)) {
                 this.datasetProvider.value.set(e.detail.label,
@@ -105,13 +94,6 @@ class LMLApp extends LitElement {
             console.log(this.datasetProvider.value);
         });
 
-        this.addEventListener('remove-data-from-label', e => {
-            if (this.datasetProvider.value.has(e.detail.label)) {
-                this.datasetProvider.value.get(e.detail.label).delete(e.detail.element);
-            }
-            console.log(this.datasetProvider.value);
-
-        });
     }
 
     loadingTemplate() {

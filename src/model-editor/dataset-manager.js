@@ -19,8 +19,8 @@ export class DatasetManager extends LitElement {
     textEntry: { type: String },
     editText: { type: Boolean },
     addTextsWindowOpened: { type: Boolean },
-    cameraOpened: { type: Boolean},
-    numberOfItems: {type: Number}
+    cameraOpened: { type: Boolean },
+    numberOfItems: { type: Number }
   };
 
   constructor() {
@@ -93,14 +93,16 @@ export class DatasetManager extends LitElement {
     this.editText = false;
     let texts = this.querySelector("#inputTexts").value;
 
-    const event = new CustomEvent('add-texts-to-label', {
-      bubbles: true,
-      composed: true,
-      detail: { label: this.labelName, texts: texts }
-    });
+    if (this._datasetConsumer.value.has(this.labelName)) {
+      texts.split("\n").forEach(entry => {
+        if (entry == "") return;
+        this._datasetConsumer.value.set(this.labelName,
+          this._datasetConsumer.value.get(this.labelName).add(entry));
+        this.numberOfItems++;
+      });
+    }
 
-    this.numberOfItems ++;
-    this.dispatchEvent(event);
+    console.log(this._datasetConsumer.value);
     this.closeAddTextWindow();
   }
 
@@ -110,15 +112,10 @@ export class DatasetManager extends LitElement {
     // Si el texto ha sido cambiado por el usuario, es decir `texts` no coincide 
     // con el atributo this.textEntry, hay que borrar el valor que tenía ...
     if (this.textEntry != texts) {
-      const event = new CustomEvent('remove-data-from-label', {
-        bubbles: true,
-        composed: true,
-        detail: { label: this.labelName, element: this.textEntry }
-      });
+      this.removeTextEntry(this.textEntry, false);
 
       this.numberOfItems--;
       this.textEntry = texts;
-      this.dispatchEvent(event);
     }
 
     // Y añadir el nuevo valor (cambiado por el usuario), es decir, conseguimos
@@ -126,18 +123,18 @@ export class DatasetManager extends LitElement {
     this.addTexts();
   }
 
-  removeTextEntry(e) {
+  removeTextEntry(e, ask = true) {
     this.editText = true;
-    if (confirm(msg("Surely you want to delete this item?"))) {
-      let entry = e.target.parentElement.getAttribute("text-entry");
-      const event = new CustomEvent('remove-data-from-label', {
-        bubbles: true,
-        composed: true,
-        detail: { label: this.labelName, element: entry }
-      });
+    if (ask && confirm(msg("Surely you want to delete this item?")) || !ask) {
+      let entry = e.target == undefined
+        ? e
+        : e.target.parentElement.getAttribute("text-entry")
+      if (this._datasetConsumer.value.has(this.labelName)) {
+        this._datasetConsumer.value.get(this.labelName).delete(entry);
+      }
+      console.log(this._datasetConsumer.value);
 
-      this.numberOfItems--;
-      this.dispatchEvent(event);
+      if (e.target != undefined) this.numberOfItems--;
       this.requestUpdate();
     }
   }
@@ -174,15 +171,10 @@ export class DatasetManager extends LitElement {
     reader.onload = function (e) {
       const textContent = e.target.result;
       // Mostrar el contenido del archivo en un elemento div
-      const event = new CustomEvent('add-texts-to-label', {
-        bubbles: true,
-        composed: true,
-        detail: { label: that.labelName, texts: textContent }
-      });
-
-      this.numberOfItems++;
-      that.dispatchEvent(event);
-      that.requestUpdate();
+      that.addTexts();
+      // this.numberOfItems++;
+      // that.dispatchEvent(event);
+      // that.requestUpdate();
     };
 
     reader.readAsText(file);
@@ -253,7 +245,7 @@ export class DatasetManager extends LitElement {
     }
   }
 
-  closeCamera(){
+  closeCamera() {
     this.cameraOpened = false;
     this.stream.getTracks().forEach(track => {
       track.stop();
@@ -261,7 +253,7 @@ export class DatasetManager extends LitElement {
     this.stream = null;
   }
 
-  takePictureFromCamera(){
+  takePictureFromCamera() {
     if (this.stream) {
       const canvas = document.createElement('canvas');
       canvas.width = video.width;
@@ -354,7 +346,7 @@ export class DatasetManager extends LitElement {
               <span>${msg('Take from camera')}</span>
             </button>
           </p>`
-        
+
         : html`
           <p class="control"> 
             <button @click=${this.takePictureFromCamera} class="button mr-1 is-primary is-fullwidth">
@@ -372,7 +364,7 @@ export class DatasetManager extends LitElement {
               <span>${msg('Close camera')}</span>
             </button>
           </p>`
-        
+
       }
       </div>
     </div>
