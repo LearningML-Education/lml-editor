@@ -456,7 +456,7 @@ export class DatasetManager extends LitElement {
   }
 
   fromCSV2Array(csv){
-    return csv.split(",").map(v => parseFloat(v));
+    return csv.split(",").map(v => isNaN(parseFloat(v))? 0: parseFloat(v));
   }
 
   templateNumberData() {
