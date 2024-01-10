@@ -363,7 +363,7 @@ export class DatasetManager extends LitElement {
     <div class="panel-block">
       <div class="field is-grouped">
         <p class="control">
-          <button class="button is-primary is-fullwidth">
+          <button @click="${this.openAddTextWindow}" class="button is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-regular fa-keyboard"></i>
             </span>
@@ -371,7 +371,7 @@ export class DatasetManager extends LitElement {
           </button>
         </p>
         <p class="control">
-          <button class="button  is-primary is-fullwidth">
+          <button @click="${this.loadTextFromFile}" class="button  is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-solid fa-upload"></i>
             </span>
@@ -455,23 +455,69 @@ export class DatasetManager extends LitElement {
     `;
   }
 
+  fromCSV2Array(csv){
+    return csv.split(",").map(v => parseFloat(v));
+  }
+
   templateNumberData() {
-    return html`
+    return html`        
       <div class="container p-3">
         <div class="table-container">
           <table class="table is-bordered">
             <tbody>
-              <tr @click=${this.dale}>
-                <td>4.2</td><td>3.5</td><td>4.2</td><td>3.5</td>
-                <td>4.2</td><td>3.5</td><td>4.2</td><td>3.5</td>
-              </tr>
-              <tr @click=${this.dale}>
-                <td>4.2</td><td>3.5</td><td>4.2</td><td>3.5</td>
-                <td>4.2</td><td>3.5</td><td>4.2</td><td>3.5</td>
-              </tr>
+            ${this.dataset.get(this.labelName)
+              ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
+                html`
+                <tr>
+                  <td>
+                    <div class="panel-block">
+                      <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2 is-clickable">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </span>
+                      <span @click=${this.removeTextEntry} text-entry=${entry} class="is-clickable">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </span> 
+                    </div>
+                  </td>
+                  ${this.fromCSV2Array(entry).map(e => 
+                    html`<td>${e}</td>`)}
+                </tr>
+                `
+              )
+              : html``
+            } 
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div class=${classMap({ "modal": true, "is-active": this.addTextsWindowOpened })}>
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <nav class="panel has-background-warning">
+            <p class="panel-heading has-background-warning">
+              ${msg("Add one or more text examples")}
+            </p>
+            
+            <div class="panel-block">
+              <textarea id="inputTexts" class="textarea" placeholder="${msg("Separate each text by a line break")}" rows="10"></textarea>
+            </div>
+            
+            <div class="panel-block">
+                ${this.editText
+        ? html`
+                    <button @click=${this.editTexts} class="button is-primary  is-fullwidth">
+                      ${msg("Edit text examples")}
+                    </button>`
+        : html`
+                    <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
+                      ${msg("Add text examples")}
+                    </button>`
+      }
+            </div>
+          </nav>          
+        </div>
+        <button @click=${this.closeAddTextWindow} class="modal-close is-large" aria-label="close"></button>
       </div>
     `;
   }

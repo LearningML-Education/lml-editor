@@ -1,0 +1,12 @@
+El término Pensamiento Computacional es propenso a ser malinterpretado.
+Y el hecho de que aún no exista una definición consensuada, no ayuda demasiado.
+Así que, en lugar de comenzar definiendo qué es el Pensamiento Computacional, vamos a comenzar por decir lo que NO es.
+
+Algunas veces se escucha que se trata de enseñar a pensar como lo hacen las computadoras.
+Seguramente esta sea la interpretación más errónea y confusa ya que, hoy por hoy, las computadoras no piensan.
+Pensar es una actividad propia del ser humano. 
+La máquina solo ejecuta obedientemente las instrucciones de un programa que ha sido previamente escrito por una persona. Y esto es cierto incluso cuando se habla de Inteligencia Artificial (otro término desafortunado).
+
+Otras veces se dice que el Pensamiento Computacional es aprender a programar computadoras y robots. 
+Y aunque nos vamos acercando a su significado, tampoco es cierto:
+Pensamiento Computacional y Programación no son la misma cosa.
