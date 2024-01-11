@@ -41,17 +41,17 @@ class LMLApp extends LitElement {
          * este proveedor contendrá un mapa en el que las claves son el nombre de las
          * clases y los valores asociados serán arrays de textos, imágenes o números.
          */
-        let kk = new Map();
-        let ll = new Set();
-        ll.add("1.5,3.2,3.3,6.5,4.7,3.5,2.4,6.4");
-        ll.add("4.3,2.4,4.3,6.5,4.7,3.5,2.4,6.4");
-        ll.add("1.5,3.7,3.3,6.5,4.7,3.5,2.4,6.4");
-        ll.add("4.3,2.5,4.3,6.5,4.7,3.5,2.4,6.4");
-        ll.add("1.5,3.2,3.3,6.5,4.7,3.5,2.4,6.4");
-        ll.add("4.3,3.4,4.3,6.5,4.7,3.5,2.4,6.4");
-        kk.set('kaka', ll);
-        //this.datasetProvider.setValue(new Map());
-        this.datasetProvider.setValue(kk);
+        // let kk = new Map();
+        // let ll = new Set();
+        // ll.add("1.5,3.2,3.3,6.5,4.7,3.5,2.4,6.4");
+        // ll.add("4.3,2.4,4.3,6.5,4.7,3.5,2.4,6.4");
+        // ll.add("1.5,3.7,3.3,6.5,4.7,3.5,2.4,6.4");
+        // ll.add("4.3,2.5,4.3,6.5,4.7,3.5,2.4,6.4");
+        // ll.add("1.5,3.2,3.3,6.5,4.7,3.5,2.4,6.4");
+        // ll.add("4.3,3.4,4.3,6.5,4.7,3.5,2.4,6.4");
+        // kk.set('kaka', ll);
+        this.datasetProvider.setValue(new Map());
+        //this.datasetProvider.setValue(kk);
 
         updateWhenLocaleChanges(this);
 

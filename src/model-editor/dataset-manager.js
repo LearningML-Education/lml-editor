@@ -9,7 +9,7 @@ export class DatasetManager extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
-
+  
   static properties = {
     editinglabelName: { type: Boolean },
     labelName: { type: String },
@@ -20,7 +20,8 @@ export class DatasetManager extends LitElement {
     editText: { type: Boolean },
     addTextsWindowOpened: { type: Boolean },
     cameraOpened: { type: Boolean },
-    numberOfItems: { type: Number }
+    numberOfItems: { type: Number },
+    dimension: { type: Number }
   };
 
   constructor() {
@@ -35,6 +36,7 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
     this.numberOfItems = 0;
+    this.dimension = null;
     updateWhenLocaleChanges(this);
   }
 
@@ -85,9 +87,34 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = true;
   }
 
+  isValidNumberEntry(entry){
+    let items = this.fromCSV2Array(entry);
+    
+    // primero miramos que todas los items separados por coma sean números
+    if (items.some(item => isNaN(item))) return false;
+
+    // después comprobamos si this.dimension es nulo, lo cual significa que es
+    // la primera entrada y será la que define la dimensión de los vectores
+    if(this.dimension == null){
+      this.dimension = items.length;
+    }
+
+    // por último comprobamos que la dimensión del array items coincida con this.dimension
+    if(this.dimension != items.length) return false;
+
+    // si hemos llegado hasta aquí, todo está bien
+
+    return true;
+    
+  }
+
   addTextToDataset(texts) {
     texts.split("\n").forEach(entry => {
       if (entry == "") return;
+      if (this._statusConsumer.value.modelEditor == 'number' && !this.isValidNumberEntry(entry)){
+        alert(msg("Invalid entry"));
+        return;
+      }
       if (!this._datasetConsumer.value.get(this.labelName).has(entry)) this.numberOfItems++;
 
       this._datasetConsumer.value.set(this.labelName,
@@ -456,7 +483,7 @@ export class DatasetManager extends LitElement {
   }
 
   fromCSV2Array(csv){
-    return csv.split(",").map(v => isNaN(parseFloat(v))? 0: parseFloat(v));
+    return csv.split(",").map(v => parseFloat(v));
   }
 
   templateNumberData() {
@@ -466,8 +493,8 @@ export class DatasetManager extends LitElement {
           <table class="table is-bordered">
             <tbody>
             ${this.dataset.get(this.labelName)
-              ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
-                html`
+        ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
+          html`
                 <tr>
                   <td>
                     <div class="panel-block">
@@ -479,13 +506,13 @@ export class DatasetManager extends LitElement {
                       </span> 
                     </div>
                   </td>
-                  ${this.fromCSV2Array(entry).map(e => 
-                    html`<td>${e}</td>`)}
+                  ${this.fromCSV2Array(entry).map(e =>
+            html`<td>${e}</td>`)}
                 </tr>
                 `
-              )
-              : html``
-            } 
+        )
+        : html``
+      } 
             </tbody>
           </table>
         </div>
