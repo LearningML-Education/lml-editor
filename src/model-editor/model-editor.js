@@ -59,6 +59,30 @@ export class ModelEditor extends LitElement {
     return "";
   }
 
+  learningText(editorType) {
+    switch (editorType) {
+      case 'text':
+        return msg("Now it's time to learn to classify text");
+      case 'image':
+        return msg("Now it's time to learn to classify images");
+      case 'number':
+        return msg("Now it's time to learn to classify numbers");
+    }
+    return "";
+  }
+
+  learnButtonText(editorType) {
+    switch (editorType) {
+      case 'text':
+        return msg("Learn to recognize texts");
+      case 'image':
+        return msg("Learn to recognize images");
+      case 'number':
+        return msg("Learn to recognize numbers");
+    }
+    return "";
+  }
+
   render() {
 
     return html`
@@ -89,8 +113,11 @@ export class ModelEditor extends LitElement {
 
   <div class="column">
     <h4 class="title is-4">${msg('Learn')}</h4>
-    <h6 class="subtitle is-6">${msg("Now it's time to learn to classify text")}</h6>
+    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
+    <button class="button is-fullwidth is-primary"><span class="icon"><i class="fa-solid fa-gears"></i></span><span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span></button>
   </div>
+
+
   <div class="column">
     <h4 class="title is-4">${msg('Try')}</h4>
     <h6 class="subtitle is-6">${msg("Introduces new terms and checks they are correctly classified ")}</h6>
