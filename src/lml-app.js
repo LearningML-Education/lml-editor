@@ -32,9 +32,9 @@ class LMLApp extends LitElement {
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
 
         this.statusProvider.setValue({
-            modelEditor: 'text'
+            //modelEditor: 'text'
             //modelEditor: 'image'
-            //modelEditor: 'number'
+            modelEditor: 'number'
         });
 
         /**

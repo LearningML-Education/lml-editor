@@ -19,7 +19,6 @@ export class DatasetManager extends LitElement {
     editText: { type: Boolean },
     addTextsWindowOpened: { type: Boolean },
     cameraOpened: { type: Boolean },
-    numberOfItems: { type: Number },
     dimension: { type: Number }
   };
 
@@ -33,7 +32,6 @@ export class DatasetManager extends LitElement {
     this.editText = false;
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
-    this.numberOfItems = 0;
     this.dimension = null;
     updateWhenLocaleChanges(this);
   }
@@ -66,7 +64,6 @@ export class DatasetManager extends LitElement {
       }
       console.log(this._datasetConsumer.value);
 
-      this.numberOfItems = 0;
       this.dispatchEvent(new CustomEvent('remove-label', {
         bubbles: true
       }));
@@ -113,11 +110,13 @@ export class DatasetManager extends LitElement {
         alert(msg("Invalid entry"));
         return;
       }
-      if (!this._datasetConsumer.value.get(this.labelName).has(entry)) this.numberOfItems++;
 
       this._datasetConsumer.value.set(this.labelName,
         this._datasetConsumer.value.get(this.labelName).add(entry));
+
     });
+
+    this.requestUpdate();
   }
 
   addTexts() {
@@ -136,7 +135,6 @@ export class DatasetManager extends LitElement {
     // con el atributo this.textEntry, hay que borrar el valor que tenía ...
     if (this.textEntry != texts) {
       this.removeTextEntry(this.textEntry, false);
-      this.numberOfItems--;
       this.textEntry = texts;
     }
 
@@ -158,7 +156,6 @@ export class DatasetManager extends LitElement {
       }
       console.log(this._datasetConsumer.value);
 
-      if (e.target != undefined) this.numberOfItems--;
       this.requestUpdate();
     }
   }
@@ -206,7 +203,6 @@ export class DatasetManager extends LitElement {
   //
   addImageToDataset(imageB64) {
     if (this._datasetConsumer.value.has(this.labelName)) {
-      if (!this._datasetConsumer.value.get(this.labelName).has(imageB64)) this.numberOfItems++;
       this._datasetConsumer.value.set(this.labelName,
         this._datasetConsumer.value.get(this.labelName).add(imageB64));
     }
@@ -553,7 +549,7 @@ export class DatasetManager extends LitElement {
   <p class="panel-heading">
         ${this.editinglabelName
         ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
-        : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this.numberOfItems} - ${this._datasetConsumer.value.get(this.labelName).size}</span>`
+        : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this._datasetConsumer.value.get(this.labelName).size}</span>`
       }
 
       <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>
