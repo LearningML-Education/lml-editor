@@ -15,7 +15,6 @@ export class DatasetManager extends LitElement {
     labelName: { type: String },
     faCheck: { type: Boolean },
     faPenToSquare: { type: Boolean },
-    dataset: { type: Set },
     textEntry: { type: String },
     editText: { type: Boolean },
     addTextsWindowOpened: { type: Boolean },
@@ -30,7 +29,6 @@ export class DatasetManager extends LitElement {
     this.labelName = "Unnamed";
     this.faCheck = false;
     this.faPenToSquare = true;
-    this.dataset = this._datasetConsumer.value;
     this.textEntry = "";
     this.editText = false;
     this.addTextsWindowOpened = false;
@@ -42,7 +40,7 @@ export class DatasetManager extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.dataset = this._datasetConsumer.value;
+    console.log(this.labelName);
   }
 
   editlabelName() {
@@ -416,8 +414,8 @@ export class DatasetManager extends LitElement {
     return html`
       
       <div class="container itemdata p-3">
-        ${this.dataset.get(this.labelName)
-        ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
+        ${this._datasetConsumer.value.get(this.labelName)
+        ? Array.from(this._datasetConsumer.value.get(this.labelName)).reverse().map((entry, index) =>
           html`
           <div class="panel-block">
             <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2">
@@ -470,8 +468,8 @@ export class DatasetManager extends LitElement {
       <div class="container itemdata p-3">    
       <video id="video" ?hidden=${!this.cameraOpened} width="400px" height="300px" autoplay></video>
       
-      ${this.dataset.get(this.labelName) && !this.cameraOpened
-        ? Array.from(this.dataset.get(this.labelName)).reverse().map((image, index) =>
+      ${this._datasetConsumer.value.get(this.labelName) && !this.cameraOpened
+        ? Array.from(this._datasetConsumer.value.get(this.labelName)).reverse().map((image, index) =>
           html`
             <img class="image-item" src=${image}/>
           `
@@ -492,8 +490,8 @@ export class DatasetManager extends LitElement {
         <div class="table-container">
           <table class="table is-bordered">
             <tbody>
-            ${this.dataset.get(this.labelName)
-        ? Array.from(this.dataset.get(this.labelName)).reverse().map((entry, index) =>
+            ${this._datasetConsumer.value.get(this.labelName)
+        ? Array.from(this._datasetConsumer.value.get(this.labelName)).reverse().map((entry, index) =>
           html`
                 <tr>
                   <td>
@@ -555,7 +553,7 @@ export class DatasetManager extends LitElement {
   <p class="panel-heading">
         ${this.editinglabelName
         ? html`<input id="inputlabelName" style="width: 200px;" class="input" value=${this.labelName} type="text" placeholder="Text input">`
-        : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this.numberOfItems}</span>`
+        : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this.numberOfItems} - ${this._datasetConsumer.value.get(this.labelName).size}</span>`
       }
 
       <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>

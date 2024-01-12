@@ -1,4 +1,5 @@
 import { LitElement, html } from 'lit';
+import {repeat} from 'lit/directives/repeat.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { datasetContext, statusContext } from '../contexts.js';
@@ -22,14 +23,9 @@ export class ModelEditor extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-
-    this.dataset = this._datasetConsumer.value;
-
     this.addEventListener('remove-label', e => {
       this.requestUpdate();
     });
-
-    console.log(this.dataset);
   }
 
   addNewLabel() {
@@ -84,8 +80,10 @@ export class ModelEditor extends LitElement {
       </div>
     </div>
 
-    ${Array.from(this.dataset).toReversed().map((entry) =>
-      html`<dataset-manager labelName=${entry[0]}></dataset-manager>`
+  
+    ${repeat(Array.from(this._datasetConsumer.value).toReversed(), 
+             entry => entry[0], 
+             (entry, index) => html`<dataset-manager labelName=${entry[0]}></dataset-manager>`
     )}
   </div>
 
