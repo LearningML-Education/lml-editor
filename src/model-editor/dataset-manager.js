@@ -19,7 +19,6 @@ export class DatasetManager extends LitElement {
     editText: { type: Boolean },
     addTextsWindowOpened: { type: Boolean },
     cameraOpened: { type: Boolean },
-    dimension: { type: Number }
   };
 
   constructor() {
@@ -32,7 +31,6 @@ export class DatasetManager extends LitElement {
     this.editText = false;
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
-    this.dimension = null;
     updateWhenLocaleChanges(this);
   }
 
@@ -90,12 +88,12 @@ export class DatasetManager extends LitElement {
 
     // después comprobamos si this.dimension es nulo, lo cual significa que es
     // la primera entrada y será la que define la dimensión de los vectores
-    if(this.dimension == null){
-      this.dimension = items.length;
+    if(this._statusConsumer.value.dimension == undefined){
+      this._statusConsumer.value.dimension = items.length;
     }
 
     // por último comprobamos que la dimensión del array items coincida con this.dimension
-    if(this.dimension != items.length) return false;
+    if(this._statusConsumer.value.dimension != items.length) return false;
 
     // si hemos llegado hasta aquí, todo está bien
 
