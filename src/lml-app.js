@@ -25,8 +25,8 @@ class LMLApp extends LitElement {
         super();
 
         this.loading = true;
-        //this.page = 'home';
-        this.page = 'model-editor';
+        this.page = 'home';
+        //this.page = 'model-editor';
         this.configProvider = new ContextProvider(this, { context: configContext });
         this.statusProvider = new ContextProvider(this, { context: statusContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
