@@ -2,11 +2,8 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { statusContext } from '../contexts.js';
-import './model-train.js';
-import './model-learn.js';
-import './model-eval.js';
 
-export class ModelEditor extends LitElement {
+export class ModelLearn extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
@@ -42,20 +39,9 @@ export class ModelEditor extends LitElement {
   render() {
 
     return html`
-<div class="columns">
-  <div class="column">
-    <model-train></model-train>
-  </div>
-
-  <div class="column">
-    <model-learn></model-learn>
-  </div>
-
-
-  <div class="column">
-    <model-eval></model-eval>
-  </div>
-</div>
+    <h4 class="title is-4">${msg('Learn')}</h4>
+    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
+    <button class="button is-fullwidth is-primary"><span class="icon"><i class="fa-solid fa-gears"></i></span><span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span></button>
     `
   }
 
@@ -64,4 +50,4 @@ export class ModelEditor extends LitElement {
   }
 }
 
-window.customElements.define('model-editor', ModelEditor);
+window.customElements.define('model-learn', ModelLearn);
