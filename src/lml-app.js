@@ -9,6 +9,7 @@ import './footers/footer-copyright';
 import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
+import './loading-message/loading-message';
 
 
 // Configuration is loaded
@@ -32,9 +33,7 @@ class LMLApp extends LitElement {
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
 
         this.statusProvider.setValue({
-            //modelEditor: 'text'
             modelEditor: 'image'
-            //modelEditor: 'number'
         });
 
         /**
@@ -66,7 +65,11 @@ class LMLApp extends LitElement {
     }
 
     loadingTemplate() {
-        return html`${msg("Loading ...")}`;
+        return html`
+        <div class="container is-fluid mb-2">
+            <loading-message></loading-message>
+        </div>
+        `;
     }
 
     initMessageTemplate() {
