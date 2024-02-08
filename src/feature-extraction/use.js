@@ -20,6 +20,7 @@ export function encode(sentences) {
     return use.load()
         .then(model => {
             console.log("ADIOS");
+            
             return model.embed(sentences);
         });
 }
