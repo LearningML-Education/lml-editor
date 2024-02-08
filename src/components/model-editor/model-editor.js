@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext } from '../contexts.js';
+import { statusContext } from '../../contexts.js';
 import './model-train.js';
 import './model-learn.js';
 import './model-eval.js';

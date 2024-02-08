@@ -3,7 +3,7 @@ import { getLocale, setLocaleFromUrl } from './localization.js';
 import { allLocales } from './locale-codes.js';
 import { updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext } from '../contexts';
+import { configContext } from '../../contexts';
 
 const localeNames = {
   en: 'English',

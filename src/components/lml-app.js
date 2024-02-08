@@ -1,7 +1,7 @@
-import configLoader from './config-loader';
+import configLoader from '../config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
-import { configContext, statusContext, datasetContext } from './contexts';
+import { configContext, statusContext, datasetContext, featuresContext } from '../contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
@@ -31,16 +31,28 @@ class LMLApp extends LitElement {
         this.configProvider = new ContextProvider(this, { context: configContext });
         this.statusProvider = new ContextProvider(this, { context: statusContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
+        this.featuresProvider = new ContextProvider(this, { context: featuresContext });
 
         this.statusProvider.setValue({
-            modelEditor: 'image'
+            modelEditor: 'text'
         });
 
         /**
          * este proveedor contendrá un mapa en el que las claves son el nombre de las
          * clases y los valores asociados serán arrays de textos, imágenes o números.
          */
-        this.datasetProvider.setValue(new Map());
+
+        let m =  new Map();
+        m.set("enciende", new Set(["enciende la luz", "dale a la luz"]));
+        m.set("apaga", new Set(["apaga la luz", "quita la luz"]));
+        this.datasetProvider.setValue(m);
+
+        /**
+         * este proveedor contendrá un mapa en el que las claves son el nombre de las
+         * clases y los valores asociados serán Tensores con las características extraidas de
+         * textos imágenes o números.
+         */
+        this.featuresProvider.setValue(new Map());
 
         updateWhenLocaleChanges(this);
 

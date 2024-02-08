@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { datasetContext, statusContext } from '../contexts.js';
+import { datasetContext, statusContext } from '../../contexts.js';
 import './dataset-manager.js';
 
 

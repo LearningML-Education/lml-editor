@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext } from '../contexts';
+import { configContext } from '../../contexts';
 import './language-menu';
 import './file-menu';
 import './input-menu';

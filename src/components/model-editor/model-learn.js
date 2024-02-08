@@ -1,11 +1,16 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext } from '../contexts.js';
+import { statusContext, datasetContext, featuresContext } from '../../contexts.js';
+import { encode } from '../../feature-extraction/use.js';
+
 
 export class ModelLearn extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
+  _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
+
 
   constructor() {
     super();
@@ -36,12 +41,29 @@ export class ModelLearn extends LitElement {
     return "";
   }
 
+  learn() {
+    let promises = [];
+    this._datasetConsumer.value.forEach((element, key) => {
+      promises.push(encode(Array.from(element)).then(features => {
+        this._featuresConsumer.value.set(key, features);
+      }));
+    });
+
+    Promise.all(promises).then(() => {
+      console.log(this._featuresConsumer.value);
+    });
+
+  }
+
   render() {
 
     return html`
     <h4 class="title is-4">${msg('Learn')}</h4>
     <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
-    <button class="button is-fullwidth is-primary"><span class="icon"><i class="fa-solid fa-gears"></i></span><span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span></button>
+    <button @click=${this.learn} class="button is-fullwidth is-primary is-loading">
+      <span class="icon"><i class="fa-solid fa-gears"></i></span>
+      <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
+    </button>
     `
   }
 

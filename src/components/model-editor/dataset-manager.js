@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext, datasetContext } from '../contexts.js';
+import { statusContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 
