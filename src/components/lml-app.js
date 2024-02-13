@@ -1,7 +1,13 @@
 import configLoader from '../config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
-import { configContext, statusContext, datasetContext, featuresContext } from '../contexts';
+import { 
+    configContext,
+    statusContext, 
+    datasetContext, 
+    featuresContext,
+    textEmbeddingContext 
+} from '../contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
@@ -10,6 +16,7 @@ import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
+import { loadUSE } from '../feature-extraction/textEmbbedding';
 
 
 // Configuration is loaded
@@ -32,9 +39,15 @@ class LMLApp extends LitElement {
         this.statusProvider = new ContextProvider(this, { context: statusContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
         this.featuresProvider = new ContextProvider(this, { context: featuresContext });
+        this.textEmbeddingContext = new ContextProvider(this, { context: textEmbeddingContext });
+
 
         this.statusProvider.setValue({
             modelEditor: 'text'
+        });
+
+        this.textEmbeddingContext.setValue({
+            use: loadUSE()
         });
 
         /**

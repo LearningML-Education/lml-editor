@@ -1,9 +1,14 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext, datasetContext, featuresContext } from '../../contexts.js';
+import { 
+  statusContext, 
+  datasetContext, 
+  featuresContext,
+  textEmbeddingContext
+} from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { encode } from '../../feature-extraction/use.js';
+import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
 
 
 export class ModelLearn extends LitElement {
@@ -11,6 +16,8 @@ export class ModelLearn extends LitElement {
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
+  _textEmbeddingConsumer = new ContextConsumer(this, { context: textEmbeddingContext });
+
 
   static properties = {
     buttonLoading: { type: Boolean }
@@ -48,9 +55,10 @@ export class ModelLearn extends LitElement {
 
   learn() {
     let promises = [];
+    let useEncoder = this._textEmbeddingConsumer.value.use
     this.buttonLoading = true;
     this._datasetConsumer.value.forEach((element, key) => {
-      promises.push(encode(Array.from(element)).then(features => {
+      promises.push(encodeSentence(useEncoder, Array.from(element)).then(features => {
         this._featuresConsumer.value.set(key, features);
       }));
     });
