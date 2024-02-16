@@ -9,7 +9,7 @@ import {
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
-import { buildModel, train, getFeatureAndNumOfClasses, getInputAndOutputTensors } from '../../algorithms/sequential.js';
+import { train } from '../../algorithms/sequential.js';
 
 
 export class ModelLearn extends LitElement {
@@ -66,8 +66,6 @@ export class ModelLearn extends LitElement {
 
     Promise.all(promises).then(() => {
       console.log(this._featuresConsumer.value);
-      // console.log(getInputAndOutputDim(this._featuresConsumer.value));
-      // console.log(getInputAndOutputTensors(this._featuresConsumer.value));
       train(this._featuresConsumer.value).then(m => {
         console.log(m);
       });
@@ -78,7 +76,6 @@ export class ModelLearn extends LitElement {
 
   render() {
     return html`
-    <h1>${this.buttonLoading}<h1>
     <h4 class="title is-4">${msg('Learn')}</h4>
     <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
     <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>

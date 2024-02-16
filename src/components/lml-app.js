@@ -57,7 +57,7 @@ class LMLApp extends LitElement {
 
         let m =  new Map();
         m.set("enciende", new Set(["enciende la luz", "dale a la luz"]));
-        m.set("apaga", new Set(["apaga la luz", "quita la luz"]));
+        m.set("apaga", new Set(["apaga la luz", "quita la luz", "apaga la lámpara"]));
         this.datasetProvider.setValue(m);
 
         /**

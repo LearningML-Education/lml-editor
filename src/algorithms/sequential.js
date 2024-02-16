@@ -51,18 +51,18 @@ export function getInputAndOutputTensors(features) {
 
     let i = 0;
     let numOfEntries = 0;
-    let inputTensorDim = features.get(Array.from(features.keys())[0]).shape[1];
     for (let label of features.keys()) {
         let t = features.get(label);
-        featuresArray.push(t);
+        let f = tf.unstack(t);
         for (let n = 0; n < t.shape[0]; n++) {
             labelsArray.push(tf.oneHot(i, features.size));
+            featuresArray.push(f[i]);
         }
         numOfEntries += t.shape[0];
         i++;
     }
 
-    let inputTensor = tf.stack(featuresArray).reshape([numOfEntries, inputTensorDim]);
+    let inputTensor = tf.stack(featuresArray);
     let outputTensor = tf.stack(labelsArray);
 
     return { inputTensor, outputTensor };
@@ -138,7 +138,7 @@ export function train(features, validationData) {
 
     //Train for 5 epochs with batch size of 32.
     return model.fit(tensors.inputTensor, tensors.outputTensor, {
-        epochs: 5,
+        epochs: 10,
         batchSize: 8,
         callbacks: { onBatchEnd },
         shuffle: true,
