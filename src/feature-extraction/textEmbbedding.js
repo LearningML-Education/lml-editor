@@ -7,23 +7,6 @@
 import * as tf from '@tensorflow/tfjs';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 
-/**
- * 
- * @param {String[]} sentences 
- */
-export function encode(sentences) {
-    console.log(tf);
-    console.log(use);
-
-    console.log("HOLA");
-
-    return use.load()
-        .then(model => {
-            console.log("ADIOS");
-            
-            return model.embed(sentences);
-        });
-}
 
 export function loadUSE(){
     return use.load();

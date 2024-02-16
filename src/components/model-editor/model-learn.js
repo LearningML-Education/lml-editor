@@ -9,6 +9,7 @@ import {
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
+import { buildModel, train, getFeatureAndNumOfClasses, getInputAndOutputTensors } from '../../algorithms/sequential.js';
 
 
 export class ModelLearn extends LitElement {
@@ -65,6 +66,11 @@ export class ModelLearn extends LitElement {
 
     Promise.all(promises).then(() => {
       console.log(this._featuresConsumer.value);
+      // console.log(getInputAndOutputDim(this._featuresConsumer.value));
+      // console.log(getInputAndOutputTensors(this._featuresConsumer.value));
+      train(this._featuresConsumer.value).then(m => {
+        console.log(m);
+      });
       this.buttonLoading = false;
     });
     

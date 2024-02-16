@@ -4,7 +4,7 @@ import {sourceLocale, targetLocales} from './locale-codes.js';
 export const {getLocale, setLocale} = configureLocalization({
   sourceLocale,
   targetLocales,
-  loadLocale: (locale) => import(`../i18n/${locale}.js`),
+  loadLocale: (locale) => import(`../../i18n/${locale}.js`),
 });
 
 export const setLocaleFromUrl = async () => {
