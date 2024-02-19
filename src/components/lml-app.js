@@ -1,12 +1,12 @@
 import configLoader from '../config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
-import { 
+import {
     configContext,
-    statusContext, 
-    datasetContext, 
+    statusContext,
+    datasetContext,
     featuresContext,
-    textEmbeddingContext 
+    textEmbeddingContext
 } from '../contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
@@ -43,7 +43,8 @@ class LMLApp extends LitElement {
 
 
         this.statusProvider.setValue({
-            modelEditor: 'text'
+            modelEditor: 'text',
+            modelName: "Untitled"
         });
 
         this.textEmbeddingContext.setValue({
@@ -55,7 +56,7 @@ class LMLApp extends LitElement {
          * clases y los valores asociados serán arrays de textos, imágenes o números.
          */
 
-        let m =  new Map();
+        let m = new Map();
         m.set("enciende", new Set(["enciende la luz", "dale a la luz"]));
         m.set("apaga", new Set(["apaga la luz", "quita la luz", "apaga la lámpara"]));
         this.datasetProvider.setValue(m);

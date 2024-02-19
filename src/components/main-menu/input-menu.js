@@ -1,23 +1,33 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext } from '../../contexts.js';
+import { configContext, statusContext } from '../../contexts.js';
 
 
 export class InputMenu extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext });
+
+  static properties = {
+    name: { type:String }
+  }
 
   constructor() {
     super();
     updateWhenLocaleChanges(this);
   }
 
+  changeFileName(e){
+    console.log(e);
+    this._statusConsumer.value.modelName = e.target.value;
+  }
+
   render() {
 
     return html`
     <div class="navbar-item">
-      <input class="input" type="text" placeholder="${msg("Untitled")}">
+      <input class="input" @change=${this.changeFileName} type="text" .value="${msg(this._statusConsumer.value.modelName)}">
     </div>
         `
   }
