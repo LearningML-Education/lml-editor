@@ -8,7 +8,7 @@ import { saveAs } from 'file-saver-es';
 export class FileMenu extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext });
-  _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true  });
   _statusConsumer = new ContextConsumer(this, { context: statusContext });
 
   static properties = {
@@ -21,6 +21,8 @@ export class FileMenu extends LitElement {
   }
 
   saveDataset(e) {
+
+    console.log(this._datasetConsumer.value);
 
     let jsonDataset = {};
     this._datasetConsumer.value.forEach((value, key) => {
@@ -43,7 +45,10 @@ export class FileMenu extends LitElement {
   loadDataset(file) {
     let inputData;
 
-    this._datasetConsumer.value = new Map();
+    // Eliminamos todos los datos del dataset
+    for(let k of this._datasetConsumer.value.keys()){
+      this._datasetConsumer.value.delete(k);
+    }
 
     try {
       inputData = JSON.parse(file);

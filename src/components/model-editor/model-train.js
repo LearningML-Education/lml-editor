@@ -8,7 +8,7 @@ import './dataset-manager.js';
 
 export class ModelTrain extends LitElement {
 
-  _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true  });
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
 
@@ -23,6 +23,14 @@ export class ModelTrain extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    // este set interval asegura que cuando se hace una carga de datos 
+    // desde el menú `upload from your computer` los datos son mostrados
+    // pues se hace un `requestUpdate`. No me gusta la solución, pero no
+    // encuentro la manera de notificar desde el componente `file-menu` a 
+    // este componente que debe hacer un `request update` cuando se ha cargado
+    // un fichero de datos. Un evento generado en `file-menu` no llega a este 
+    // componente, pues este componente no es padre de `file-menu`. 
+    setInterval(() => this.requestUpdate(), 1000);
     this.addEventListener('remove-label', e => {
       this.requestUpdate();
     });
@@ -63,6 +71,8 @@ export class ModelTrain extends LitElement {
   render() {
 
     return html`
+
+    <button @click=${function(){this.requestUpdate();}}>model train-kk</button>
 
     <h4 class="title is-4">${msg('Training')}</h4>
     <h6 class="subtitle is-6">${this.trainingText(this._statusConsumer.value.modelEditor)}</h6>

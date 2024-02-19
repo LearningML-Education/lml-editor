@@ -9,7 +9,7 @@ export class DatasetManager extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
-  
+
   static properties = {
     editinglabelName: { type: Boolean },
     labelName: { type: String },
@@ -19,6 +19,7 @@ export class DatasetManager extends LitElement {
     editText: { type: Boolean },
     addTextsWindowOpened: { type: Boolean },
     cameraOpened: { type: Boolean },
+    dataset: { type: Set }
   };
 
   constructor() {
@@ -80,31 +81,31 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = true;
   }
 
-  isValidNumberEntry(entry){
+  isValidNumberEntry(entry) {
     let items = this.fromCSV2Array(entry);
-    
+
     // primero miramos que todas los items separados por coma sean números
     if (items.some(item => isNaN(item))) return false;
 
     // después comprobamos si this.dimension es nulo, lo cual significa que es
     // la primera entrada y será la que define la dimensión de los vectores
-    if(this._statusConsumer.value.dimension == undefined){
+    if (this._statusConsumer.value.dimension == undefined) {
       this._statusConsumer.value.dimension = items.length;
     }
 
     // por último comprobamos que la dimensión del array items coincida con this.dimension
-    if(this._statusConsumer.value.dimension != items.length) return false;
+    if (this._statusConsumer.value.dimension != items.length) return false;
 
     // si hemos llegado hasta aquí, todo está bien
 
     return true;
-    
+
   }
 
   addTextToDataset(texts) {
     texts.split("\n").forEach(entry => {
       if (entry == "") return;
-      if (this._statusConsumer.value.modelEditor == 'number' && !this.isValidNumberEntry(entry)){
+      if (this._statusConsumer.value.modelEditor == 'number' && !this.isValidNumberEntry(entry)) {
         alert(msg("Invalid entry"));
         return;
       }
@@ -474,7 +475,7 @@ export class DatasetManager extends LitElement {
     `;
   }
 
-  fromCSV2Array(csv){
+  fromCSV2Array(csv) {
     return csv.split(",").map(v => parseFloat(v));
   }
 

@@ -44,7 +44,7 @@ export class ModelEditor extends LitElement {
     return html`
 <div class="columns">
   <div class="column">
-    <model-train></model-train>
+    <model-train id="model-train"></model-train>
   </div>
 
   <div class="column">

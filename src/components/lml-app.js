@@ -82,6 +82,10 @@ class LMLApp extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
+        this.addEventListener("dataset-loaded", e => {
+            this.requestUpdate();
+        });
+
         this.addEventListener("load-model-editor", e => {
             this.page = 'model-editor';
             this.statusProvider.setValue({
@@ -144,11 +148,19 @@ class LMLApp extends LitElement {
         `;
     }
 
+    kaka() {
+        console.log(this.datasetProvider.value);
+        console.log(this.statusProvider.value);
+        console.log(this.childNodes);
+    }
+
     render() {
         if (this.loading) {
             return this.loadingTemplate();
         } else {
             return html`
+                <button @click=${this.kaka}>lml app</button>
+
             ${this.configProvider.value.initMessage.show
                     ? this.initMessageTemplate()
                     : html``
