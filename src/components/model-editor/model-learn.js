@@ -21,7 +21,7 @@ export class ModelLearn extends LitElement {
 
 
   static properties = {
-    buttonLoading: { type: Boolean }
+    buttonLoading: { type: Boolean },
   }
 
   constructor() {
@@ -76,6 +76,16 @@ export class ModelLearn extends LitElement {
 
   render() {
     return html`
+
+    <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <p class="image is-9by4">
+          <img src="/images/robot.gif">
+        </p>
+      </div>
+    </div>
+
     <h4 class="title is-4">${msg('Learn')}</h4>
     <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
     <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>
