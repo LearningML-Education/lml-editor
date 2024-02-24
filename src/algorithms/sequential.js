@@ -149,3 +149,16 @@ export function train(features, validationData) {
         return { model, info }
     });
 }
+
+export function classify(inputTensor, model){
+    const prediction = model.predict(inputTensor);
+    input_tensor.dispose();
+    const predictions = prediction.dataSync();
+    const arr_predictions = Array.from(predictions);
+    let results = [];
+    for (let i = 0; i < arr_predictions.length; i++) {
+      results.push([labels[i], arr_predictions[i]]);
+    }
+    results.sort((a, b) => b[1] - a[1]);
+    return new Promise((resolve, reject) => { resolve(results) });
+}
