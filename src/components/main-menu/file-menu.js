@@ -56,23 +56,17 @@ export class FileMenu extends LitElement {
         this._statusConsumer.value.modelEditor = inputData.type;
         let data = inputData.data[key];
         for (let d of data) {
-          if (this._statusConsumer.value.modelEditor == 'text') {
-            if (!this._datasetConsumer.value.has(key)){
-              this._datasetConsumer.value.set(key, new Set());
-            }
-            this._datasetConsumer.value.get(key).add(d);
-          }
+          if (!this._datasetConsumer.value.has(key)){
+            this._datasetConsumer.value.set(key, new Set());
+          }                   
           if (this._statusConsumer.value.modelEditor == 'numerical') {
             let _d = this.truncateNumbers(d);
             this._datasetConsumer.value.set(key, d);
             this.featureDimension = d.split(",").length;
             this.featureDimensionLocked = true;
           }
-          if (this._statusConsumer.value.modelEditor == 'image') {
-            let i = new Image();
-            i.src = d;
-            this._datasetConsumer.value.set(key, d);
-          }
+          
+          this._datasetConsumer.value.get(key).add(d);
         }
       });
     }
