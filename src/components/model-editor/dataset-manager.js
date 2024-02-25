@@ -246,13 +246,13 @@ export class DatasetManager extends LitElement {
   }
 
   async openCamera() {
-    let video = this.querySelector("#video");
+    this.video = this.querySelector("#video");
     try {
       // Obtener acceso a la webcam
       this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
       // Mostrar el flujo de video en el elemento video
-      video.srcObject = this.stream;
+      this.video.srcObject = this.stream;
       this.cameraOpened = true;
     } catch (error) {
       console.error('Error al iniciar la webcam:', error);
@@ -270,12 +270,12 @@ export class DatasetManager extends LitElement {
   takePictureFromCamera() {
     if (this.stream) {
       const canvas = document.createElement('canvas');
-      canvas.width = video.width;
-      canvas.height = video.height;
+      canvas.width = this.video.width;
+      canvas.height = this.video.height;
       const context = canvas.getContext('2d');
 
       // Dibujar el fotograma actual en el lienzo
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      context.drawImage(this.video, 0, 0, canvas.width, canvas.height);
 
       // Obtener el contenido del lienzo como datos base64
       const base64String = canvas.toDataURL('image/png');

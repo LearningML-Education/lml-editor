@@ -35,8 +35,8 @@ class LMLApp extends LitElement {
         super();
 
         this.loading = true;
-        //this.page = 'home';
-        this.page = 'model-editor';
+        this.page = 'home';
+        //this.page = 'model-editor';
         this.configProvider = new ContextProvider(this, { context: configContext });
         this.statusProvider = new ContextProvider(this, { context: statusContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
@@ -59,11 +59,7 @@ class LMLApp extends LitElement {
          * este proveedor contendrá un mapa en el que las claves son el nombre de las
          * clases y los valores asociados serán arrays de textos, imágenes o números.
          */
-
-        let m = new Map();
-        m.set("enciende", new Set(["enciende la luz", "dale a la luz"]));
-        m.set("apaga", new Set(["apaga la luz", "quita la luz", "apaga la lámpara"]));
-        this.datasetProvider.setValue(m);
+        this.datasetProvider.setValue(new Map());
 
         /**
          * este proveedor contendrá un mapa en el que las claves son el nombre de las

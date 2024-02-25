@@ -72,8 +72,6 @@ export class ModelTrain extends LitElement {
 
     return html`
 
-    <button @click=${function(){this.requestUpdate();}}>model train-kk</button>
-
     <h4 class="title is-4">${msg('Training')}</h4>
     <h6 class="subtitle is-6">${this.trainingText(this._statusConsumer.value.modelEditor)}</h6>
     <div class="field has-addons">
