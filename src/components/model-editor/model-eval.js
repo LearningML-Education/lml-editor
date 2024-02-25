@@ -1,13 +1,13 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { modelContext, statusContext, textEmbeddingContext } from '../../contexts.js';
+import { modelContext, statusContext, encodingContext } from '../../contexts.js';
 import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
 
 export class ModelEval extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext });
-  _textEmbeddingConsumer = new ContextConsumer(this, { context: textEmbeddingContext });
+  _encodingConsumer = new ContextConsumer(this, { context: encodingContext });
   _modelConsumer = new ContextConsumer(this, { context: modelContext });
 
 
@@ -18,7 +18,7 @@ export class ModelEval extends LitElement {
 
   checkInput(e){
     let textToEncode = this.querySelector("#textInput").value;
-    let useEncoder = this._textEmbeddingConsumer.value.use;
+    let useEncoder = this._encodingConsumer.value.use;
     encodeSentence(useEncoder, [textToEncode]).then(features => {
       console.log(features);
       return this._modelConsumer.value.classify(features);

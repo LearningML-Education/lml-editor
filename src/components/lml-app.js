@@ -6,7 +6,7 @@ import {
     statusContext,
     datasetContext,
     featuresContext,
-    textEmbeddingContext,
+    encodingContext,
     modelContext
 } from '../contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
@@ -42,7 +42,7 @@ class LMLApp extends LitElement {
         this.statusProvider = new ContextProvider(this, { context: statusContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
         this.featuresProvider = new ContextProvider(this, { context: featuresContext });
-        this.textEmbeddingContext = new ContextProvider(this, { context: textEmbeddingContext });
+        this.encodingContext = new ContextProvider(this, { context: encodingContext });
         this.modelContext = new ContextProvider(this, { context: modelContext });
 
         this.statusProvider.setValue({
@@ -50,7 +50,7 @@ class LMLApp extends LitElement {
             modelName: "Untitled"
         });
 
-        this.textEmbeddingContext.setValue({
+        this.encodingContext.setValue({
             use: loadUSE()
         });
 

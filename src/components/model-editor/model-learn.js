@@ -5,7 +5,7 @@ import {
   statusContext, 
   datasetContext, 
   featuresContext,
-  textEmbeddingContext,
+  encodingContext,
   modelContext
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -16,7 +16,7 @@ export class ModelLearn extends LitElement {
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
-  _textEmbeddingConsumer = new ContextConsumer(this, { context: textEmbeddingContext });
+  _encoderComsumer = new ContextConsumer(this, { context: encodingContext });
   _modelConsumer = new ContextConsumer(this, {context: modelContext});
 
 
@@ -56,10 +56,10 @@ export class ModelLearn extends LitElement {
 
   learn() {
     let promises = [];
-    let useEncoder = this._textEmbeddingConsumer.value.use
+    let encoder = this._encoderComsumer.value.use
     this.buttonLoading = true;
     this._datasetConsumer.value.forEach((element, key) => {
-      promises.push(encodeSentence(useEncoder, Array.from(element)).then(features => {
+      promises.push(encodeSentence(encoder, Array.from(element)).then(features => {
         this._featuresConsumer.value.set(key, features);
       }));
     });
