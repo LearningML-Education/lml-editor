@@ -9,7 +9,7 @@ import {
   modelContext
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
+import { encode } from '../../feature-extraction/encoding.js';
 
 export class ModelLearn extends LitElement {
 
@@ -56,10 +56,10 @@ export class ModelLearn extends LitElement {
 
   learn() {
     let promises = [];
-    let encoder = this._encoderComsumer.value.use
+    let encoder = this._encoderComsumer.value[this._statusConsumer.value.modelEditor]
     this.buttonLoading = true;
     this._datasetConsumer.value.forEach((element, key) => {
-      promises.push(encodeSentence(encoder, Array.from(element)).then(features => {
+      promises.push(encode(encoder, Array.from(element)).then(features => {
         this._featuresConsumer.value.set(key, features);
       }));
     });

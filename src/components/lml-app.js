@@ -17,7 +17,7 @@ import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
-import { loadUSE } from '../feature-extraction/textEmbbedding';
+import { loadUSE } from '../feature-extraction/encoding';
 import { MobilenetService } from '../feature-extraction/mobilenet';
 import { LMLSequential } from '../algorithms/sequential';
 
@@ -50,10 +50,6 @@ class LMLApp extends LitElement {
             modelName: "Untitled"
         });
 
-        this.encodingContext.setValue({
-            use: loadUSE()
-        });
-
         this.modelContext.setValue(new LMLSequential);
 
         /**
@@ -79,8 +75,11 @@ class LMLApp extends LitElement {
 
             let mobilenet = new MobilenetService(config.urlMobilenetModels);
 
-            mobilenet.get().then(v => {
-                console.log(v);
+
+            this.encodingContext.setValue({
+                text: loadUSE(),
+                image: mobilenet.get()
+    
             });
 
         });

@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, statusContext, encodingContext } from '../../contexts.js';
-import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
+import { encode } from '../../feature-extraction/encoding.js';
 
 export class ModelEval extends LitElement {
 
@@ -18,8 +18,8 @@ export class ModelEval extends LitElement {
 
   checkInput(e){
     let textToEncode = this.querySelector("#textInput").value;
-    let useEncoder = this._encodingConsumer.value.use;
-    encodeSentence(useEncoder, [textToEncode]).then(features => {
+    let useEncoder = this._encodingConsumer.value.text;
+    encode(useEncoder, [textToEncode]).then(features => {
       console.log(features);
       return this._modelConsumer.value.classify(features);
     }).then(results => {
