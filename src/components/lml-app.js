@@ -18,6 +18,7 @@ import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
 import { loadUSE } from '../feature-extraction/textEmbbedding';
+import { MobilenetService } from '../feature-extraction/mobilenet';
 import { LMLSequential } from '../algorithms/sequential';
 
 
@@ -75,6 +76,12 @@ class LMLApp extends LitElement {
                 this.loading = false;
                 this.configProvider.setValue(config);
             }, 1000)
+
+            let mobilenet = new MobilenetService(config.urlMobilenetModels);
+
+            mobilenet.get().then(v => {
+                console.log(v);
+            });
 
         });
     }

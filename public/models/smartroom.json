@@ -1,0 +1,56 @@
+{
+    "encender_lampara": [
+        "que me tocan el culo ",
+        "enciende la luz",
+        "esto está muy oscuro",
+        "qué oscuridad",
+        "dale a la luz",
+        "enciende la lámpara",
+        "se está poniendo el sol",
+        "no veo nada",
+        "necesito luz",
+        "no hay suficiente luz"
+    ],
+    "apagar_lampara": [
+        "apaga la luz",
+        "apaga la lámpara",
+        "hay demasiada luz",
+        "menos luz",
+        "desconecta la luz",
+        "quiero estar en la oscuridad",
+        "está demasiado claro",
+        "mucha claridad",
+        "me gusta la oscuridad",
+        "prefiero la oscuridad",
+        "veo muy bien"
+    ],
+    "encender_ventilador": [
+        "qué sofocón",
+        "enciende el ventilador",
+        "hace mucho calor",
+        "demasiado calor",
+        "pon en marcha el ventilador",
+        "qué calor",
+        "conecta el ventilador",
+        "me afixio",
+        "me derrito",
+        "dale caña al ventilador",
+        "que bochorno",
+        "me abraso",
+        "que calor tan sofocante"
+    ],
+    "apagar_ventilador": [
+        "estoy arrecío",
+        "qué frío",
+        "apaga el ventilador",
+        "hace mucho viento",
+        "hace mucho frío",
+        "demasiado frío",
+        "quita el ventilador",
+        "me congelo",
+        "me voy a resfriar",
+        "hay mucha corriente",
+        "tengo la carne de gallina",
+        "me estoy quedando pajarito"
+    ]
+}

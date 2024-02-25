@@ -4,5 +4,6 @@
         "show": true,
         "title": "Atención",
         "message": "LearningML necesita tu ayuda."
-    }
+    },
+    "urlMobilenetModels": "http://localhost:5173"
 }
