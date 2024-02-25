@@ -1,14 +1,14 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext, textEmbeddingContext } from '../../contexts.js';
+import { modelContext, statusContext, textEmbeddingContext } from '../../contexts.js';
 import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
-import { classify } from '../../algorithms/sequential.js';
 
 export class ModelEval extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
-  _textEmbeddingConsumer = new ContextConsumer(this, { context: textEmbeddingContext, subscribe: true });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext });
+  _textEmbeddingConsumer = new ContextConsumer(this, { context: textEmbeddingContext });
+  _modelConsumer = new ContextConsumer(this, { context: modelContext });
 
 
   constructor() {
@@ -21,7 +21,9 @@ export class ModelEval extends LitElement {
     let useEncoder = this._textEmbeddingConsumer.value.use;
     encodeSentence(useEncoder, [textToEncode]).then(features => {
       console.log(features);
-      classify()
+      return this._modelConsumer.value.classify(features);
+    }).then(results => {
+      console.log(results);
     })
     
   }

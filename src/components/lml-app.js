@@ -6,7 +6,8 @@ import {
     statusContext,
     datasetContext,
     featuresContext,
-    textEmbeddingContext
+    textEmbeddingContext,
+    modelContext
 } from '../contexts';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
@@ -17,6 +18,7 @@ import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
 import { loadUSE } from '../feature-extraction/textEmbbedding';
+import { LMLSequential } from '../algorithms/sequential';
 
 
 // Configuration is loaded
@@ -40,7 +42,7 @@ class LMLApp extends LitElement {
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
         this.featuresProvider = new ContextProvider(this, { context: featuresContext });
         this.textEmbeddingContext = new ContextProvider(this, { context: textEmbeddingContext });
-
+        this.modelContext = new ContextProvider(this, { context: modelContext });
 
         this.statusProvider.setValue({
             modelEditor: 'text',
@@ -50,6 +52,8 @@ class LMLApp extends LitElement {
         this.textEmbeddingContext.setValue({
             use: loadUSE()
         });
+
+        this.modelContext.setValue(new LMLSequential);
 
         /**
          * este proveedor contendrá un mapa en el que las claves son el nombre de las

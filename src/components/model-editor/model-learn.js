@@ -5,12 +5,11 @@ import {
   statusContext, 
   datasetContext, 
   featuresContext,
-  textEmbeddingContext
+  textEmbeddingContext,
+  modelContext
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { encodeSentence } from '../../feature-extraction/textEmbbedding.js';
-import { train } from '../../algorithms/sequential.js';
-
 
 export class ModelLearn extends LitElement {
 
@@ -18,6 +17,7 @@ export class ModelLearn extends LitElement {
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
   _textEmbeddingConsumer = new ContextConsumer(this, { context: textEmbeddingContext });
+  _modelConsumer = new ContextConsumer(this, {context: modelContext});
 
 
   static properties = {
@@ -66,7 +66,7 @@ export class ModelLearn extends LitElement {
 
     Promise.all(promises).then(() => {
       console.log(this._featuresConsumer.value);
-      train(this._featuresConsumer.value).then(m => {
+      this._modelConsumer.value.train(this._featuresConsumer.value).then(m => {
         console.log(m);
       });
       this.buttonLoading = false;

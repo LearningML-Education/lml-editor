@@ -15,6 +15,12 @@ import * as tf from '@tensorflow/tfjs';
  *                                   la clase a la que corresponde el ejemplar asociado.
  */
 
+export class LMLSequential{
+
+constructor(){
+    this.model = null;
+    this.labels = [];
+}
 /**
  * Dado un Mapa con las características extraídas en el proceso de extracción de 
  * características del conjunto de datos, devuelve un objeto de tipo `Dimensiones`
@@ -26,7 +32,7 @@ import * as tf from '@tensorflow/tfjs';
  * @returns {Dimensiones} el primer elemento es la dimensión del vector de características 
  *                        y el segundo es el nº de clases
  */
-export function getFeatureAndNumOfClasses(features) {
+getFeatureAndNumOfClasses(features) {
     let featureDim = features.get(Array.from(features.keys())[0]).shape[1];
     let numOfClasses = features.size;
 
@@ -44,7 +50,7 @@ export function getFeatureAndNumOfClasses(features) {
  *                                            del proceso de extracción de características
  * @returns InOutTensors
  */
-export function getInputAndOutputTensors(features) {
+getInputAndOutputTensors(features) {
 
     let featuresArray = [];
     let labelsArray = [];
@@ -52,6 +58,7 @@ export function getInputAndOutputTensors(features) {
     let i = 0;
     let numOfEntries = 0;
     for (let label of features.keys()) {
+        this.labels.push(label);
         let t = features.get(label);
         let f = tf.unstack(t);
         for (let n = 0; n < t.shape[0]; n++) {
@@ -80,7 +87,7 @@ export function getInputAndOutputTensors(features) {
  * 
  * @returns {tf.Sequential}
  */
-export function buildModel(inputDim, outputDim, learningRate = 0.001) {
+buildModel(inputDim, outputDim, learningRate = 0.001) {
 
     let model = tf.sequential({
         layers: [
@@ -125,19 +132,21 @@ export function buildModel(inputDim, outputDim, learningRate = 0.001) {
  *                                        conjunto de validación y su clasificación (one-hot-encoded)
  * @returns {Promise()}
  */
-export function train(features, validationData) {
+train(features, validationData) {
 
-    let dims = getFeatureAndNumOfClasses(features);
-    let tensors = getInputAndOutputTensors(features);
+    let dims = this.getFeatureAndNumOfClasses(features);
+    let tensors = this.getInputAndOutputTensors(features);
 
-    let model = buildModel(dims.featureDim, dims.numOfClasses);
-
+    if(!this.model){
+        this.model = this.buildModel(dims.featureDim, dims.numOfClasses);
+    }
+    
     function onBatchEnd(batch, logs) {
         console.log('Accuracy', logs.acc);
     }
 
     //Train for 5 epochs with batch size of 32.
-    return model.fit(tensors.inputTensor, tensors.outputTensor, {
+    return this.model.fit(tensors.inputTensor, tensors.outputTensor, {
         epochs: 10,
         batchSize: 8,
         callbacks: { onBatchEnd },
@@ -145,20 +154,23 @@ export function train(features, validationData) {
         //validationSplit: this.params.neural_network.validationSplit/100,
         validationData: validationData
     }).then(info => {
-        model.save('indexeddb://lml-sequential-model');
-        return { model, info }
+        this.model.save('indexeddb://lml-sequential-model');
+        return { model: this.model, info }
     });
 }
 
-export function classify(inputTensor, model){
-    const prediction = model.predict(inputTensor);
-    input_tensor.dispose();
+classify(inputTensor){
+    const prediction = this.model.predict(inputTensor);
+    inputTensor.dispose();
     const predictions = prediction.dataSync();
+    console.log(predictions);
+    console.log(this.labels);
     const arr_predictions = Array.from(predictions);
     let results = [];
     for (let i = 0; i < arr_predictions.length; i++) {
-      results.push([labels[i], arr_predictions[i]]);
+      results.push([this.labels[i], arr_predictions[i]]);
     }
     results.sort((a, b) => b[1] - a[1]);
     return new Promise((resolve, reject) => { resolve(results) });
+}
 }
