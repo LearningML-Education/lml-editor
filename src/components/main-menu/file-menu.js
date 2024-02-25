@@ -81,10 +81,6 @@ export class FileMenu extends LitElement {
     }
 
     console.log(this._datasetConsumer.value);
-
-    this.dispatchEvent(new CustomEvent('dataset-loaded', {
-      bubbles: true
-    }));
   
   }
 

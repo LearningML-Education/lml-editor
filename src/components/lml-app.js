@@ -82,10 +82,6 @@ class LMLApp extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener("dataset-loaded", e => {
-            this.requestUpdate();
-        });
-
         this.addEventListener("load-model-editor", e => {
             this.page = 'model-editor';
             this.statusProvider.setValue({
