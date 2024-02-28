@@ -17,15 +17,15 @@ export class ModelEval extends LitElement {
   }
 
   checkInput(e){
+    let modelEditor = this._statusConsumer.value.modelEditor;
     let textToEncode = this.querySelector("#textInput").value;
     let useEncoder = this._encodingConsumer.value.text;
-    encode(useEncoder, [textToEncode]).then(features => {
+    encode(modelEditor, useEncoder, [textToEncode]).then(features => {
       console.log(features);
       return this._modelConsumer.value.classify(features);
     }).then(results => {
       console.log(results);
-    })
-    
+    })    
   }
 
   render() {

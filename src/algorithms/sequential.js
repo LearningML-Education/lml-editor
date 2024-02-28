@@ -147,8 +147,8 @@ train(features, validationData) {
 
     //Train for 5 epochs with batch size of 32.
     return this.model.fit(tensors.inputTensor, tensors.outputTensor, {
-        epochs: 10,
-        batchSize: 8,
+        epochs: 20,
+        batchSize: 10,
         callbacks: { onBatchEnd },
         shuffle: true,
         //validationSplit: this.params.neural_network.validationSplit/100,
