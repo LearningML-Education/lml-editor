@@ -16,7 +16,7 @@ export class ModelEval extends LitElement {
     updateWhenLocaleChanges(this);
   }
 
-  checkInput(e){
+  checkInput(e) {
     let modelEditor = this._statusConsumer.value.modelEditor;
     let textToEncode = this.querySelector("#textInput").value;
     let useEncoder = this._encodingConsumer.value.text;
@@ -25,13 +25,11 @@ export class ModelEval extends LitElement {
       return this._modelConsumer.value.classify(features);
     }).then(results => {
       console.log(results);
-    })    
+    })
   }
 
-  render() {
-
+  templateTextEval() {
     return html`
-    <h4 class="title is-4">${msg('Try')}</h4>
     <h6 class="subtitle is-6">${msg("Introduces new terms and checks they are correctly classified ")}</h6>
     <textarea id="textInput" class="textarea"></textarea>
     
@@ -47,8 +45,59 @@ export class ModelEval extends LitElement {
         </button>
       </p>
       
-    </div>
+    </div>`;
+  }
+
+  templateImageEval() {
+    return html`
+    <h6 class="subtitle is-6">${msg("Introduces new images and checks they are correctly classified")}</h6>
     
+    <div class="field mt-2 is-grouped is-justify-content-center">
+      <p class="control">
+        <button @click=${this.uploadImage} class="button">
+            <span class="icon">
+              <i class="fa-solid fa-images"></i>
+            </span>
+            <span>${msg("Upload image")}</span>
+        </button>        
+      </p>
+      <p class="control">
+         <button class="button">
+            <span class="icon">
+              <i class="fa-solid fa-camera"></i>
+            </span>
+            <span>${msg("Take from camera")}</span>
+        </button>
+      </p>
+      <p class="control">
+        <button class="button">          
+          <img src="/images/scratch_icon.svg">          
+        </button>
+      </p>
+      
+    </div>`;
+  }
+
+  templateNumberEval(){
+    return html`< h2 > NÚMERO</h2 > `
+  }
+
+  templateFormEval(editorType) {
+    switch (editorType) {
+      case 'text':
+        return this.templateTextEval();
+      case 'image':
+        return this.templateImageEval();
+      case 'number':
+        return this.templateNumberEval();
+    }
+  }
+
+  render() {
+
+    return html`
+      <h4 class="title is-4" > ${ msg('Try') }</h4 >
+        ${ this.templateFormEval(this._statusConsumer.value.modelEditor) }
     `
   }
 
