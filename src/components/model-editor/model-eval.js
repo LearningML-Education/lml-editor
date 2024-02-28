@@ -12,12 +12,14 @@ export class ModelEval extends LitElement {
   _modelConsumer = new ContextConsumer(this, { context: modelContext });
 
   static properties = {
-    imageSrc: { type: String }
+    imageSrc: { type: String },
+    cameraOpened: { type: Boolean },
   }
 
   constructor() {
     super();
     this.imageSrc = null;
+    this.cameraOpened = false;
     updateWhenLocaleChanges(this);
   }
 
@@ -33,16 +35,53 @@ export class ModelEval extends LitElement {
     })
   }
 
-  openCamera() {
-
-  }
-
   _uploadImage() {
     uploadImages(false).then(filesB64 => {
       console.log(filesB64);
       this.imageSrc = filesB64[0];
       this.requestUpdate();
     });
+  }
+
+  openCamera() {
+    this.video = this.querySelector("#video");
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      this.stream = stream;
+      this.video.srcObject = stream;
+      this.cameraOpened = true;
+    }).catch(e => {
+      console.error('Error al iniciar la webcam:', e);
+      window.alert(msg("Can't init camera. Are you using it in another application?"));
+    });
+  }
+
+  closeCamera() {
+    this.cameraOpened = false;
+    this.stream.getTracks().forEach(track => {
+      track.stop();
+    })
+    this.stream = null;
+  }
+
+  takePictureFromCamera() {
+    this.cameraOpened = true;
+
+    if (this.stream) {
+      const canvas = document.createElement('canvas');
+      canvas.width = this.video.width;
+      canvas.height = this.video.height;
+      const context = canvas.getContext('2d');
+
+      // Dibujar el fotograma actual en el lienzo
+      context.drawImage(this.video, 0, 0, canvas.width, canvas.height);
+
+      // Obtener el contenido del lienzo como datos base64
+      const base64String = canvas.toDataURL('image/png');
+      this.imageSrc = base64String;
+
+      this.closeCamera();
+      this.requestUpdate();
+    }
   }
 
   templateTextEval() {
@@ -67,35 +106,57 @@ export class ModelEval extends LitElement {
 
   templateImageEval() {
     return html`
-    <h6 class="subtitle is-6">${msg("Introduces new images and checks they are correctly classified")}</h6>
-    <div class="card-image has-text-centered">
-      <img class="is-justify-content-center" height="200" src=${this.imageSrc} />
-    </div>
+    <h6 class="subtitle is-6">${msg("Introduces new images and checks they are correctly classified")}</h6> 
     
-    <div class="field mt-2 is-grouped is-justify-content-center">
-      <p class="control">
-        <button @click=${this._uploadImage} class="button">
+    <div class="field is-grouped is-grouped-centered">
+    ${!this.cameraOpened
+      ? html`
+        <p class="control">      
+          <button @click=${this._uploadImage} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
-              <i class="fa-solid fa-images"></i>
+            <i class="fa-solid fa-images"></i>
             </span>
-            <span>${msg("Upload image")}</span>
-        </button>        
-      </p>
-      <p class="control">
-         <button @click=${this.openCamera} class="button">
+            <span>${msg('Upload images')}</span>
+          </button>
+        </p>
+        <p class="control"> 
+          <button @click=${this.openCamera} class="button mr-1 is-primary is-fullwidth">
+            <span class="icon">
+            <i class="fa-solid fa-camera"></i>
+            </span>
+            <span>${msg('Take from camera')}</span>
+          </button>
+        </p>`
+
+      : html`
+        <p class="control"> 
+          <button @click=${this.takePictureFromCamera} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
               <i class="fa-solid fa-camera"></i>
             </span>
-            <span>${msg("Take from camera")}</span>
-        </button>
-      </p>
-      <p class="control">
-        <button class="button">          
-          <img src="/images/scratch_icon.svg">          
-        </button>
-      </p>
-      
-    </div>`;
+            <span>${msg('Take picture')}</span>
+          </button>
+        </p>
+        <p class="control"> 
+          <button @click=${this.closeCamera} class="button mr-1 is-primary is-fullwidth">
+            <span class="icon">
+              <i class="fa-solid fa-xmark"></i>
+            </span>
+            <span>${msg('Close camera')}</span>
+          </button>
+        </p>`
+
+    }
+    </div>
+  
+    
+    <div class="card-image has-text-centered">
+      <video id="video" ?hidden=${!this.cameraOpened} width="320px" height="240px" autoplay></video>
+    </div>
+    <div class="card-image has-text-centered">
+      <img ?hidden=${this.cameraOpened} width="300px"  src=${this.imageSrc} />
+    </div>
+    `;
   }
 
   templateNumberEval() {

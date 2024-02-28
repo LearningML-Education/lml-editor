@@ -161,8 +161,6 @@ class LMLApp extends LitElement {
             return this.loadingTemplate();
         } else {
             return html`
-                <button @click=${this.kaka}>lml app</button>
-
             ${this.configProvider.value.initMessage.show
                     ? this.initMessageTemplate()
                     : html``
