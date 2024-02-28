@@ -228,7 +228,7 @@ export class DatasetManager extends LitElement {
       this.video.srcObject = stream;
       this.cameraOpened = true;
     }).catch(e => {
-      console.error('Error al iniciar la webcam:', error);
+      console.error('Error al iniciar la webcam:', e);
       window.alert(msg("Can't init camera. Are you using it in another application?"));
     });    
   }

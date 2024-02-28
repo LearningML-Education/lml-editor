@@ -3,6 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, statusContext, encodingContext } from '../../contexts.js';
 import { encode } from '../../feature-extraction/encoding.js';
+import { uploadImages } from './uploadImages.js';
 
 export class ModelEval extends LitElement {
 
@@ -10,9 +11,13 @@ export class ModelEval extends LitElement {
   _encodingConsumer = new ContextConsumer(this, { context: encodingContext });
   _modelConsumer = new ContextConsumer(this, { context: modelContext });
 
+  static properties = {
+    imageSrc: { type: String }
+  }
 
   constructor() {
     super();
+    this.imageSrc = null;
     updateWhenLocaleChanges(this);
   }
 
@@ -26,6 +31,18 @@ export class ModelEval extends LitElement {
     }).then(results => {
       console.log(results);
     })
+  }
+
+  openCamera() {
+
+  }
+
+  _uploadImage() {
+    uploadImages(false).then(filesB64 => {
+      console.log(filesB64);
+      this.imageSrc = filesB64[0];
+      this.requestUpdate();
+    });
   }
 
   templateTextEval() {
@@ -51,10 +68,13 @@ export class ModelEval extends LitElement {
   templateImageEval() {
     return html`
     <h6 class="subtitle is-6">${msg("Introduces new images and checks they are correctly classified")}</h6>
+    <div class="card-image has-text-centered">
+      <img class="is-justify-content-center" height="200" src=${this.imageSrc} />
+    </div>
     
     <div class="field mt-2 is-grouped is-justify-content-center">
       <p class="control">
-        <button @click=${this.uploadImage} class="button">
+        <button @click=${this._uploadImage} class="button">
             <span class="icon">
               <i class="fa-solid fa-images"></i>
             </span>
@@ -62,7 +82,7 @@ export class ModelEval extends LitElement {
         </button>        
       </p>
       <p class="control">
-         <button class="button">
+         <button @click=${this.openCamera} class="button">
             <span class="icon">
               <i class="fa-solid fa-camera"></i>
             </span>
@@ -78,7 +98,7 @@ export class ModelEval extends LitElement {
     </div>`;
   }
 
-  templateNumberEval(){
+  templateNumberEval() {
     return html`< h2 > NÚMERO</h2 > `
   }
 
@@ -96,8 +116,8 @@ export class ModelEval extends LitElement {
   render() {
 
     return html`
-      <h4 class="title is-4" > ${ msg('Try') }</h4 >
-        ${ this.templateFormEval(this._statusConsumer.value.modelEditor) }
+      <h4 class="title is-4" > ${msg('Try')}</h4 >
+        ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
     `
   }
 
