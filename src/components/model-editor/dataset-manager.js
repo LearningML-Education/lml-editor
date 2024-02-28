@@ -212,7 +212,7 @@ export class DatasetManager extends LitElement {
 
     uploadImages().then(filesB64 => {
       console.log(filesB64);
-      for(let f of filesB64){
+      for (let f of filesB64) {
         this.addImageToDataset(f);
       }
       console.log(this._datasetConsumer.value);
@@ -221,18 +221,16 @@ export class DatasetManager extends LitElement {
 
   }
 
-  async openCamera() {
+  openCamera() {
     this.video = this.querySelector("#video");
-    try {
-      // Obtener acceso a la webcam
-      this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
-
-      // Mostrar el flujo de video en el elemento video
-      this.video.srcObject = this.stream;
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      this.stream = stream;
+      this.video.srcObject = stream;
       this.cameraOpened = true;
-    } catch (error) {
+    }).catch(e => {
       console.error('Error al iniciar la webcam:', error);
-    }
+      window.alert(msg("Can't init camera. Are you using it in another application?"));
+    });    
   }
 
   closeCamera() {
