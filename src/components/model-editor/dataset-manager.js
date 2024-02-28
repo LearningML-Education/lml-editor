@@ -3,6 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { statusContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { uploadImages } from './uploadImages.js';
 
 
 export class DatasetManager extends LitElement {
@@ -207,40 +208,15 @@ export class DatasetManager extends LitElement {
     }
   }
 
-  async uploadImages() {
-    const pickerOpts = {
-      types: [
-        {
-          description: "Images",
-          accept: {
-            "images/*": [".jpg", ".png"],
-          },
-        },
-      ],
-      excludeAcceptAllOption: true,
-      multiple: true,
-    };
+  _uploadImages() {
 
-    const filesHandle = await window.showOpenFilePicker(pickerOpts);
-
-    filesHandle.forEach(async (fileHandle) => {
-      const file = await fileHandle.getFile();
-      const reader = new FileReader();
-
-      // Definir la función de devolución de llamada cuando la lectura se complete
-      let that = this;
-      reader.onload = function (e) {
-        console.log(e);
-        // Convertir el contenido a base64
-        //const base64String = e.target.result.split(',')[1];
-        const base64String = e.target.result
-        that.addImageToDataset(base64String);
-        console.log(that._datasetConsumer.value);
-        that.requestUpdate();
-      };
-
-      // Leer el contenido del archivo como base64
-      reader.readAsDataURL(file);
+    uploadImages().then(filesB64 => {
+      console.log(filesB64);
+      for(let f of filesB64){
+        this.addImageToDataset(f);
+      }
+      console.log(this._datasetConsumer.value);
+      this.requestUpdate();
     });
 
   }
@@ -338,7 +314,7 @@ export class DatasetManager extends LitElement {
       ${!this.cameraOpened
         ? html`
           <p class="control">      
-            <button @click=${this.uploadImages} class="button mr-1 is-primary is-fullwidth">
+            <button @click=${this._uploadImages} class="button mr-1 is-primary is-fullwidth">
               <span class="icon">
               <i class="fa-solid fa-images"></i>
               </span>
