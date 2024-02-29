@@ -66,7 +66,6 @@ export class ModelLearn extends LitElement {
     });
 
     Promise.all(promises).then(() => {
-      console.log(this._featuresConsumer.value);
       this._modelConsumer.value.train(this._featuresConsumer.value).then(m => {
         this.buttonLoading = false;
         console.log(m);

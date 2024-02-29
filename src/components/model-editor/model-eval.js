@@ -24,22 +24,29 @@ export class ModelEval extends LitElement {
   }
 
   checkInput(e) {
-    let modelEditor = this._statusConsumer.value.modelEditor;
     let textToEncode = this.querySelector("#textInput").value;
-    let useEncoder = this._encodingConsumer.value.text;
-    encode(modelEditor, useEncoder, [textToEncode]).then(features => {
-      console.log(features);
+    let encoder = this._encodingConsumer.value.text;
+    encode('text', encoder, [textToEncode]).then(features => {
       return this._modelConsumer.value.classify(features);
     }).then(results => {
       console.log(results);
     })
   }
 
+  checkImage(image){
+     let encoder = this._encodingConsumer.value.image;
+     encode('image', encoder, [image]).then(features => {
+      return this._modelConsumer.value.classify(features);
+     }).then(results => {
+      console.log(results);
+     })
+  }
+
   _uploadImage() {
-    uploadImages(false).then(filesB64 => {
-      console.log(filesB64);
+    uploadImages().then(filesB64 => {
       this.imageSrc = filesB64[0];
       this.requestUpdate();
+      this.checkImage(filesB64[0]);
     });
   }
 
@@ -78,6 +85,8 @@ export class ModelEval extends LitElement {
       // Obtener el contenido del lienzo como datos base64
       const base64String = canvas.toDataURL('image/png');
       this.imageSrc = base64String;
+
+      this.checkImage(base64String);
 
       this.closeCamera();
       this.requestUpdate();
