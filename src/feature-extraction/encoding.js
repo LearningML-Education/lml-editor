@@ -33,7 +33,8 @@ export function encode(modelEditor, encoder, items) {
             }
 
             return Promise.all(promises).then( features => {
-                return tf.reshape(tf.stack(features), [items.length, 1024]);
+                let t = tf.reshape(tf.stack(features), [items.length, 1024]);
+                return t;
             });
         });
     }

@@ -55,18 +55,19 @@ getInputAndOutputTensors(features) {
     let featuresArray = [];
     let labelsArray = [];
 
-    let i = 0;
-    let numOfEntries = 0;
+    let j = 0;
     for (let label of features.keys()) {
+        let i = 0;        
         this.labels.push(label);
         let t = features.get(label);
         let f = tf.unstack(t);
         for (let n = 0; n < t.shape[0]; n++) {
-            labelsArray.push(tf.oneHot(i, features.size));
+            labelsArray.push(tf.oneHot(j, features.size));
             featuresArray.push(f[i]);
+            i++;
         }
-        numOfEntries += t.shape[0];
-        i++;
+        j++;
+        
     }
 
     let inputTensor = tf.stack(featuresArray);
