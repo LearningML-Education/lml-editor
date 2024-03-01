@@ -14,6 +14,7 @@ export class ModelEval extends LitElement {
   static properties = {
     imageSrc: { type: String },
     cameraOpened: { type: Boolean },
+    results: {type: Array }
   }
 
   constructor() {
@@ -30,6 +31,7 @@ export class ModelEval extends LitElement {
       return this._modelConsumer.value.classify(features);
     }).then(results => {
       console.log(results);
+      this.results = results
     })
   }
 
@@ -39,6 +41,7 @@ export class ModelEval extends LitElement {
       return this._modelConsumer.value.classify(features);
      }).then(results => {
       console.log(results);
+      this.results = result;
      })
   }
 
@@ -68,6 +71,7 @@ export class ModelEval extends LitElement {
       return this._modelConsumer.value.classify(features);
      }).then(results => {
       console.log(results);
+      this.results = results;
      })
 
   }
@@ -234,6 +238,10 @@ export class ModelEval extends LitElement {
     return html`
       <h4 class="title is-4" > ${msg('Try')}</h4 >
         ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
+
+      <ul>
+        ${this.results}
+      </ul>
     `
   }
 
