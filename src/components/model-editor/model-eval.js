@@ -14,13 +14,14 @@ export class ModelEval extends LitElement {
   static properties = {
     imageSrc: { type: String },
     cameraOpened: { type: Boolean },
-    results: {type: Array }
+    results: { type: Array }
   }
 
   constructor() {
     super();
     this.imageSrc = null;
     this.cameraOpened = false;
+    this.results = [];
     updateWhenLocaleChanges(this);
   }
 
@@ -35,44 +36,44 @@ export class ModelEval extends LitElement {
     })
   }
 
-  checkImage(image){
-     let encoder = this._encodingConsumer.value.image;
-     encode('image', encoder, [image]).then(features => {
+  checkImage(image) {
+    let encoder = this._encodingConsumer.value.image;
+    encode('image', encoder, [image]).then(features => {
       return this._modelConsumer.value.classify(features);
-     }).then(results => {
+    }).then(results => {
       console.log(results);
       this.results = results;
-     })
+    })
   }
 
-  checkNumber(){
+  checkNumber() {
     let that = this;
     function isValidNumberEntry(entry) {
       let items = entry.split(",").map(v => parseFloat(v));;
-  
+
       // primero miramos que todas los items separados por coma sean números
       if (items.some(item => isNaN(item))) return false;
-  
+
       // comprobamos que la dimensión del array items coincida con this.dimension
       if (that._statusConsumer.value.dimension != items.length) return false;
-  
+
       // si hemos llegado hasta aquí, todo está bien
       return true;
     }
     let textToEncode = this.querySelector("#numberInput").value;
 
-    if(!isValidNumberEntry(textToEncode)){
+    if (!isValidNumberEntry(textToEncode)) {
       window.alert(msg("This entry is not valid"));
       return;
     }
 
     let encoder = this._encodingConsumer.value.numerical;
-     encode('numerical', encoder, [textToEncode]).then(features => {
+    encode('numerical', encoder, [textToEncode]).then(features => {
       return this._modelConsumer.value.classify(features);
-     }).then(results => {
+    }).then(results => {
       console.log(results);
       this.results = results;
-     })
+    })
 
   }
 
@@ -153,7 +154,7 @@ export class ModelEval extends LitElement {
     
     <div class="field is-grouped is-grouped-centered">
     ${!this.cameraOpened
-      ? html`
+        ? html`
         <p class="control">      
           <button @click=${this._uploadImage} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
@@ -171,7 +172,7 @@ export class ModelEval extends LitElement {
           </button>
         </p>`
 
-      : html`
+        : html`
         <p class="control"> 
           <button @click=${this.takePictureFromCamera} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
@@ -189,7 +190,7 @@ export class ModelEval extends LitElement {
           </button>
         </p>`
 
-    }
+      }
     </div>
   
     
@@ -239,9 +240,10 @@ export class ModelEval extends LitElement {
       <h4 class="title is-4" > ${msg('Try')}</h4 >
         ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
 
-      <ul>
-        ${this.results}
-      </ul>
+    ${this.results.map((r) =>
+      html`${r[0]}(${parseFloat(r[1]).toFixed(4)}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
+    )}
+      
     `
   }
 
