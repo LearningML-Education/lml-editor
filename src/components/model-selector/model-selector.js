@@ -40,7 +40,7 @@ export class ModelSelector extends LitElement {
       title="${msg('Number recognition')}"
       description="${msg('Teach the computer to recognize number sets')}"
       image="dalle-numbers.png"
-      type="number">
+      type="numerical">
     </model-card>
   </div>
 </div>

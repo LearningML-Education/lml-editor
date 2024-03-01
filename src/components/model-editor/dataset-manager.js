@@ -106,7 +106,7 @@ export class DatasetManager extends LitElement {
   addTextToDataset(texts) {
     texts.split("\n").forEach(entry => {
       if (entry == "") return;
-      if (this._statusConsumer.value.modelEditor == 'number' && !this.isValidNumberEntry(entry)) {
+      if (this._statusConsumer.value.modelEditor == 'numerical' && !this.isValidNumberEntry(entry)) {
         alert(msg("Invalid entry"));
         return;
       }
@@ -264,7 +264,7 @@ export class DatasetManager extends LitElement {
         return this.templateTextButtons();
       case 'image':
         return this.templateImageButtons();
-      case 'number':
+      case 'numerical':
         return this.templateNumberButtons();
     }
   }
@@ -275,7 +275,7 @@ export class DatasetManager extends LitElement {
         return this.templateTextData();
       case 'image':
         return this.templateImageData();
-      case 'number':
+      case 'numerical':
         return this.templateNumberData();
     }
   }

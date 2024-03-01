@@ -37,7 +37,7 @@ export function encode(modelEditor, encoder, items) {
                 return t;
             });
         });
-    } else if (modelEditor == 'number') {
+    } else if (modelEditor == 'numerical') {
         return new Promise((resolve, reject) => {
             let features = [];
             for(let csv of items){

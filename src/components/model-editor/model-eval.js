@@ -216,7 +216,7 @@ export class ModelEval extends LitElement {
         return this.templateTextEval();
       case 'image':
         return this.templateImageEval();
-      case 'number':
+      case 'numerical':
         return this.templateNumberEval();
     }
   }

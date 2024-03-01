@@ -36,7 +36,7 @@ export class ModelLearn extends LitElement {
         return msg("Now it's time to learn to classify text");
       case 'image':
         return msg("Now it's time to learn to classify images");
-      case 'number':
+      case 'numerical':
         return msg("Now it's time to learn to classify numbers");
     }
     return "";
@@ -48,7 +48,7 @@ export class ModelLearn extends LitElement {
         return msg("Learn to recognize texts");
       case 'image':
         return msg("Learn to recognize images");
-      case 'number':
+      case 'numerical':
         return msg("Learn to recognize numbers");
     }
     return "";
