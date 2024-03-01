@@ -60,7 +60,15 @@ export class ModelEval extends LitElement {
 
     if(!isValidNumberEntry(textToEncode)){
       window.alert(msg("This entry is not valid"));
+      return;
     }
+
+    let encoder = this._encodingConsumer.value.numerical;
+     encode('numerical', encoder, [textToEncode]).then(features => {
+      return this._modelConsumer.value.classify(features);
+     }).then(results => {
+      console.log(results);
+     })
 
   }
 

@@ -1,6 +1,6 @@
 import configLoader from '../config-loader';
 import { LitElement, html } from 'lit';
-import { ContextProvider, ContextConsumer } from '@lit/context';
+import { ContextProvider } from '@lit/context';
 import {
     configContext,
     statusContext,
@@ -9,7 +9,7 @@ import {
     encodingContext,
     modelContext
 } from '../contexts';
-import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import { updateWhenLocaleChanges } from '@lit/localize';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
 import './footers/footer-copyright';
@@ -19,6 +19,7 @@ import './model-editor/model-editor';
 import './loading-message/loading-message';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 import { MobilenetService } from '../feature-extraction/mobilenet';
+import { numericalEncoder } from '../feature-extraction/numerical';
 import { LMLSequential } from '../algorithms/sequential';
 
 
@@ -80,8 +81,7 @@ class LMLApp extends LitElement {
             this.encodingContext.setValue({
                 text: use.load(),
                 image: mobilenet.get(),
-                numerical: null
-    
+                numerical: numericalEncoder()    
             });
 
         });
