@@ -1,6 +1,6 @@
 import configLoader from '../config-loader';
 import { LitElement, html } from 'lit';
-import { ContextProvider } from '@lit/context';
+import { ContextProvider, ContextConsumer } from '@lit/context';
 import {
     configContext,
     statusContext,
@@ -48,7 +48,8 @@ class LMLApp extends LitElement {
 
         this.statusProvider.setValue({
             modelEditor: 'text',
-            modelName: "Untitled"
+            modelName: "Untitled",
+            dimension: 0
         });
 
         this.modelContext.setValue(new LMLSequential);
@@ -78,7 +79,8 @@ class LMLApp extends LitElement {
 
             this.encodingContext.setValue({
                 text: use.load(),
-                image: mobilenet.get()
+                image: mobilenet.get(),
+                numerical: null
     
             });
 
@@ -86,13 +88,10 @@ class LMLApp extends LitElement {
     }
 
     connectedCallback() {
-        super.connectedCallback();
+        super.connectedCallback();       
 
         this.addEventListener("load-model-editor", e => {
-            this.page = 'model-editor';
-            this.statusProvider.setValue({
-                modelEditor: e.detail
-            })
+            this.page = 'model-editor';            
         });
     }
 

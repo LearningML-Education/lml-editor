@@ -1,14 +1,19 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import { ContextConsumer } from '@lit/context';
+import { statusContext } from '../../contexts.js';
+
 
 export class ModelCard extends LitElement {
+
+  _statusConsumer = new ContextConsumer(this, { context: statusContext });
 
 
   static properties = {
     title: { type: String },
     description: { type: String },
     image: { type: String },
-    type: {type: String}
+    type: { type: String }
   }
 
   constructor() {
@@ -17,6 +22,13 @@ export class ModelCard extends LitElement {
     this.description = "Missing description";
     this.image = "cabeza_genio.png";
     updateWhenLocaleChanges(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener("load-model-editor", e => {
+      this._statusConsumer.value.modelEditor = e.detail;
+    });
   }
 
   loadEditor() {

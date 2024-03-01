@@ -70,7 +70,8 @@ export class FileMenu extends LitElement {
             this._datasetConsumer.value.set(key, new Set());
           }                   
           if (this._statusConsumer.value.modelEditor == 'numerical') {
-            let _d = this.truncateNumbers(d);
+              d = this.truncateNumbers(d);
+              this._statusConsumer.value.dimension = d.split(",").length;
           }
           
           this._datasetConsumer.value.get(key).add(d);

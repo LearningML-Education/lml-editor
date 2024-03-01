@@ -32,10 +32,18 @@ export function encode(modelEditor, encoder, items) {
                 }));
             }
 
-            return Promise.all(promises).then( features => {
+            return Promise.all(promises).then(features => {
                 let t = tf.reshape(tf.stack(features), [items.length, 1024]);
                 return t;
             });
         });
+    } else if (modelEditor == 'number') {
+        return new Promise((resolve, reject) => {
+            let features = [];
+            for(let csv of items){
+                features.push(csv.split(",").map(v => parseFloat(v)));
+            }
+            resolve(tf.stack(features));
+        });  
     }
 }
