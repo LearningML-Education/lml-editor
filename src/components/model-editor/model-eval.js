@@ -41,7 +41,7 @@ export class ModelEval extends LitElement {
       return this._modelConsumer.value.classify(features);
      }).then(results => {
       console.log(results);
-      this.results = result;
+      this.results = results;
      })
   }
 
