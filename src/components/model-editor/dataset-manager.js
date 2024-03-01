@@ -455,7 +455,7 @@ export class DatasetManager extends LitElement {
 
   templateNumberData() {
     return html`        
-      <div class="container p-3">
+      <div class="container itemdata p-3">
         <div class="table-container">
           <table class="table is-bordered">
             <tbody>

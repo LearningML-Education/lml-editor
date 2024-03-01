@@ -42,6 +42,16 @@ export class FileMenu extends LitElement {
     saveAs(blob, this._statusConsumer.value.modelName);
   }
 
+  truncateNumbers(numbersCSV){
+    let numbers = [];
+    let numbersString = numbersCSV.split(",");
+    for(let numberString of numbersString){
+      numbers.push(parseFloat(numberString).toFixed(4));
+    }
+
+    return numbers.join(",");
+  }
+
   loadDataset(file) {
     let inputData;
 
@@ -61,9 +71,6 @@ export class FileMenu extends LitElement {
           }                   
           if (this._statusConsumer.value.modelEditor == 'numerical') {
             let _d = this.truncateNumbers(d);
-            this._datasetConsumer.value.set(key, d);
-            this.featureDimension = d.split(",").length;
-            this.featureDimensionLocked = true;
           }
           
           this._datasetConsumer.value.get(key).add(d);

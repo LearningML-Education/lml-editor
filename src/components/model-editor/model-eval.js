@@ -42,6 +42,28 @@ export class ModelEval extends LitElement {
      })
   }
 
+  checkNumber(){
+    let that = this;
+    function isValidNumberEntry(entry) {
+      let items = entry.split(",").map(v => parseFloat(v));;
+  
+      // primero miramos que todas los items separados por coma sean números
+      if (items.some(item => isNaN(item))) return false;
+  
+      // comprobamos que la dimensión del array items coincida con this.dimension
+      if (that._statusConsumer.value.dimension != items.length) return false;
+  
+      // si hemos llegado hasta aquí, todo está bien
+      return true;
+    }
+    let textToEncode = this.querySelector("#numberInput").value;
+
+    if(!isValidNumberEntry(textToEncode)){
+      window.alert(msg("This entry is not valid"));
+    }
+
+  }
+
   _uploadImage() {
     uploadImages().then(filesB64 => {
       this.imageSrc = filesB64[0];
@@ -169,7 +191,23 @@ export class ModelEval extends LitElement {
   }
 
   templateNumberEval() {
-    return html`< h2 > NÚMERO</h2 > `
+    return html`
+    <h6 class="subtitle is-6">${msg("Introduces new numbers and checks they are correctly classified ")}</h6>
+    <input class="input" type="text" placeholder="Introduce numbers separated by commas" id="numberInput" />
+    
+    <div class="field mt-2 is-grouped is-justify-content-center">
+      <p class="control">
+        <button @click=${this.checkNumber} class="button is-primary">
+          ${msg("Check")}
+        </button>
+      </p>
+      <p class="control">
+        <button class="button">          
+          <img src="/images/scratch_icon.svg">          
+        </button>
+      </p>
+      
+    </div>`;
   }
 
   templateFormEval(editorType) {
