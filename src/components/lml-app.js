@@ -51,8 +51,7 @@ class LMLApp extends LitElement {
         this.statusProvider.setValue({
             modelEditor: 'text',
             modelName: "Untitled",
-            dimension: 0,
-            advancedMode: false
+            dimension: 0
         });
 
         this.modelContext.setValue(new LMLSequential);
@@ -83,20 +82,20 @@ class LMLApp extends LitElement {
             this.encodingContext.setValue({
                 text: use.load(),
                 image: mobilenet.get(),
-                numerical: numericalEncoder()    
+                numerical: numericalEncoder()
             });
 
         });
     }
 
     connectedCallback() {
-        super.connectedCallback();       
+        super.connectedCallback();
 
         this.addEventListener("load-model-editor", e => {
-            this.page = 'model-editor';            
+            this.page = 'model-editor';
         });
 
-        this.addEventListener("toggle-advanced-mode", e =>{
+        this.addEventListener("toggle-advanced-mode", e => {
             this.advancedMode = !this.advancedMode;
             this.requestUpdate();
         });

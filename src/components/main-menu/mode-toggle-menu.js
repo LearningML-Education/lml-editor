@@ -1,13 +1,9 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import { ContextConsumer } from '@lit/context';
-import { statusContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 
 export class ModeToggleMenu extends LitElement {
-
-  _statusConsumer = new ContextConsumer(this, { context: statusContext });
 
   static properties = {
     advanced: { Boolean },
@@ -21,12 +17,10 @@ export class ModeToggleMenu extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.advanced = this._statusConsumer.value.advancedMode;
   }
 
   handleToggleClick() {
     this.advanced = !this.advanced;
-    this._statusConsumer.value.advancedMode = this._statusConsumer;
 
     this.dispatchEvent(new CustomEvent('toggle-advanced-mode', {
       bubbles: true

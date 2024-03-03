@@ -46,7 +46,6 @@ export class ModelEditor extends LitElement {
   render() {
 
     return html`
-    ${this.advancedMode.enabled? html`advanced on` : html`advanced off`}
 
 <div class="columns">
   <div class="column">
@@ -54,7 +53,7 @@ export class ModelEditor extends LitElement {
   </div>
 
   <div class="column">
-    <model-learn></model-learn>
+    <model-learn advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-learn>
   </div>
 
 
