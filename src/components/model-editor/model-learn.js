@@ -92,6 +92,7 @@ export class ModelLearn extends LitElement {
       <span class="icon"><i class="fa-solid fa-gears"></i></span>
       <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
     </button>
+
     `
   }
 

@@ -39,6 +39,7 @@ class LMLApp extends LitElement {
 
         this.loading = true;
         this.page = 'home';
+        this.advancedMode = false;
         //this.page = 'model-editor';
         this.configProvider = new ContextProvider(this, { context: configContext });
         this.statusProvider = new ContextProvider(this, { context: statusContext });
@@ -50,7 +51,8 @@ class LMLApp extends LitElement {
         this.statusProvider.setValue({
             modelEditor: 'text',
             modelName: "Untitled",
-            dimension: 0
+            dimension: 0,
+            advancedMode: false
         });
 
         this.modelContext.setValue(new LMLSequential);
@@ -93,6 +95,11 @@ class LMLApp extends LitElement {
         this.addEventListener("load-model-editor", e => {
             this.page = 'model-editor';            
         });
+
+        this.addEventListener("toggle-advanced-mode", e =>{
+            this.advancedMode = !this.advancedMode;
+            this.requestUpdate();
+        });
     }
 
     loadingTemplate() {
@@ -129,7 +136,7 @@ class LMLApp extends LitElement {
     editorTemplate() {
         return html`
         <div class="container is-fluid mb-2">
-            <model-editor></model-editor>
+            <model-editor advanced-mode='{"enabled": ${this.advancedMode}}'></model-editor>
         </div>`;
     }
 

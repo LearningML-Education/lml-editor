@@ -1,35 +1,48 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext } from '../../contexts.js';
+import { statusContext } from '../../contexts.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 
 export class ModeToggleMenu extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext });
 
   static properties = {
-    modeClass: { String },
+    advanced: { Boolean },
   }
 
   constructor() {
     super();
     this.advanced = false;
-    this.modeClass = "";
     updateWhenLocaleChanges(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.advanced = this._statusConsumer.value.advancedMode;
   }
 
   handleToggleClick() {
     this.advanced = !this.advanced;
-    this.modeClass = this.advanced ? "is-success" : "";
+    this._statusConsumer.value.advancedMode = this._statusConsumer;
+
+    this.dispatchEvent(new CustomEvent('toggle-advanced-mode', {
+      bubbles: true
+    }));
   }
 
   render() {
 
     return html`
+
     <div class="navbar-item">
-      <button class="button is-rounded ${this.modeClass}" @click="${this.handleToggleClick}">
-      ${this.advanced ? msg("Advanced mode") : msg("Basic mode")}
+      <button class="button is-primary" @click="${this.handleToggleClick}">
+        <span class="icon">
+          <i class=${classMap({ "fas": true, "fa-toggle-off": !this.advanced, "fa-toggle-on": this.advanced })}></i>
+        </span>
+        <span>${this.advanced ? msg("Advanced mode on") : msg("Advanced mode off")}</span>
       </button>
     </div>
         `

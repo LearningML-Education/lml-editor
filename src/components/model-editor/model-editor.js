@@ -10,6 +10,10 @@ export class ModelEditor extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
+  static properties = {
+    advancedMode: { type: Object, attribute: 'advanced-mode' }
+  }
+
   constructor() {
     super();
     updateWhenLocaleChanges(this);
@@ -42,6 +46,8 @@ export class ModelEditor extends LitElement {
   render() {
 
     return html`
+    ${this.advancedMode.enabled? html`advanced on` : html`advanced off`}
+
 <div class="columns">
   <div class="column">
     <model-train id="model-train"></model-train>
