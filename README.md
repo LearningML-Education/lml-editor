@@ -20,4 +20,4 @@ Referencia: https://lit.dev/docs/localization/overview/
 
 ## Estructura de componentes
 
-![Estructura de componentes](./img-doc/Estructura-lml-editor-lit.excalidraw.png)
+![Estructura de componentes](./doc/img-doc/Estructura-lml-editor-lit.excalidraw.png)
