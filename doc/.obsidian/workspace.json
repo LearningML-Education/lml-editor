@@ -1,0 +1,166 @@
+{
+  "main": {
+    "id": "160d7e466291753f",
+    "type": "split",
+    "children": [
+      {
+        "id": "d07ff783cbcab2be",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b4a163814838e1d9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "LearningML v2.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "67ea4381fb0097e6",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "img-doc/Estructura-lml-editor-lit.excalidraw.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "bd6da132b1ec09fb",
+    "type": "split",
+    "children": [
+      {
+        "id": "7cc9eae1f51e89f8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a5c0de5b01e036b7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "1ac11c1fb7413a50",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "39ddcd210926a255",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f3c6f88fb57939c9",
+    "type": "split",
+    "children": [
+      {
+        "id": "4157f3ce449f4f7d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7ad826fbebd3e825",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "LearningML v2.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "7bba4bad4e2944c0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "LearningML v2.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "0e4d7b4b63e204a5",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "686883120f5e58ea",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "LearningML v2.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
+    }
+  },
+  "active": "b4a163814838e1d9",
+  "lastOpenFiles": [
+    "img-doc/Estructura-lml-editor-lit.excalidraw.md",
+    "LearningML v2.md",
+    "img-doc/Estructura-lml-editor-lit.excalidraw.png"
+  ]
+}

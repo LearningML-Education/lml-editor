@@ -45,7 +45,7 @@ export class DatasetManager extends LitElement {
     if (this.editinglabelName) {
       let oldLabel = this.labelName;
       this.labelName = this.querySelector("#inputlabelName").value;
-      if (this._datasetConsumer.value.has(oldLabel)) {
+      if (this._datasetConsumer.value.has(oldLabel) && oldLabel != this.labelName) {
         this._datasetConsumer.value.set(this.labelName,
           this._datasetConsumer.value.get(oldLabel));
         this._datasetConsumer.value.delete(oldLabel);

@@ -32,7 +32,7 @@ export class MobilenetService {
   version = '1.00';
   alpha = '1.00';
 
-  constructor(urlMobilenetModels) {
+  constructor(urlBase) {
 
 
     this.normalizationConstant = (this.inputMax - this.inputMin) / 255;
@@ -42,25 +42,25 @@ export class MobilenetService {
         '0.25': {
           url:
             //'https://tfhub.dev/google/imagenet/mobilenet_v1_025_224/classification/1',
-            `${urlMobilenetModels}/models/imagenet_mobilenet_v1_025_224_classification_1`,
+            `${urlBase}/models/imagenet_mobilenet_v1_025_224_classification_1`,
           inputRange: [0, 1]
         },
         '0.50': {
           url:
             //'https://tfhub.dev/google/imagenet/mobilenet_v1_050_224/classification/1',
-            `${urlMobilenetModels}/models/imagenet_mobilenet_v1_050_224_classification_1`,
+            `${urlBase}/models/imagenet_mobilenet_v1_050_224_classification_1`,
           inputRange: [0, 1]
         },
         '0.75': {
           url:
             //'https://tfhub.dev/google/imagenet/mobilenet_v1_075_224/classification/1',
-            `${urlMobilenetModels}/models/imagenet_mobilenet_v1_075_224_classification_1`,
+            `${urlBase}/models/imagenet_mobilenet_v1_075_224_classification_1`,
           inputRange: [0, 1]
         },
         '1.00': {
           url:
             //'https://tfhub.dev/google/imagenet/mobilenet_v1_100_224/classification/1',
-            `${urlMobilenetModels}/models/imagenet_mobilenet_v1_100_224_classification_1`,
+            `${urlBase}/models/imagenet_mobilenet_v1_100_224_classification_1`,
           inputRange: [0, 1]
         }
       },
@@ -68,19 +68,19 @@ export class MobilenetService {
         '0.50': {
           url:
             //'https://tfhub.dev/google/imagenet/mobilenet_v2_050_224/classification/2',
-            `${urlMobilenetModels}/models/imagenet_mobilenet_v2_050_224_classification_2`,
+            `${urlBase}/models/imagenet_mobilenet_v2_050_224_classification_2`,
           inputRange: [0, 1]
         },
         '0.75': {
           url:
             //'https://tfhub.dev/google/imagenet/mobilenet_v2_075_224/classification/2',
-            `${urlMobilenetModels}/models/imagenet_mobilenet_v2_075_224_classification_2`,
+            `${urlBase}/models/imagenet_mobilenet_v2_075_224_classification_2`,
           inputRange: [0, 1]
         },
         '1.00': {
           url:
             //'https://tfhub.dev/google/imagenet/mobilenet_v2_100_224/classification/2',
-            `${urlMobilenetModels}/models/imagenet_mobilenet_v2_100_224_classification_2`,
+            `${urlBase}/models/imagenet_mobilenet_v2_100_224_classification_2`,
 
           inputRange: [0, 1]
         }

@@ -77,7 +77,7 @@ class LMLApp extends LitElement {
                 this.configProvider.setValue(config);
             }, 1000)
 
-            let mobilenet = new MobilenetService(config.urlMobilenetModels);
+            let mobilenet = new MobilenetService(config.urlBase);
 
             this.encodingContext.setValue({
                 text: use.load(),

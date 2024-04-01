@@ -5,5 +5,5 @@
         "title": "Atención",
         "message": "LearningML necesita tu ayuda."
     },
-    "urlMobilenetModels": "http://localhost:5173"
+    "urlBase": "http://localhost:5173"
 }
