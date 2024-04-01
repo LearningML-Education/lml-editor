@@ -40,6 +40,7 @@ Fichero fuente: [[Estructura-lml-editor-lit.excalidraw]]
 
   ![[Estructura-lml-editor-lit.excalidraw.png]]
   
+## Proveedores de contexto
 El primer componente que se carga, denominado componente raíz, es `lml-app`. Este componente crea todos los proveedores de contextos que usa la aplicación. Un [proveedor de contexto](https://lit.dev/docs/data/context/) es un mecanismo que *lit* utiliza para gestionar datos que son transversales a todos los componentes. Se crean lo siguientes contextos:
 
 - configContext, para almacenar la configuración de la aplicación. 
@@ -63,7 +64,43 @@ El primer componente que se carga, denominado componente raíz, es `lml-app`. Es
 	dimension: 0
 }
 ```
-- datasetProvider, es un mapa (Map) de javascript que almacena el conjunto de datos (textos, imágenes, números) y sus etiquetas:
+- datasetProvider, es un mapa de javascript (Map)  que almacena el conjunto de datos (textos, imágenes, números) y sus etiquetas. Las claves son las etiquetas y los valores son conjuntos de javascript (Set) con los textos, imágenes (en Base64) o conjuntos de números (números separados por comas).
+	
+Un ejemplo de dataset de textos
+![[Pasted image 20240401173454.png]]
+
+Un ejemplo de dataset de imágenes
+![[Pasted image 20240401173819.png]]
+
+Un ejemplo de dataset de números
+![[Pasted image 20240401180127.png]]
+
+- featuresProvider, es un mapa (Map) que almacena el conjunto de datos (texto, imagen, número) codificados y sus etiquetas, es decir, almacena las características una vez extraídas de los datos originales. Tiene la misma estructura que el datasetProvider pero los elementos de cada conjunto son datos codificados, esto es, características extraídas desde los elementos originales usando algún tipo de codificación.
+
+Un ejemplo de featureset. Valdría para cualquier tipo de datos (texto, imagen, número), pues la extracción de características o codificación se representa con un Tensor en todos los casos.
+![[Pasted image 20240401181046.png]]
+
+- encodingContext, es un objeto que almacena el extractor de características (o codificador) que se usará para cada tipo de datos (texto, imagen o número). Estos codificadores se aplican sobre los elementos del dataset para construir el featureset.
 ```
+{
+	text: use.load(),
+	image: mobilenet.get(),
+	numerical: numericalEncoder()
+}
+```
+- modelContext, es un objeto que representa el modelo que será construido en el proceso de aprendizaje. Por ejemplo una red neuronal feedfoward  o un algoritmo KNN. En realidad modelContext contiene tanto al algoritmo de Machine Learning como al modelo.
+
+Desde cualquier componente hijo se puede acceder a los datos almacenados en estos proveedores a través de los consumidores de contexto. Por ejemplo para acceder a los datos del datasetProvider se haría lo siguiente:
 
 ```
+import {datasetContext} from 'ruta/a/context.js'
+...
+export class ComponenteQueSea extends LitElement {
+	_datasetConsumer = new ContextConsumer(this, { context: datasetContext });
+...
+funcionQueSea(){
+	let dataset = this._datasetConsumer.value;
+}
+...
+```
+

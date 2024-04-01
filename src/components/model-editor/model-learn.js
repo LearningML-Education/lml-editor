@@ -69,6 +69,8 @@ export class ModelLearn extends LitElement {
       }));
     });
 
+    console.log(this._featuresConsumer.value);
+
     Promise.all(promises).then(() => {
       this._modelConsumer.value.train(this._featuresConsumer.value).then(m => {
         this.buttonLoading = false;
