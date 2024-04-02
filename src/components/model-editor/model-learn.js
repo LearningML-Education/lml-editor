@@ -61,10 +61,10 @@ export class ModelLearn extends LitElement {
     console.log(this.algorithm);
     let promises = [];
     let modelEditor = this._statusConsumer.value.modelEditor;
-    let encoder = this._encoderComsumer.value[modelEditor]
+    let encode = this._encoderComsumer.value[modelEditor]
     this.buttonLoading = true;
     this._datasetConsumer.value.forEach((element, key) => {
-      promises.push(encode(modelEditor, encoder, Array.from(element)).then(features => {
+      promises.push(encode(Array.from(element)).then(features => {
         this._featuresConsumer.value.set(key, features);
       }));
     });

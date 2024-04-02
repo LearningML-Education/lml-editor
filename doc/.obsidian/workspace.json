@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "b4a163814838e1d9",
+            "id": "67ea4381fb0097e6",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -16,16 +16,6 @@
                 "file": "LearningML v2.md",
                 "mode": "source",
                 "source": false
-              }
-            }
-          },
-          {
-            "id": "67ea4381fb0097e6",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "img-doc/Pasted image 20240401173454.png"
               }
             }
           }
@@ -157,11 +147,14 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "b4a163814838e1d9",
+  "active": "67ea4381fb0097e6",
   "lastOpenFiles": [
-    "img-doc/Estructura-lml-editor-lit.excalidraw.png",
+    "img-doc/Paso-de-mensajes-entre-componentes.excalidraw.md",
+    "img-doc/Paso-de-mensajes-entre-componentes.excalidraw.png",
     "img-doc/Estructura-lml-editor-lit.excalidraw.md",
     "LearningML v2.md",
+    "Pasted image 20240401191907.png",
+    "img-doc/Estructura-lml-editor-lit.excalidraw.png",
     "img-doc/Pasted image 20240401173454.png",
     "img-doc/Pasted image 20240401181046.png",
     "img-doc/Pasted image 20240401180127.png",

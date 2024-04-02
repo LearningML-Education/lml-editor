@@ -17,8 +17,8 @@ import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
-import * as use from '@tensorflow-models/universal-sentence-encoder';
-import { MobilenetService } from '../feature-extraction/mobilenet';
+import { useEncode } from '../feature-extraction/useEncode';
+import { mobilenetEncoder } from '../feature-extraction/mobilenet';
 import { numericalEncoder } from '../feature-extraction/numerical';
 import { LMLSequential } from '../algorithms/sequential';
 
@@ -77,11 +77,9 @@ class LMLApp extends LitElement {
                 this.configProvider.setValue(config);
             }, 1000)
 
-            let mobilenet = new MobilenetService(config.urlBase);
-
             this.encodingContext.setValue({
-                text: use.load(),
-                image: mobilenet.get(),
+                text: useEncode,
+                image: mobilenetEncoder,
                 numerical: numericalEncoder()
             });
 

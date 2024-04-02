@@ -27,8 +27,8 @@ export class ModelEval extends LitElement {
 
   checkInput(e) {
     let textToEncode = this.querySelector("#textInput").value;
-    let encoder = this._encodingConsumer.value.text;
-    encode('text', encoder, [textToEncode]).then(features => {
+    let encode = this._encodingConsumer.value.text;
+    encode([textToEncode]).then(features => {
       return this._modelConsumer.value.classify(features);
     }).then(results => {
       console.log(results);
@@ -37,8 +37,8 @@ export class ModelEval extends LitElement {
   }
 
   checkImage(image) {
-    let encoder = this._encodingConsumer.value.image;
-    encode('image', encoder, [image]).then(features => {
+    let encode = this._encodingConsumer.value.image;
+    encode([image]).then(features => {
       return this._modelConsumer.value.classify(features);
     }).then(results => {
       console.log(results);
@@ -67,8 +67,8 @@ export class ModelEval extends LitElement {
       return;
     }
 
-    let encoder = this._encodingConsumer.value.numerical;
-    encode('numerical', encoder, [textToEncode]).then(features => {
+    let encode = this._encodingConsumer.value.numerical;
+    encode([textToEncode]).then(features => {
       return this._modelConsumer.value.classify(features);
     }).then(results => {
       console.log(results);
