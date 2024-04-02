@@ -9,7 +9,6 @@ import {
   modelContext
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { encode } from '../../feature-extraction/encoding.js';
 
 export class ModelLearn extends LitElement {
 

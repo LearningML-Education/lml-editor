@@ -20,6 +20,15 @@ export class LMLSequential {
     constructor() {
         this.model = null;
         this.labels = [];
+        this.params = {
+            learningRate: 0.001,
+            batchSize: 10,
+            epochs: 20
+        };
+    }
+
+    setMetaParameter(params){
+        this
     }
     /**
      * Dado un Mapa con las características extraídas en el proceso de extracción de 
@@ -84,11 +93,10 @@ export class LMLSequential {
      * 
      * @param {Number} inputDim - Dimensión de la capa de entrada (dimensión de los vectores de características)
      * @param {Number} outputDim - Dimensión de la capa de salida (nº de clases)
-     * @param {Number} learningRate 
      * 
      * @returns {tf.Sequential}
      */
-    buildModel(inputDim, outputDim, learningRate = 0.001) {
+    buildModel(inputDim, outputDim) {
 
         let model = tf.sequential({
             layers: [
@@ -114,7 +122,7 @@ export class LMLSequential {
 
         // 0.0001 es el learning rate
         //const optimizer = tf.train.adamax();
-        const optimizer = tf.train.adam(learningRate)
+        const optimizer = tf.train.adam(this.params.learningRate)
 
         model.compile({
             optimizer: optimizer,
@@ -148,8 +156,8 @@ export class LMLSequential {
 
         //Train for 5 epochs with batch size of 32.
         return this.model.fit(tensors.inputTensor, tensors.outputTensor, {
-            epochs: 20,
-            batchSize: 10,
+            epochs: this.params.epochs,
+            batchSize: this.params.batchSize,
             callbacks: { onBatchEnd },
             shuffle: true,
             //validationSplit: this.params.neural_network.validationSplit/100,

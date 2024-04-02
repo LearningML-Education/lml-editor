@@ -2,7 +2,6 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, statusContext, encodingContext } from '../../contexts.js';
-import { encode } from '../../feature-extraction/encoding.js';
 import { uploadImages } from './uploadImages.js';
 
 export class ModelEval extends LitElement {

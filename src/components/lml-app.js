@@ -45,8 +45,8 @@ class LMLApp extends LitElement {
         this.statusProvider = new ContextProvider(this, { context: statusContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
         this.featuresProvider = new ContextProvider(this, { context: featuresContext });
-        this.encodingContext = new ContextProvider(this, { context: encodingContext });
-        this.modelContext = new ContextProvider(this, { context: modelContext });
+        this.encodingProvider = new ContextProvider(this, { context: encodingContext });
+        this.modelProvider = new ContextProvider(this, { context: modelContext });
 
         this.statusProvider.setValue({
             modelEditor: 'text',
@@ -54,7 +54,7 @@ class LMLApp extends LitElement {
             dimension: 0
         });
 
-        this.modelContext.setValue(new LMLSequential);
+        this.modelProvider.setValue(new LMLSequential);
 
         /**
          * este proveedor contendrá un mapa en el que las claves son el nombre de las
@@ -77,10 +77,10 @@ class LMLApp extends LitElement {
                 this.configProvider.setValue(config);
             }, 1000)
 
-            this.encodingContext.setValue({
+            this.encodingProvider.setValue({
                 text: useEncode,
                 image: mobilenetEncoder,
-                numerical: numericalEncoder()
+                numerical: numericalEncoder
             });
 
         });
