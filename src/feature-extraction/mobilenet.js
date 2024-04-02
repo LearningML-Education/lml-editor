@@ -5,11 +5,11 @@ let mobilenet;
 
 export function mobilenetEncoder(items) {
   if (mobilenet == null) {
-    mobilenet = new MobilenetService('http://localhost:5173');
+    mobilenet = new MobilenetService('http://localhost:5173').get();
   }
 
   let promises = [];
-  return encoder.then(model => {
+  return mobilenet.then(model => {
     for (let imageB64 of items) {
       promises.push(new Promise((resolve, reject) => {
         let image = document.createElement('img');
