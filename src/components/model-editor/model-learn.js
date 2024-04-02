@@ -58,6 +58,20 @@ export class ModelLearn extends LitElement {
 
   learn() {
     console.log(this.algorithm);
+    if (this.advancedMode.enabled) {
+      let params = {};
+      switch (this.algorithm) {
+        case "ann":
+          params["learningRate"] = parseFloat(this.querySelector("#learningrate").value);
+          params["batchSize"] = parseInt(this.querySelector("#batchsize").value);
+          params["epochs"] = parseInt(this.querySelector("#epochs").value);
+          break;
+        case "knn":
+          params['K'] = this.querySelector("#numofneighbours").value;
+          break;
+      }
+      this._modelConsumer.value.setHyperParameters(params);
+    }
     let promises = [];
     let modelEditor = this._statusConsumer.value.modelEditor;
     let encode = this._encoderComsumer.value[modelEditor]
@@ -156,10 +170,10 @@ export class ModelLearn extends LitElement {
             </div>
           </div>
          
-          ${this.algorithm == 'ann'?
-            this.templateANNParams()
-            :
-            this.templateKNNParams()}
+          ${this.algorithm == 'ann' ?
+        this.templateANNParams()
+        :
+        this.templateKNNParams()}
         </div>
       
         <div class="box">
