@@ -13,6 +13,14 @@ npm run dev
 ```
 3. Apuntar el navegador web a `http://localhost:5173`
 
+# Construcción de un desplegable
+
+Ejecutar la instrucción:
+```
+npm run build
+```
+
+En la carpeta `dist` se generará el código HTML/CSS/JS estático listo para ser desplegado en un servidor web.
 # Traducciones
 
 En el archivo `lit-localize.json` se configura el sistema de traducción. Lo importante es el atributo `targetLocales`, donde se especifica en un array los idiomas a los que se traducirá la aplicación.
@@ -213,6 +221,10 @@ Por tanto, podemos añadir tantos algoritmos como queramos. Cada algoritmo se im
 | `train(features, validationData)` | Construye el modelo de ML a partir del argumento `features` el cual es un Tensor que contiene todos los datos del conjunto de datos de entrenamiento codificado.<br>El argumento `validationData` es opcional. Debe ser un Tensor con datos del conjunto de datos de validación codificados y, si se le pasa, se usará para construir una matriz de confusión. |
 | `classify(inputTensor)`           | Una vez construido el modelo (después de ejecutar `train`) esta función se usa para realizar la clasificación de un ejemplar (texto, imagen, número, etcétera) codificado.                                                                                                                                                                                     |
 | `setHyperParameters(params)`      | Define los [hyper-parámetros](https://en.wikipedia.org/wiki/Hyperparameter_(machine_learning)) que se usarán para llevar a cabo el proceso de construcción del  modelo de ML.  El argumento `params`es un objeto cuyos atributos son los hyper parámetros del algoritmo.                                                                                       |
+Cuando añadamos un nuevo algoritmo, además de crear la clase que lo implemente, hay que modificar el archivo `components/model-editor/model-learn.js`. 
+- En la función `getHyperParameters()` hay que añadir los hyper-parámetros del algoritmo en cuestión.
+- Hay que añadir una función con el HTML para el formulario que recoge los hyperparámetros. Se le puede llamar como se quiera, pero se recomienda `template<NOMBREALGORITML>Params()`
+- En la función `render()` hay que añadir el template que corresponda al nuevo algoritmo.
 ## Algoritmos implementados
 ### Sequential
 Archivo: `algorithms/sequetial.js`.

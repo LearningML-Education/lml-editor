@@ -14,8 +14,6 @@ export class DatasetManager extends LitElement {
   static properties = {
     editinglabelName: { type: Boolean },
     labelName: { type: String },
-    faCheck: { type: Boolean },
-    faPenToSquare: { type: Boolean },
     textEntry: { type: String },
     editText: { type: Boolean },
     addTextsWindowOpened: { type: Boolean },
@@ -27,8 +25,6 @@ export class DatasetManager extends LitElement {
     super();
     this.editinglabelName = false;
     this.labelName = "Unnamed";
-    this.faCheck = false;
-    this.faPenToSquare = true;
     this.textEntry = "";
     this.editText = false;
     this.addTextsWindowOpened = false;
@@ -52,8 +48,6 @@ export class DatasetManager extends LitElement {
       }
       console.log(this._datasetConsumer.value);
     }
-    this.faCheck = this.editlabelName;
-    this.faPenToSquare = !this.faCheck;
     this.editinglabelName = !this.editinglabelName;
   }
 
@@ -525,7 +519,7 @@ export class DatasetManager extends LitElement {
         : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this._datasetConsumer.value.get(this.labelName).size}</span>`
       }
 
-      <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.faCheck, "fa-pen-to-square": this.faPenToSquare })}></i></a>
+      <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.editinglabelName, "fa-pen-to-square": !this.editinglabelName })}></i></a>
       
       <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
         
