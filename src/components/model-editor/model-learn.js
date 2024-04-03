@@ -9,8 +9,6 @@ import {
   modelContext
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { LMLSequential } from '../../algorithms/sequential';
-import { KNN } from '../../algorithms/knn';
 
 export class ModelLearn extends LitElement {
 
@@ -19,9 +17,6 @@ export class ModelLearn extends LitElement {
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
   _encoderComsumer = new ContextConsumer(this, { context: encodingContext });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true  });
-
-
-  modelProvider = new ContextProvider(this, { context: modelContext });
 
 
   static properties = {
