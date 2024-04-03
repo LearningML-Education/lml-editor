@@ -21,7 +21,7 @@ import { useEncode } from '../feature-extraction/useEncode';
 import { mobilenetEncoder } from '../feature-extraction/mobilenet';
 import { numericalEncoder } from '../feature-extraction/numerical';
 import { LMLSequential } from '../algorithms/sequential';
-
+import { KNN } from '../algorithms/knn';
 
 
 // Configuration is loaded
@@ -96,6 +96,20 @@ class LMLApp extends LitElement {
         this.addEventListener("toggle-advanced-mode", e => {
             this.advancedMode = !this.advancedMode;
             this.requestUpdate();
+        });
+
+        this.addEventListener("change-algorithm", e => {
+            switch (e.detail) {
+                case 'ann':
+                    this.modelProvider.setValue(new LMLSequential);
+                    break;
+                case 'knn':
+                    this.modelProvider.setValue(new KNN);
+                    break;
+            }
+
+            this.requestUpdate();
+
         });
     }
 

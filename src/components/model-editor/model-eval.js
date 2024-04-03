@@ -8,7 +8,7 @@ export class ModelEval extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
   _encodingConsumer = new ContextConsumer(this, { context: encodingContext });
-  _modelConsumer = new ContextConsumer(this, { context: modelContext });
+  _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
   static properties = {
     imageSrc: { type: String },
@@ -239,8 +239,14 @@ export class ModelEval extends LitElement {
       <h4 class="title is-4" > ${msg('Try')}</h4 >
         ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
 
-    ${this.results.map((r) =>
-      html`${r[0]}(${parseFloat(r[1]).toFixed(4)}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
+    ${this.results.map((r) => {
+      let result = parseFloat(100 * r[1]).toFixed(3).toString();
+      if (result.includes('.')) {
+        result = result.replace(/\.?0+$/, '');
+      }
+      return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
+    }
+
     )}
       
     `

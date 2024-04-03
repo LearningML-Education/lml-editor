@@ -27,7 +27,7 @@ export class LMLSequential {
         };
     }
 
-    setHyperParameters(params){
+    setHyperParameters(params) {
         this.hyperparams = params;
     }
 

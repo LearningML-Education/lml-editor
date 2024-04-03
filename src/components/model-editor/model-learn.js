@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import { ContextConsumer } from '@lit/context';
+import { ContextConsumer, ContextProvider } from '@lit/context';
 import {
   statusContext,
   datasetContext,
@@ -9,6 +9,8 @@ import {
   modelContext
 } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { LMLSequential } from '../../algorithms/sequential';
+import { KNN } from '../../algorithms/knn';
 
 export class ModelLearn extends LitElement {
 
@@ -16,7 +18,10 @@ export class ModelLearn extends LitElement {
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
   _encoderComsumer = new ContextConsumer(this, { context: encodingContext });
-  _modelConsumer = new ContextConsumer(this, { context: modelContext });
+  _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true  });
+
+
+  modelProvider = new ContextProvider(this, { context: modelContext });
 
 
   static properties = {
@@ -73,7 +78,7 @@ export class ModelLearn extends LitElement {
 
   learn() {
     console.log(this.algorithm);
-    if (this.advancedMode.enabled) {    
+    if (this.advancedMode.enabled) {
       this._modelConsumer.value.setHyperParameters(this.getHyperParameters());
     }
     let promises = [];
@@ -99,6 +104,14 @@ export class ModelLearn extends LitElement {
 
   chooseAlgorithm(e) {
     this.algorithm = e.target.value;
+    
+    const event = new CustomEvent('change-algorithm', {
+      bubbles: true,
+      composed: true,
+      detail: this.algorithm
+    });
+
+    this.dispatchEvent(event);
   }
 
   templateANNParams() {
