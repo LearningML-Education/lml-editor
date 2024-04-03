@@ -209,6 +209,14 @@ export function numericalEncoder(items) {
     });    
 } 
 ```
+## Codificadores de textos implementados
+
+## Codificadores de imágenes implementados
+
+> [!info] Importante
+> Dentro del archivo `feature-extraction/mobilenet.js` se ha metido todo el código de `tfjs-models/mobilenet`, la librería que implementa el famoso modelo de imágenes mobilenet. Esto se ha hecho así para no depender  de las llamadas a internet que realiza la librería para obtener los modelos. Para eliminar esta dependencia, los pesos de los modelos de mobilenet se han colocado en `public/models`. De  esta manera se hacen peticiones al propio servidor web donde se aloja la aplicación.
+
+## Codificadores de números implementados
 
 # Modelo y algoritmo de ML
 
@@ -231,3 +239,14 @@ Archivo: `algorithms/sequetial.js`.
 Clase: `LMLSequential`
 
 Es un wrapper a la clase `tf.sequential` de Tensorflow. Construye una red neuronal feedforward con tres capas: la entrada, una capa oculta y la de salida. Se pueden ajustar los siguientes hyperparámetros: `learning rate`, `batch size` y `epochs`
+
+### KNN
+Archivo: `algorithms/knn.js`
+Clase: `KNN`
+
+Es una implementación del algoritmo K - nearest neiborgh. Se puede ajustar su único hyperparámetro K, que es el número  de vecinos más cercanos.
+
+> [!info] Importante
+> Se ha metido y adaptado dentro del archivo `algorithms/knn.js` el código de https://github.com/tensorflow/tfjs-models/tree/master/knn-classifier
+
+
