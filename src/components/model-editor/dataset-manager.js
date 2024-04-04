@@ -310,7 +310,7 @@ export class DatasetManager extends LitElement {
               <span class="icon">
               <i class="fa-solid fa-images"></i>
               </span>
-              <span>${msg('Upload images')}</span>
+              <span>${msg('Upload')}</span>
             </button>
           </p>
           <p class="control"> 
@@ -318,7 +318,7 @@ export class DatasetManager extends LitElement {
               <span class="icon">
               <i class="fa-solid fa-camera"></i>
               </span>
-              <span>${msg('Take from camera')}</span>
+              <span>${msg('Camera')}</span>
             </button>
           </p>`
 
@@ -328,7 +328,7 @@ export class DatasetManager extends LitElement {
               <span class="icon">
                 <i class="fa-solid fa-camera"></i>
               </span>
-              <span>${msg('Take picture')}</span>
+              <span>${msg('Shot')}</span>
             </button>
           </p>
           <p class="control"> 
@@ -336,7 +336,7 @@ export class DatasetManager extends LitElement {
               <span class="icon">
                 <i class="fa-solid fa-xmark"></i>
               </span>
-              <span>${msg('Close camera')}</span>
+              <span>${msg('Close')}</span>
             </button>
           </p>`
 

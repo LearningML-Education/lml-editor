@@ -57,60 +57,73 @@ export class ModelEditor extends LitElement {
     this.showEval = e.target.id ==  "evalTab";
   }
 
+
+  templateBasic(){
+    return html`
+    <div class="columns">
+      <div class="column">
+        <model-train id="model-train"></model-train>
+      </div>
+
+      <div class="column">
+        <model-learn advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-learn>
+      </div>
+
+
+      <div class="column">
+        <model-eval></model-eval>
+      </div>
+    </div>
+    `
+  }
+
+  templateAdvanced(){
+    return html`
+      <div class="tabs is-centered is-boxed">
+        <ul>
+          <li class=${classMap({ "is-active": this.showTrain})}>
+            <a id="trainTab" @click=${this.showTag}>
+            <span class="icon is-small"><i class="fas fa-play" aria-hidden="true"></i></span>
+              ${msg("Training")}
+            </a>
+          
+          </li>
+          <li class=${classMap({ "is-active": this.showLearn})}>
+            <a id="learnTab" @click=${this.showTag}>
+            <span class="icon is-small"><i class="fas fa-play" aria-hidden="true"></i></span>
+              ${msg("Learn")}
+            </a>
+        </li>
+          <li class=${classMap({ "is-active": this.showEval})}>
+            <a id="evalTab" @click=${this.showTag}>
+              <span class="icon is-small"><i class="fas fa-eye" aria-hidden="true"></i></span>
+              ${msg("Try")}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div ?hidden=${!this.showTrain}>
+        <model-train id="model-train"></model-train>
+      </div>
+
+      <div ?hidden=${!this.showLearn}>
+        <model-learn advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-learn>
+      </div>
+
+      <div ?hidden=${!this.showEval}>
+        <model-eval></model-eval>
+      </div>
+    `;
+  }
+
   render() {
 
     return html`
-
-<div class="tabs is-centered is-boxed">
-  <ul>
-    <li class=${classMap({ "is-active": this.showTrain})}>
-      <a id="trainTab" @click=${this.showTag}>
-      <span class="icon is-small"><i class="fas fa-play" aria-hidden="true"></i></span>
-        ${msg("Training")}
-      </a>
-     
-    </li>
-    <li class=${classMap({ "is-active": this.showLearn})}>
-      <a id="learnTab" @click=${this.showTag}>
-      <span class="icon is-small"><i class="fas fa-play" aria-hidden="true"></i></span>
-        ${msg("Learn")}
-      </a>
-  </li>
-    <li class=${classMap({ "is-active": this.showEval})}>
-      <a id="evalTab" @click=${this.showTag}>
-        <span class="icon is-small"><i class="fas fa-eye" aria-hidden="true"></i></span>
-        ${msg("Try")}
-      </a>
-    </li>
-  </ul>
-</div>
-
-<div ?hidden=${!this.showTrain}>
-  <model-train id="model-train"></model-train>
-</div>
-
-<div ?hidden=${!this.showLearn}>
-  <model-learn advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-learn>
-</div>
-
-<div ?hidden=${!this.showEval}>
-  <model-eval></model-eval>
-</div>
-
-<!-- <div class="columns">
-  <div class="column">
-    <model-train id="model-train"></model-train>
-  </div>
-
-  <div class="column">
-    <model-learn advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-learn>
-  </div>
-
-
-  <div class="column">
-    <model-eval></model-eval>
-  </div>
-</div> -->
+      ${this.advancedMode.enabled ?
+        this.templateAdvanced()
+        :
+        this.templateBasic()}
     `
   }
 

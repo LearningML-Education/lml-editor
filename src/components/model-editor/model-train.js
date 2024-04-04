@@ -88,11 +88,13 @@ export class ModelTrain extends LitElement {
       </div>
     </div>
 
-  
-    ${repeat(Array.from(this._datasetConsumer.value).toReversed(),
-      entry => entry[0],
-      (entry, index) => html`<dataset-manager labelName=${entry[0]}></dataset-manager>`
-    )}
+    <div class="grid is-col-min-12">
+      ${repeat(Array.from(this._datasetConsumer.value).toReversed(),
+        entry => entry[0],
+        (entry, index) => html`<div class="cell"><dataset-manager labelName=${entry[0]}></dataset-manager></div>`
+      )}
+    </div>
+    
     `
   }
 
