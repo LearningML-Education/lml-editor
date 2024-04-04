@@ -16,7 +16,7 @@ export class ModelLearn extends LitElement {
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
   _encoderComsumer = new ContextConsumer(this, { context: encodingContext });
-  _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true  });
+  _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
 
   static properties = {
@@ -76,6 +76,11 @@ export class ModelLearn extends LitElement {
     if (this.advancedMode.enabled) {
       this._modelConsumer.value.setHyperParameters(this.getHyperParameters());
     }
+
+    this.percentageForValidation = parseInt(this.querySelector("#percentageforvalidation").value || 0);
+
+    console.log(`porcentaje validación ${this.percentageForValidation}`)
+
     let promises = [];
     let modelEditor = this._statusConsumer.value.modelEditor;
     let encode = this._encoderComsumer.value[modelEditor]
@@ -89,7 +94,7 @@ export class ModelLearn extends LitElement {
     console.log(this._featuresConsumer.value);
 
     Promise.all(promises).then(() => {
-      this._modelConsumer.value.train(this._featuresConsumer.value).then(m => {
+      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation).then(m => {
         this.buttonLoading = false;
         console.log(m);
       });
@@ -99,7 +104,7 @@ export class ModelLearn extends LitElement {
 
   chooseAlgorithm(e) {
     this.algorithm = e.target.value;
-    
+
     const event = new CustomEvent('change-algorithm', {
       bubbles: true,
       composed: true,

@@ -108,7 +108,6 @@ funcionQueSea(){
 }
 ...
 ```
-
 ## Producir un evento en un componente y detectarlo en otro componente hermano
 
 Cuando emitimos un evento en un componente, este se transmite hacia arriba, de manera que cualquier componente padre puede capturarlo y actuar en consecuencia. Sin embargo, los componentes que están en una rama distinta a la de sus ascendientes, no lo pillan. Por ejemplo, un evento que se origina en el componente `mode-togle-menu` no se puede detectar en el componente `model-learn`. Sin embargo, necesitamos que cuando se haga clic en el botón que conmuta entre el modo básico y el avanzado
@@ -163,6 +162,20 @@ El siguiente diagrama muestra esquemáticamente todo lo anterior:
 > [!info] Una alternativa más simple pero que no funciona (lo he probado)
 > En principio, todo este trasiego de información desde el disparo del evento en `mode-togle-menu`hasta la reacción del componente `lml-learn` para mostrar/ocultar los controles del modo avanzado, podría simplificarse usando un contexto de lit. Por ejemplo se podría usar el `statusContext` y agregarle un atributo `advancedMode`. Cuando el usuario hace clic en el botón de cambio de modo, se modificaría este atributo, el cual estaría inmediatamente disponible en todos los componentes. Sin embargo, aunque esto es así, el DOM no detecta este cambio, con lo cual no puede reaccionar para mostrar/ocultar los controles del modo avanzado.
 
+# Modificar el valor de un contexto
+
+Los contextos, como ya hemos visto, se inician a través de los proveedores de contexto en el componente raíz `lml-app`. En ocasiones habrá que modificar el valor de alguno de los datos almacenados en los contextos. Por  ejemplo, cuando se cambia de algoritmo en  el modo avanzado, hay que cambiar el valor almacenado en el contexto `modelContext`, asignándole  el algoritmo que le corresponda. Este cambio. según he probado, no se puede hacer directamente en un consumidor de contexto, es decir, hacer algo así:
+```javascript
+this._modelConsumer.value = new KNN();
+```
+
+modifica el valor del atributo `modelConsumer` en el componente donde se halla ejecutado ese código, pero no se enteran los consumidores de contexto  de los demás componentes.
+
+Tampoco funciona crear un proveedor de contexto y usar `setValue()` en los componentes hijos. Lo único que he logrado hacer funcionar es usar `setValue()` en el proveedor de contexto del componente raíz `lml-app`. Así que para que esto ocurra, he seguido una estrategia similar a la del apartado anterior: lanzar un evento en el componente que requiere el cambio del valor almacenado en el contexto, pillar el evento en el componente raíz y usar `setValue()` en el proveedor de contexto del componente raíz. Por otro lado es importante, para que se enteren los consumidores de contexto de este cambio, que se use el atributo `subscribe: true`. Es decir, en el componente donde se necesite actualizar este cambio hay que definir el consumidor de contexto así:
+
+```javascript
+_modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
+```
 # Extractores de características (Feature extractors)
 
 Los modelos de ML solo pueden operar con vectores numéricos, es decir, cualquier cosa que se quiera reconocer con un modelo de ML debe ser previamente convertida a un vector. A este proceso de codificación se le conoce como *extracción de características*.

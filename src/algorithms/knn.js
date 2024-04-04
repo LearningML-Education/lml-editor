@@ -345,7 +345,7 @@ export class KNN {
         this.hyperparams = params;
     }
 
-    train(features, validationData) {
+    train(features, percentageForValidation) {
         const classifier = new KNNClassifier();
         let tensors = this.getInputAndOutputTensors(features);
         let inputs = tf.unstack(tensors.inputTensor);

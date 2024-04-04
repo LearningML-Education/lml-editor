@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
+import { splitData } from './util';
 
 /**
  * @typedef {Object} Dimensiones
@@ -138,11 +139,11 @@ export class LMLSequential {
      * 
      * @param {Map(String, tf.Tensor)} features - Mapa de las `features` que han resultado 
      *                                            del proceso de extracción de características
-     * @param {InOutTensors} validationData - un par de tensores con las características del
-     *                                        conjunto de validación y su clasificación (one-hot-encoded)
+     * @param {InOutTensors} percentageForValidation - porcentaje de datos que serán usados para validar
+     *                                                 el modelo
      * @returns {Promise()}
      */
-    train(features, validationData) {
+    train(features, percentageForValidation = 0) {
 
         let dims = this.getFeatureAndNumOfClasses(features);
         let tensors = this.getInputAndOutputTensors(features);
@@ -155,8 +156,19 @@ export class LMLSequential {
             console.log('Accuracy', logs.acc);
         }
 
+        let inputTensor = tensors.inputTensor;
+        let outputTensor = tensors.outputTensor;
+        let validationData;
+        if (percentageForValidation != 0) {
+            let splitFraction = percentageForValidation / 100;
+            let splittedData = splitData(tensors.inputTensor, tensors.outputTensor, splitFraction);
+            inputTensor = splittedData[0]['tensor_inputs_data'];
+            outputTensor = splittedData[0]['tensor_labels_data'];
+            validationData = splittedData[1];
+        }
+
         //Train for 5 epochs with batch size of 32.
-        return this.model.fit(tensors.inputTensor, tensors.outputTensor, {
+        return this.model.fit(inputTensor, outputTensor, {
             epochs: this.hyperparams.epochs,
             batchSize: this.hyperparams.batchSize,
             callbacks: { onBatchEnd },
