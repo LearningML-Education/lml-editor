@@ -79,9 +79,11 @@ export class ModelLearn extends LitElement {
       this._modelConsumer.value.setHyperParameters(this.getHyperParameters());
     }
 
-    this.percentageForValidation = parseInt(this.querySelector("#percentageforvalidation").value || 0);
-
-    console.log(`porcentaje validación ${this.percentageForValidation}`)
+    if (this.querySelector("#percentageforvalidation")) {
+      this.percentageForValidation = parseInt(this.querySelector("#percentageforvalidation").value || 0);
+    }else{
+      this.percentageForValidation = 0;
+    }
 
     let promises = [];
     let modelEditor = this._statusConsumer.value.modelEditor;
@@ -108,10 +110,9 @@ export class ModelLearn extends LitElement {
         console.log(d);
 
         let confusionMatrixElem = this.querySelector("#confusionMatrix");
-
-        Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
-
-        
+        if(this.advancedMode.enabled && this.percentageForValidation != 0){
+          Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
+        }
       });
     });
 
@@ -170,9 +171,9 @@ export class ModelLearn extends LitElement {
 </div>`
   }
 
-  render() {
+  templateAdvanced() {
     return html`
-    <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
+<div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
       <div class="modal-background"></div>
       <div class="modal-content">
         <p class="image is-9by4">
@@ -185,41 +186,63 @@ export class ModelLearn extends LitElement {
     <h4 class="title is-4">${msg('Learn')}</h4>    
     <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
     
-    <div ?hidden=${!this.advancedMode.enabled}>
-      <h4 class="title is-4 mt-2">${msg("Advanced mode")}</h4>
-      
-        <div class="box">
-          <h5 class="title is-5">${msg("Algorithm")}</h5>
-          <div class="field">
-            <label class="label">${msg("Choose Machine Learning Algorithm:")}</label>
-            <div class="control">
-              <div @click=${this.chooseAlgorithm} class="select">
-                <select>
-                  <option value="ann">${msg("Neural network")}</option>
-                  <option value="knn">${msg("KNN")}</option>
-                </select>
-              </div>
+    <h4 class="title is-4 mt-2">${msg("Advanced mode")}</h4>
+    
+      <div class="box">
+        <h5 class="title is-5">${msg("Algorithm")}</h5>
+        <div class="field">
+          <label class="label">${msg("Choose Machine Learning Algorithm:")}</label>
+          <div class="control">
+            <div @click=${this.chooseAlgorithm} class="select">
+              <select>
+                <option value="ann">${msg("Neural network")}</option>
+                <option value="knn">${msg("KNN")}</option>
+              </select>
             </div>
           </div>
-         
-          ${this.algorithm == 'ann' ?
+        </div>
+        
+        ${this.algorithm == 'ann' ?
         this.templateANNParams()
         :
         this.templateKNNParams()}
-        </div>
-      
-        <div class="box">
-          <h5 class="title is-5">${msg("Validation")}</h5>
-          <div class="field">
-            <label class="label">${msg("Percentage of samples for validation:")}</label>
-            <div class="control">
-              <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
-            </div>
+      </div>
+    
+      <div class="box">
+        <h5 class="title is-5">${msg("Validation")}</h5>
+        <div class="field">
+          <label class="label">${msg("Percentage of samples for validation:")}</label>
+          <div class="control">
+            <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
           </div>
-          <div id="confusionMatrix"></div>
         </div>
-              
-    </div >
+        <div id="confusionMatrix"></div>
+      </div>
+            
+      <div class="block mt-2">
+        <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>
+        <span class="icon"><i class="fa-solid fa-gears"></i></span>
+        <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
+      </button> 
+    </div >    
+    `;
+  }
+
+  templateBasic() {
+    return html`
+<div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <p class="image is-9by4">
+          <img src="/images/robot.gif">
+        </p>
+      </div>
+    </div>
+
+    
+    <h4 class="title is-4">${msg('Learn')}</h4>    
+    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
+      
 
       <div class="block mt-2">
         <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>
@@ -227,6 +250,15 @@ export class ModelLearn extends LitElement {
         <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
       </button> 
     </div >
+    `;
+  }
+
+  render() {
+    return html`
+    ${this.advancedMode.enabled ?
+        this.templateAdvanced()
+        :
+        this.templateBasic()}
 
       `
   }
