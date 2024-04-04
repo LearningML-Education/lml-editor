@@ -27,46 +27,6 @@ export class ModelLearn extends LitElement {
     advancedMode: { type: Object, attribute: 'advanced-mode' }
   }
 
-  firstUpdated() {
-
-    let gd = this.querySelector("#gd");
-  
-    
-    var trace1 = {
-      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      y: [20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
-      type: 'bar',
-      name: 'Primary Product',
-      marker: {
-        color: 'rgb(49,130,189)',
-        opacity: 0.7,
-      }
-    };
-
-    var trace2 = {
-      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      y: [19, 14, 22, 14, 16, 19, 15, 14, 10, 12, 12, 16],
-      type: 'bar',
-      name: 'Secondary Product',
-      marker: {
-        color: 'rgb(204,204,204)',
-        opacity: 0.5
-      }
-    };
-
-    var data = [trace1, trace2];
-
-    var layout = {
-      title: '2013 Sales Report',
-      xaxis: {
-        tickangle: -45
-      },
-      barmode: 'group',
-    };
-
-    Plotly.newPlot(gd, data, layout);
-  }
-
   constructor() {
     super();
     this.buttonLoading = false;
@@ -138,12 +98,15 @@ export class ModelLearn extends LitElement {
     Promise.all(promises).then(() => {
       this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation).then(result => {
         this.buttonLoading = false;
-        let cm;
-        if (this.percentageForValidation != 0) {
-          let text_labels = Array.from(this._featuresConsumer.value.keys());
-          confusionMatrix(result.validationDataset, text_labels, this._modelConsumer.value)
-        }
         console.log(result);
+        return result;
+      }).then(r => {
+        let text_labels = Array.from(this._featuresConsumer.value.keys());
+        let dataForPlotly = confusionMatrix(r.validationDataset, text_labels, this._modelConsumer.value)
+        return dataForPlotly;
+      }).then(d => {
+        console.log(d);
+        
       });
     });
 
@@ -204,10 +167,6 @@ export class ModelLearn extends LitElement {
 
   render() {
     return html`
-
-<div id="gd"></div>
-
-
     <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
       <div class="modal-background"></div>
       <div class="modal-content">
@@ -252,6 +211,7 @@ export class ModelLearn extends LitElement {
               <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
             </div>
           </div>
+          <div id="confusionMatrix"></div>
         </div>
               
     </div >
