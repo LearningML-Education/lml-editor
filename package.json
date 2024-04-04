@@ -15,7 +15,8 @@
     "@tensorflow/tfjs": "^4.16.0",
     "blueimp-md5": "^2.19.0",
     "file-saver-es": "^2.0.5",
-    "lit": "^3.0.2"
+    "lit": "^3.0.2",
+    "plotly.js-dist-min": "^2.30.1"
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.7.1",
