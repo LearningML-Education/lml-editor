@@ -106,6 +106,11 @@ export class ModelLearn extends LitElement {
         return dataForPlotly;
       }).then(d => {
         console.log(d);
+
+        let confusionMatrixElem = this.querySelector("#confusionMatrix");
+
+        Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
+
         
       });
     });
