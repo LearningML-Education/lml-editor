@@ -163,7 +163,7 @@ export class LMLSequential {
             let splitFraction = percentageForValidation / 100;
             let splittedData = splitData(tensors.inputTensor, tensors.outputTensor, splitFraction);
             inputTensor = splittedData[0]['tensor_inputs_data'];
-            outputTensor = splittedData[0]['tensor_labels_data'];
+            outputTensor = splittedData[0]['tensor_outputs_data'];
             validationData = splittedData[1];
         }
 
@@ -177,7 +177,18 @@ export class LMLSequential {
             validationData: validationData
         }).then(info => {
             this.model.save('indexeddb://lml-sequential-model');
-            return { model: this.model, info }
+            let result = {
+                model: this.model,                
+                info: info,
+                validationDataset: null
+            }
+            if(validationData){
+                result['validationDataset'] = {
+                    tensor_inputs: validationData[0],
+                    tensor_outputs: validationData[1]
+                };
+            }
+            return result;
         });
     }
 

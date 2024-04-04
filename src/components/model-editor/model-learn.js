@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import { ContextConsumer, ContextProvider } from '@lit/context';
+import { ContextConsumer } from '@lit/context';
+import { confusionMatrix } from '../../algorithms/util.js';
 import {
   statusContext,
   datasetContext,
@@ -94,9 +95,14 @@ export class ModelLearn extends LitElement {
     console.log(this._featuresConsumer.value);
 
     Promise.all(promises).then(() => {
-      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation).then(m => {
+      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation).then(result => {
         this.buttonLoading = false;
-        console.log(m);
+        let cm;
+        if (this.percentageForValidation != 0) {
+          let text_labels = Array.from(this._featuresConsumer.value.keys());
+          confusionMatrix(result.validationDataset, text_labels, this._modelConsumer.value)
+        }
+        console.log(result);
       });
     });
 
