@@ -17,11 +17,14 @@ import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
-import { useEncoder } from 'lml-algorithms';
-import { getMobilenetEncoder } from 'lml-algorithms';
-import { numericalEncoder } from 'lml-algorithms';
-import { LMLSequential } from '../algorithms/sequential';
-import { KNN } from '../algorithms/knn';
+import { 
+    useEncoder,
+    getMobilenetEncoder,
+    numericalEncoder,
+    LMLSequential, 
+    KNN 
+} from 'lml-algorithms';
+
 
 
 // Configuration is loaded
