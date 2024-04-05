@@ -22,6 +22,11 @@ export class MainMenu extends LitElement {
         updateWhenLocaleChanges(this);
     }
 
+    initScratch(){
+        let urlScratch = this._configConsumer.value.urlScratch
+        window.open(urlScratch);
+    }
+
     templateMenu(){
         if(this.menu == 'home'){
             return html`
@@ -36,6 +41,11 @@ export class MainMenu extends LitElement {
             <input-menu class="component"></input-menu>              
             <learn-menu class="component"></learn-menu>
             <mode-toggle-menu class="component"></mode-toggle-menu> 
+            <div class="navbar-item">
+                <a  @click="${this.initScratch}">                
+                    <img src="/images/scratch_icon.svg"                
+                </a>
+            </div>
             `;
         }
     }

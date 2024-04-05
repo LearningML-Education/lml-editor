@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs-core';
+import { splitData } from './util';
 
 function concatWithNulls(ndarray1, ndarray2) {
     if (ndarray1 == null && ndarray2 == null) {
@@ -345,9 +346,21 @@ export class KNN {
         this.hyperparams = params;
     }
 
-    train(features, percentageForValidation) {
+    train(features, percentageForValidation = 0) {
         const classifier = new KNNClassifier();
         let tensors = this.getInputAndOutputTensors(features);
+
+        let inputTensor = tensors.inputTensor;
+        let outputTensor = tensors.outputTensor;
+        let validationData;
+        if (percentageForValidation != 0) {
+            let splitFraction = percentageForValidation / 100;
+            let splittedData = splitData(tensors.inputTensor, tensors.outputTensor, splitFraction);
+            inputTensor = splittedData[0]['tensor_inputs_data'];
+            outputTensor = splittedData[0]['tensor_outputs_data'];
+            validationData = splittedData[1];
+        }
+
         let inputs = tf.unstack(tensors.inputTensor);
         let outputs = tf.unstack(tensors.outputTensor);
 
@@ -361,7 +374,19 @@ export class KNN {
         });
         console.log(classifier);
         this.model = classifier;
-        return Promise.resolve({ model: this.model, info: "hola" });
+        let result = {
+            model: this.model,
+            info: "hola",
+            validationDataset: null
+        }
+        if(validationData){
+            result['validationDataset'] = {
+                tensor_inputs: validationData[0],
+                tensor_outputs: validationData[1]
+            };
+        }
+
+        return Promise.resolve(result);
     }
 
     classify(inputTensor) {

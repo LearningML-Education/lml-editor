@@ -11,9 +11,11 @@
             "id": "67ea4381fb0097e6",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "img-doc/Estructura-lml-editor-lit.excalidraw.png"
+                "file": "LearningML v2.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -83,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "img-doc/Estructura-lml-editor-lit.excalidraw.png",
+                "file": "LearningML v2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "img-doc/Estructura-lml-editor-lit.excalidraw.png",
+                "file": "LearningML v2.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -123,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "img-doc/Estructura-lml-editor-lit.excalidraw.png"
+                "file": "LearningML v2.md"
               }
             }
           }
@@ -145,8 +147,9 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "a5c0de5b01e036b7",
+  "active": "67ea4381fb0097e6",
   "lastOpenFiles": [
+    "img-doc/Estructura-lml-editor-lit.excalidraw.png",
     "LearningML v2.md",
     "img-doc/Paso-de-mensajes-entre-componentes.excalidraw.md",
     "img-doc/Pasted image 20240401173454.png",
@@ -155,7 +158,6 @@
     "img-doc/Pasted image 20240401181046.png",
     "Pasted image 20240401191907.png",
     "img-doc/Paso-de-mensajes-entre-componentes.excalidraw.png",
-    "img-doc/Estructura-lml-editor-lit.excalidraw.md",
-    "img-doc/Estructura-lml-editor-lit.excalidraw.png"
+    "img-doc/Estructura-lml-editor-lit.excalidraw.md"
   ]
 }

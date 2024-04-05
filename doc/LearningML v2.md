@@ -263,3 +263,5 @@ Es una implementación del algoritmo K - nearest neiborgh. Se puede ajustar su �
 > Se ha metido y adaptado dentro del archivo `algorithms/knn.js` el código de https://github.com/tensorflow/tfjs-models/tree/master/knn-classifier
 
 
+# Exportación del modelo a Scratch
+
