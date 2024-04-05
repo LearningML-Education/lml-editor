@@ -1,5 +1,7 @@
 import * as tf from '@tensorflow/tfjs-core';
-import { splitData } from './util';
+import { 
+    getFormattedModelResult, 
+    getSuffledAndSplittedTensorsAndValidationData } from './util';
 
 function concatWithNulls(ndarray1, ndarray2) {
     if (ndarray1 == null && ndarray2 == null) {
@@ -305,65 +307,19 @@ export class KNN {
         };
     }
 
-    /**
-     * Dado un Mapa con las características extraídas en el proceso de extracción de 
-     * características del conjunto de datos, devuelve un objeto de tipo `InOutTensors`. 
-     * Los tensores correspondientes serán usados  en proceso de aprendizaje mediante el
-     * algoritmo de ML.
-     * 
-     * @param {Map(String, tf.Tensor)} features - Mapa de las `features` que han resultado 
-     *                                            del proceso de extracción de características
-     * @returns InOutTensors
-     */
-    getInputAndOutputTensors(features) {
-
-        let featuresArray = [];
-        let labelsArray = [];
-
-        let j = 0;
-        for (let label of features.keys()) {
-            let i = 0;
-            this.labels.push(label);
-            let t = features.get(label);
-            let f = tf.unstack(t);
-            for (let n = 0; n < t.shape[0]; n++) {
-                labelsArray.push(tf.oneHot(j, features.size));
-                featuresArray.push(f[i]);
-                i++;
-            }
-            j++;
-
-        }
-
-        let inputTensor = tf.stack(featuresArray);
-        let outputTensor = tf.stack(labelsArray);
-
-        return { inputTensor, outputTensor };
-
-    }
-
     setHyperParameters(params) {
         this.hyperparams = params;
     }
 
     train(features, percentageForValidation = 0) {
+
+        this.labels = Array.from(features.keys());
+        let tensors = getSuffledAndSplittedTensorsAndValidationData(features, percentageForValidation);       
+        
+        ///////////// KNN ////////////
         const classifier = new KNNClassifier();
-        let tensors = this.getInputAndOutputTensors(features);
-
-        let inputTensor = tensors.inputTensor;
-        let outputTensor = tensors.outputTensor;
-        let validationData;
-        if (percentageForValidation != 0) {
-            let splitFraction = percentageForValidation / 100;
-            let splittedData = splitData(tensors.inputTensor, tensors.outputTensor, splitFraction);
-            inputTensor = splittedData[0]['tensor_inputs_data'];
-            outputTensor = splittedData[0]['tensor_outputs_data'];
-            validationData = splittedData[1];
-        }
-
         let inputs = tf.unstack(tensors.inputTensor);
         let outputs = tf.unstack(tensors.outputTensor);
-
 
         inputs.forEach((input, index) => {
             console.log(input);
@@ -372,19 +328,12 @@ export class KNN {
             classifier.addExample(input, label);
 
         });
-        console.log(classifier);
+        //////////////////////////////
+
         this.model = classifier;
-        let result = {
-            model: this.model,
-            info: "hola",
-            validationDataset: null
-        }
-        if(validationData){
-            result['validationDataset'] = {
-                tensor_inputs: validationData[0],
-                tensor_outputs: validationData[1]
-            };
-        }
+        let info = "NO INFO";
+
+        let result = getFormattedModelResult(this.model, info, tensors.validationData);         
 
         return Promise.resolve(result);
     }

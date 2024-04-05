@@ -1,5 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
-import { splitData } from './util';
+import { splitData, getFeatureAndNumOfClasses, getInputAndOutputTensors } from './util';
 
 /**
  * @typedef {Object} Dimensiones
@@ -32,61 +32,6 @@ export class LMLSequential {
         this.hyperparams = params;
     }
 
-    /**
-     * Dado un Mapa con las características extraídas en el proceso de extracción de 
-     * características del conjunto de datos, devuelve un objeto de tipo `Dimensiones`
-     * con la información de la dimensión del vector de características y el nº de clases
-     * 
-     * 
-     * @param {Map(String, tf.Tensor)} features - Mapa de las `features` que han resultado 
-     *                                            del proceso de extracción de características
-     * @returns {Dimensiones} el primer elemento es la dimensión del vector de características 
-     *                        y el segundo es el nº de clases
-     */
-    getFeatureAndNumOfClasses(features) {
-        let featureDim = features.get(Array.from(features.keys())[0]).shape[1];
-        let numOfClasses = features.size;
-
-        return { featureDim, numOfClasses };
-    }
-
-
-    /**
-     * Dado un Mapa con las características extraídas en el proceso de extracción de 
-     * características del conjunto de datos, devuelve un objeto de tipo `InOutTensors`. 
-     * Los tensores correspondientes serán usados  en proceso de aprendizaje mediante el
-     * algoritmo de ML.
-     * 
-     * @param {Map(String, tf.Tensor)} features - Mapa de las `features` que han resultado 
-     *                                            del proceso de extracción de características
-     * @returns InOutTensors
-     */
-    getInputAndOutputTensors(features) {
-
-        let featuresArray = [];
-        let labelsArray = [];
-
-        let j = 0;
-        for (let label of features.keys()) {
-            let i = 0;
-            this.labels.push(label);
-            let t = features.get(label);
-            let f = tf.unstack(t);
-            for (let n = 0; n < t.shape[0]; n++) {
-                labelsArray.push(tf.oneHot(j, features.size));
-                featuresArray.push(f[i]);
-                i++;
-            }
-            j++;
-
-        }
-
-        let inputTensor = tf.stack(featuresArray);
-        let outputTensor = tf.stack(labelsArray);
-
-        return { inputTensor, outputTensor };
-
-    }
 
     /**
      * 
@@ -145,16 +90,8 @@ export class LMLSequential {
      */
     train(features, percentageForValidation = 0) {
 
-        let dims = this.getFeatureAndNumOfClasses(features);
-        let tensors = this.getInputAndOutputTensors(features);
-
-        if (!this.model || (this.hyperparams.learningRate != 0.001)) {
-            this.model = this.buildModel(dims.featureDim, dims.numOfClasses);
-        }
-
-        function onBatchEnd(batch, logs) {
-            console.log('Accuracy', logs.acc);
-        }
+        let dims = getFeatureAndNumOfClasses(features);
+        let tensors = getInputAndOutputTensors(features);
 
         let inputTensor = tensors.inputTensor;
         let outputTensor = tensors.outputTensor;
@@ -166,6 +103,18 @@ export class LMLSequential {
             outputTensor = splittedData[0]['tensor_outputs_data'];
             validationData = splittedData[1];
         }
+
+        //#######################################
+
+        if (!this.model || (this.hyperparams.learningRate != 0.001)) {
+            this.model = this.buildModel(dims.featureDim, dims.numOfClasses);
+        }
+
+        function onBatchEnd(batch, logs) {
+            console.log('Accuracy', logs.acc);
+        }
+
+        
 
         //Train for 5 epochs with batch size of 32.
         return this.model.fit(inputTensor, outputTensor, {
