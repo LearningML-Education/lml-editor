@@ -71,7 +71,7 @@ export class ModelEditor extends LitElement {
 
 
       <div class="column">
-        <model-eval></model-eval>
+        <model-eval advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-eval>
       </div>
     </div>
     `
@@ -112,7 +112,7 @@ export class ModelEditor extends LitElement {
       </div>
 
       <div ?hidden=${!this.showEval}>
-        <model-eval></model-eval>
+        <model-eval advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-eval>
       </div>
     `;
   }

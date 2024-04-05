@@ -13,7 +13,8 @@ export class ModelEval extends LitElement {
   static properties = {
     imageSrc: { type: String },
     cameraOpened: { type: Boolean },
-    results: { type: Array }
+    results: { type: Array },
+    advancedMode: { type: Object, attribute: 'advanced-mode' }
   }
 
   constructor() {
@@ -232,24 +233,56 @@ export class ModelEval extends LitElement {
         return this.templateNumberEval();
     }
   }
+  
+  templateAdvanced(){
+    return html`
+
+<div class="columns">
+    <div class="column">
+      <h4 class="title is-4" > ${msg('Try')}</h4 >
+      ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
+    </div>
+    <div class="column">
+      ${this.results.map((r) => {
+        let result = parseFloat(100 * r[1]).toFixed(3).toString();
+        if (result.includes('.')) {
+          result = result.replace(/\.?0+$/, '');
+        }
+        return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
+      }
+
+      )}  
+    </div>
+</div>
+
+      
+    `;
+  }
+
+  templateBasic(){
+    return html`
+<h4 class="title is-4" > ${msg('Try')}</h4 >
+${this.templateFormEval(this._statusConsumer.value.modelEditor)}
+
+  ${this.results.map((r) => {
+    let result = parseFloat(100 * r[1]).toFixed(3).toString();
+    if (result.includes('.')) {
+      result = result.replace(/\.?0+$/, '');
+    }
+    return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
+  }
+  )} 
+`
+}
 
   render() {
-
     return html`
-      <h4 class="title is-4" > ${msg('Try')}</h4 >
-        ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
+    ${this.advancedMode.enabled ?
+        this.templateAdvanced()
+        :
+        this.templateBasic()}
 
-    ${this.results.map((r) => {
-      let result = parseFloat(100 * r[1]).toFixed(3).toString();
-      if (result.includes('.')) {
-        result = result.replace(/\.?0+$/, '');
-      }
-      return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
-    }
-
-    )}
-      
-    `
+      `
   }
 
   createRenderRoot() {

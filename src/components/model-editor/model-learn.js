@@ -173,7 +173,7 @@ export class ModelLearn extends LitElement {
 
   templateAdvanced() {
     return html`
-<div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
+    <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
       <div class="modal-background"></div>
       <div class="modal-content">
         <p class="image is-9by4">
@@ -188,43 +188,51 @@ export class ModelLearn extends LitElement {
     
     <h4 class="title is-4 mt-2">${msg("Advanced mode")}</h4>
     
-      <div class="box">
-        <h5 class="title is-5">${msg("Algorithm")}</h5>
-        <div class="field">
-          <label class="label">${msg("Choose Machine Learning Algorithm:")}</label>
-          <div class="control">
-            <div @click=${this.chooseAlgorithm} class="select">
-              <select>
-                <option value="ann">${msg("Neural network")}</option>
-                <option value="knn">${msg("KNN")}</option>
-              </select>
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <h5 class="title is-5">${msg("Algorithm")}</h5>
+          <div class="field">
+            <label class="label">${msg("Choose Machine Learning Algorithm:")}</label>
+            <div class="control">
+              <div @click=${this.chooseAlgorithm} class="select">
+                <select>
+                  <option value="ann">${msg("Neural network")}</option>
+                  <option value="knn">${msg("KNN")}</option>
+                </select>
+              </div>
             </div>
           </div>
+          
+          ${this.algorithm == 'ann' ?
+          this.templateANNParams()
+          :
+          this.templateKNNParams()}
+
+        <div class="block mt-2">
+          <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.buttonLoading })}>
+            <span class="icon"><i class="fa-solid fa-gears"></i></span>
+            <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
+          </button> 
+      </div >  
         </div>
-        
-        ${this.algorithm == 'ann' ?
-        this.templateANNParams()
-        :
-        this.templateKNNParams()}
       </div>
-    
-      <div class="box">
-        <h5 class="title is-5">${msg("Validation")}</h5>
-        <div class="field">
-          <label class="label">${msg("Percentage of samples for validation:")}</label>
-          <div class="control">
-            <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
+      <div class="column">
+        <div class="box">
+          <h5 class="title is-5">${msg("Validation")}</h5>
+          <div class="field">
+            <label class="label">${msg("Percentage of samples for validation:")}</label>
+            <div class="control">
+              <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
+            </div>
           </div>
+          <div id="confusionMatrix"></div>
         </div>
-        <div id="confusionMatrix"></div>
       </div>
-            
-      <div class="block mt-2">
-        <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>
-        <span class="icon"><i class="fa-solid fa-gears"></i></span>
-        <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
-      </button> 
-    </div >    
+      
+    </div>
+
+                        
     `;
   }
 
