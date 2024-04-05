@@ -350,6 +350,4 @@ export class KNN {
             return results;
         })
     }
-
-
 }

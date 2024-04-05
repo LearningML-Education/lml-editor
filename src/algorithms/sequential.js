@@ -1,5 +1,9 @@
 import * as tf from '@tensorflow/tfjs';
-import { splitData, getFeatureAndNumOfClasses, getInputAndOutputTensors } from './util';
+import { 
+    getFormattedModelResult,
+    getFeatureAndNumOfClasses,
+    getSuffledAndSplittedTensorsAndValidationData
+ } from './util';
 
 /**
  * @typedef {Object} Dimensiones
@@ -90,22 +94,11 @@ export class LMLSequential {
      */
     train(features, percentageForValidation = 0) {
 
+        this.labels = Array.from(features.keys());
         let dims = getFeatureAndNumOfClasses(features);
-        let tensors = getInputAndOutputTensors(features);
+        let tensors = getSuffledAndSplittedTensorsAndValidationData(features, percentageForValidation);     
 
-        let inputTensor = tensors.inputTensor;
-        let outputTensor = tensors.outputTensor;
-        let validationData;
-        if (percentageForValidation != 0) {
-            let splitFraction = percentageForValidation / 100;
-            let splittedData = splitData(tensors.inputTensor, tensors.outputTensor, splitFraction);
-            inputTensor = splittedData[0]['tensor_inputs_data'];
-            outputTensor = splittedData[0]['tensor_outputs_data'];
-            validationData = splittedData[1];
-        }
-
-        //#######################################
-
+        ////////////// SEQUENTIAL /////////////
         if (!this.model || (this.hyperparams.learningRate != 0.001)) {
             this.model = this.buildModel(dims.featureDim, dims.numOfClasses);
         }
@@ -114,29 +107,18 @@ export class LMLSequential {
             console.log('Accuracy', logs.acc);
         }
 
-        
-
         //Train for 5 epochs with batch size of 32.
-        return this.model.fit(inputTensor, outputTensor, {
+        return this.model.fit(tensors.inputTensor, tensors.outputTensor, {
             epochs: this.hyperparams.epochs,
             batchSize: this.hyperparams.batchSize,
             callbacks: { onBatchEnd },
             shuffle: true,
             //validationSplit: this.params.neural_network.validationSplit/100,
-            validationData: validationData
+            validationData: tensors.validationData
         }).then(info => {
             this.model.save('indexeddb://lml-sequential-model');
-            let result = {
-                model: this.model,                
-                info: info,
-                validationDataset: null
-            }
-            if(validationData){
-                result['validationDataset'] = {
-                    tensor_inputs: validationData[0],
-                    tensor_outputs: validationData[1]
-                };
-            }
+            let result = getFormattedModelResult(this.model, info, tensors.validationData);         
+            
             return result;
         });
     }
