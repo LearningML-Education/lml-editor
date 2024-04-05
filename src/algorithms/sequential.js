@@ -117,6 +117,9 @@ export class LMLSequential {
             validationData: tensors.validationData
         }).then(info => {
             this.model.save('indexeddb://lml-sequential-model');
+            
+            ////////////////////////////////////////
+            
             let result = getFormattedModelResult(this.model, info, tensors.validationData);         
             
             return result;
