@@ -17,10 +17,9 @@ import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
-import { useEncode } from '../feature-extraction/useEncode';
-//import { mobilenetEncoder } from '../feature-extraction/mobilenet';
+import { useEncoder } from 'lml-algorithms';
 import { getMobilenetEncoder } from 'lml-algorithms';
-import { numericalEncoder } from '../feature-extraction/numerical';
+import { numericalEncoder } from 'lml-algorithms';
 import { LMLSequential } from '../algorithms/sequential';
 import { KNN } from '../algorithms/knn';
 
@@ -80,7 +79,7 @@ class LMLApp extends LitElement {
 
             let mobilenetEncoder = getMobilenetEncoder(config.urlBase);
             this.encodingProvider.setValue({
-                text: useEncode,
+                text: useEncoder,
                 image: mobilenetEncoder,
                 numerical: numericalEncoder
             });
