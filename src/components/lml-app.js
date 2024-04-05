@@ -18,7 +18,8 @@ import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
 import { useEncode } from '../feature-extraction/useEncode';
-import { mobilenetEncoder } from '../feature-extraction/mobilenet';
+//import { mobilenetEncoder } from '../feature-extraction/mobilenet';
+import { getMobilenetEncoder } from 'lml-algorithms';
 import { numericalEncoder } from '../feature-extraction/numerical';
 import { LMLSequential } from '../algorithms/sequential';
 import { KNN } from '../algorithms/knn';
@@ -77,6 +78,7 @@ class LMLApp extends LitElement {
                 this.configProvider.setValue(config);
             }, 1000)
 
+            let mobilenetEncoder = getMobilenetEncoder(config.urlBase);
             this.encodingProvider.setValue({
                 text: useEncode,
                 image: mobilenetEncoder,
