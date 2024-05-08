@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext } from '../../contexts';
+import { configContext, modelContext } from '../../contexts';
 import './language-menu';
 import './file-menu';
 import './input-menu';
@@ -12,6 +12,7 @@ import './about-menu';
 export class MainMenu extends LitElement {
 
     _configConsumer = new ContextConsumer(this, { context: configContext });
+    _modelConsumer = new ContextConsumer(this, {context: modelContext});
 
     static properties = {
         menu: {type: String}
@@ -22,8 +23,12 @@ export class MainMenu extends LitElement {
         updateWhenLocaleChanges(this);
     }
 
-    initScratch(){
+    initScratch(){        
         let urlScratch = this._configConsumer.value.urlScratch
+        console.log(urlScratch);
+        if(this._modelConsumer.value.model){
+            urlScratch += '?loadModel=1';
+        }
         window.open(urlScratch);
     }
 
