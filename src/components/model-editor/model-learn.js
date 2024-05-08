@@ -100,10 +100,12 @@ export class ModelLearn extends LitElement {
     Promise.all(promises).then(() => {
       this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation).then(result => {
         this.buttonLoading = false;
-        console.log(result);
+        console.log(result);              
         return result;
       }).then(r => {
         let text_labels = Array.from(this._featuresConsumer.value.keys());
+        this._modelConsumer.value.model.save('localstorage://lml');  
+        localStorage.setItem('lml-labels', text_labels)
         let dataForPlotly = confusionMatrix(r.validationDataset, text_labels, this._modelConsumer.value)
         return dataForPlotly;
       }).then(d => {

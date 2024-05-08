@@ -5,6 +5,6 @@
         "title": "Atención",
         "message": "LearningML necesita tu ayuda."
     },
-    "urlBase": "http://localhost:5173",
-    "urlScratch": "http://localhost:8601"
+    "urlBase": "http://localhost:8888",
+    "urlScratch": "http://localhost:8888/scratch/"
 }
