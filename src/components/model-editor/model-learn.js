@@ -20,6 +20,8 @@ export class ModelLearn extends LitElement {
   _encoderComsumer = new ContextConsumer(this, { context: encodingContext });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
+  bc = new BroadcastChannel('lml-editor');
+
 
   static properties = {
     buttonLoading: { type: Boolean },
@@ -89,6 +91,7 @@ export class ModelLearn extends LitElement {
     let modelEditor = this._statusConsumer.value.modelEditor;
     let encode = this._encoderComsumer.value[modelEditor]
     this.buttonLoading = true;
+    this._featuresConsumer.value.clear();
     this._datasetConsumer.value.forEach((element, key) => {
       promises.push(encode(Array.from(element)).then(features => {
         this._featuresConsumer.value.set(key, features);
@@ -104,7 +107,13 @@ export class ModelLearn extends LitElement {
         return result;
       }).then(r => {
         let text_labels = Array.from(this._featuresConsumer.value.keys());
-        this._modelConsumer.value.model.save('localstorage://lml');  
+        if('save' in this._modelConsumer.value.model){
+          this._modelConsumer.value.model.save('localstorage://lml');    
+          this.bc.postMessage('uploadModel');               
+        }else{
+          alert("Atención: Los modelos KNN aún no son exportados a Scratch");
+        }
+        
         localStorage.setItem('lml-labels', text_labels)
         let dataForPlotly = confusionMatrix(r.validationDataset, text_labels, this._modelConsumer.value)
         return dataForPlotly;
