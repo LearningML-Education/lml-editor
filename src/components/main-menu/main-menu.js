@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, modelContext } from '../../contexts';
+import { configContext, modelContext, statusContext } from '../../contexts';
 import './language-menu';
 import './file-menu';
 import './input-menu';
@@ -13,6 +13,7 @@ export class MainMenu extends LitElement {
 
     _configConsumer = new ContextConsumer(this, { context: configContext });
     _modelConsumer = new ContextConsumer(this, {context: modelContext});
+    _statusConsumer = new ContextConsumer(this, {context: statusContext});
 
     static properties = {
         advancedMode: { type: Object, attribute: 'advanced-mode' },
@@ -25,7 +26,16 @@ export class MainMenu extends LitElement {
     }
 
     initScratch(){        
-        let urlScratch = this._configConsumer.value.urlScratch + "?url_models=" + this._configConsumer.value.urlBase;
+
+        // ATENCIÓN: en lml-editor, modelEditor es un parámetro que representa el tipo de
+        // datos que se desean clasificar/reconocer, que puede ser text, image y numeric.
+        // En lml-scratch el parámetro que almacena esta información se llama modelType, que 
+        // puede ser text, image, number.
+        // HAY QUE HOMOGENEIZAR LA NOMENCLATURA ENTRE AMBAS APLICACIONES PARA ESTE PARÁMETRO
+        let modelType = this._statusConsumer.value.modelEditor == 'numerical'? 'number' : this._statusConsumer.value.modelEditor;
+        let urlScratch = this._configConsumer.value.urlScratch + 
+            "?modelType=" + modelType +
+            "&url_models=" + this._configConsumer.value.urlBase;
         if(this.advancedMode.enabled){
             urlScratch += '&advanced=1';
         }
