@@ -15,6 +15,7 @@ export class MainMenu extends LitElement {
     _modelConsumer = new ContextConsumer(this, {context: modelContext});
 
     static properties = {
+        advancedMode: { type: Object, attribute: 'advanced-mode' },
         menu: {type: String}
     }
 
@@ -24,10 +25,12 @@ export class MainMenu extends LitElement {
     }
 
     initScratch(){        
-        let urlScratch = this._configConsumer.value.urlScratch
-        console.log(urlScratch);
+        let urlScratch = this._configConsumer.value.urlScratch + "?url_models=" + this._configConsumer.value.urlBase;
+        if(this.advancedMode.enabled){
+            urlScratch += '&advanced=1';
+        }
         if(this._modelConsumer.value.model){
-            urlScratch += '?loadModel=1';
+            urlScratch += '&loadModel=1';
         }
         window.open(urlScratch);
     }

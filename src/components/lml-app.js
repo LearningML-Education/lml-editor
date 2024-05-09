@@ -136,7 +136,7 @@ class LMLApp extends LitElement {
     mainMenuTemplate() {
         return html`
         <div class="container is-fluid mb-2">
-            <main-menu></main-menu>
+            <main-menu advanced-mode='{"enabled": ${this.advancedMode}}'></main-menu>
         </div>`;
     }
 
