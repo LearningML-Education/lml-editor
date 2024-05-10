@@ -8,7 +8,7 @@ import './dataset-manager.js';
 
 export class ModelTrain extends LitElement {
 
-  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true  });
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
 
@@ -19,6 +19,15 @@ export class ModelTrain extends LitElement {
   constructor() {
     super();
     updateWhenLocaleChanges(this);
+
+    this.bc = new BroadcastChannel('lml-editor');
+    this.bc.addEventListener('message', message => {
+      console.log(message);
+      if (message.data.operation == 'addLabel') {        
+        this._datasetConsumer.value.set(message.data.label, new Set());
+        this.requestUpdate();
+      }
+    })
   }
 
   connectedCallback() {
@@ -90,9 +99,9 @@ export class ModelTrain extends LitElement {
 
     <div class="grid is-col-min-12">
       ${repeat(Array.from(this._datasetConsumer.value).toReversed(),
-        entry => entry[0],
-        (entry, index) => html`<div class="cell"><dataset-manager labelName=${entry[0]}></dataset-manager></div>`
-      )}
+      entry => entry[0],
+      (entry, index) => html`<div class="cell"><dataset-manager labelName=${entry[0]}></dataset-manager></div>`
+    )}
     </div>
     
     `

@@ -30,6 +30,18 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
     updateWhenLocaleChanges(this);
+
+    this.bc = new BroadcastChannel('lml-editor');
+    this.bc.addEventListener('message', message => {
+      console.log(message);
+      if (message.data.operation == 'addItemToLabel' && message.data.label == this.labelName) {
+        if(this._statusConsumer.value.modelEditor == 'image'){
+          this.addImageToDataset(message.data.item);
+        } else {
+          this.addTextToDataset(message.data.item);
+        }
+      }
+    })
   }
 
   connectedCallback() {
@@ -224,7 +236,7 @@ export class DatasetManager extends LitElement {
     }).catch(e => {
       console.error('Error al iniciar la webcam:', e);
       window.alert(msg("Can't init camera. Are you using it in another application?"));
-    });    
+    });
   }
 
   closeCamera() {
