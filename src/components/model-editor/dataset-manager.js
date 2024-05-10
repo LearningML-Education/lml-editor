@@ -35,11 +35,15 @@ export class DatasetManager extends LitElement {
     this.bc.addEventListener('message', message => {
       console.log(message);
       if (message.data.operation == 'addItemToLabel' && message.data.label == this.labelName) {
-        if(this._statusConsumer.value.modelEditor == 'image'){
+        if (this._statusConsumer.value.modelEditor == 'image') {
           this.addImageToDataset(message.data.item);
         } else {
           this.addTextToDataset(message.data.item);
         }
+      }
+
+      if (message.data.operation == 'removeLabel' && message.data.label == this.labelName) {
+        this._removeClass();
       }
     })
   }
@@ -63,16 +67,20 @@ export class DatasetManager extends LitElement {
     this.editinglabelName = !this.editinglabelName;
   }
 
+  _removeClass() {
+    if (this._datasetConsumer.value.has(this.labelName)) {
+      this._datasetConsumer.value.delete(this.labelName);
+    }
+    console.log(this._datasetConsumer.value);
+
+    this.dispatchEvent(new CustomEvent('remove-label', {
+      bubbles: true
+    }));
+  }
+
   removeClass() {
     if (confirm(msg("Are you sure?"))) {
-      if (this._datasetConsumer.value.has(this.labelName)) {
-        this._datasetConsumer.value.delete(this.labelName);
-      }
-      console.log(this._datasetConsumer.value);
-
-      this.dispatchEvent(new CustomEvent('remove-label', {
-        bubbles: true
-      }));
+      this._removeClass();
     }
   }
 
