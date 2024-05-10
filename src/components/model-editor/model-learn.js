@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { confusionMatrix } from 'lml-algorithms';
+import { confusionMatrix, saveDatasetInLocalStorage } from 'lml-algorithms';
 import {
   statusContext,
   datasetContext,
@@ -83,7 +83,7 @@ export class ModelLearn extends LitElement {
 
     if (this.querySelector("#percentageforvalidation")) {
       this.percentageForValidation = parseInt(this.querySelector("#percentageforvalidation").value || 0);
-    }else{
+    } else {
       this.percentageForValidation = 0;
     }
 
@@ -103,25 +103,27 @@ export class ModelLearn extends LitElement {
     Promise.all(promises).then(() => {
       this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation).then(result => {
         this.buttonLoading = false;
-        console.log(result);              
+        console.log(result);
         return result;
       }).then(r => {
         let text_labels = Array.from(this._featuresConsumer.value.keys());
-        if('save' in this._modelConsumer.value.model){
-          this._modelConsumer.value.model.save('localstorage://lml');    
-          this.bc.postMessage('uploadModel');               
-        }else{
+        localStorage.setItem('lml-labels', text_labels);
+        saveDatasetInLocalStorage('dataset', this._datasetConsumer.value);
+        if ('save' in this._modelConsumer.value.model) {
+          this._modelConsumer.value.model.save('localstorage://lml').then(r => {
+            this.bc.postMessage('uploadModel');
+          });
+          
+        } else {
           alert("Atención: Los modelos KNN aún no son exportados a Scratch");
         }
-        
-        localStorage.setItem('lml-labels', text_labels)
         let dataForPlotly = confusionMatrix(r.validationDataset, text_labels, this._modelConsumer.value)
         return dataForPlotly;
       }).then(d => {
         console.log(d);
 
         let confusionMatrixElem = this.querySelector("#confusionMatrix");
-        if(this.advancedMode.enabled && this.percentageForValidation != 0){
+        if (this.advancedMode.enabled && this.percentageForValidation != 0) {
           Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
         }
       });
@@ -216,9 +218,9 @@ export class ModelLearn extends LitElement {
           </div>
           
           ${this.algorithm == 'ann' ?
-          this.templateANNParams()
-          :
-          this.templateKNNParams()}
+        this.templateANNParams()
+        :
+        this.templateKNNParams()}
 
         <div class="block mt-2">
           <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.buttonLoading })}>
