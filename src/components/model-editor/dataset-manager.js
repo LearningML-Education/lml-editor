@@ -220,6 +220,7 @@ export class DatasetManager extends LitElement {
       this._datasetConsumer.value.set(this.labelName,
         this._datasetConsumer.value.get(this.labelName).add(imageB64));
     }
+    this.requestUpdate();
   }
 
   _uploadImages() {
