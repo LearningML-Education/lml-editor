@@ -31,8 +31,8 @@ export class DatasetManager extends LitElement {
     this.cameraOpened = false;
     updateWhenLocaleChanges(this);
 
-    this.bc = new BroadcastChannel('lml-editor');
-    this.bc.addEventListener('message', message => {
+    this.bcScratch = new BroadcastChannel('lml-scratch');
+    this.bcScratch.addEventListener('message', message => {
       console.log(message);
       if (message.data.operation == 'addItemToLabel' && message.data.label == this.labelName) {
         if (this._statusConsumer.value.modelEditor == 'image') {

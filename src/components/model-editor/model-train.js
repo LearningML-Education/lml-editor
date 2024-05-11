@@ -20,8 +20,8 @@ export class ModelTrain extends LitElement {
     super();
     updateWhenLocaleChanges(this);
 
-    this.bc = new BroadcastChannel('lml-editor');
-    this.bc.addEventListener('message', message => {
+    this.bcScratch = new BroadcastChannel('lml-scratch');
+    this.bcScratch.addEventListener('message', message => {
       console.log(message);
       if (message.data.operation == 'addLabel') {        
         this._datasetConsumer.value.set(message.data.label, new Set());

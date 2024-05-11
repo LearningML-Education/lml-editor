@@ -20,7 +20,7 @@ export class ModelLearn extends LitElement {
   _encoderComsumer = new ContextConsumer(this, { context: encodingContext });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
-  bc = new BroadcastChannel('lml-editor');
+  bcEditor = new BroadcastChannel('lml-editor');
 
 
   static properties = {
@@ -34,6 +34,15 @@ export class ModelLearn extends LitElement {
     this.buttonLoading = false;
     this.algorithm = "ann";
     updateWhenLocaleChanges(this);
+
+    this.bcScratch = new BroadcastChannel('lml-scratch');
+    this.bcScratch.addEventListener('message', message => {
+      if (message.data == 'updateModel') {
+        if ('tensorflowjs_models/lml/weight_data' in localStorage) {
+          this._modelConsumer.value.load('localstorage://lml');
+        }
+      }
+    });
   }
 
   learningText(editorType) {
@@ -111,9 +120,9 @@ export class ModelLearn extends LitElement {
         saveDatasetInLocalStorage('dataset', this._datasetConsumer.value);
         if ('save' in this._modelConsumer.value.model) {
           this._modelConsumer.value.model.save('localstorage://lml').then(r => {
-            this.bc.postMessage('uploadModel');
+            this.bcEditor.postMessage('updateModel');
           });
-          
+
         } else {
           alert("Atención: Los modelos KNN aún no son exportados a Scratch");
         }
