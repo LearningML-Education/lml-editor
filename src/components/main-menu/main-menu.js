@@ -72,7 +72,7 @@ export class MainMenu extends LitElement {
         return html`
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="http://localhost:5173">
+                <a class="navbar-item" href="${this._configConsumer.value.urlBase}">
                 <img src="/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
                 </a>
 
