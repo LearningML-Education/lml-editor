@@ -17,12 +17,13 @@ import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
-import { 
+import {
     useEncoder,
     getMobilenetEncoder,
     numericalEncoder,
-    LMLSequential, 
-    KNN 
+    LMLSequential,
+    KNN,
+    getDatasetFromLocalStorage
 } from 'lml-algorithms';
 
 
@@ -50,6 +51,20 @@ class LMLApp extends LitElement {
         this.featuresProvider = new ContextProvider(this, { context: featuresContext });
         this.encodingProvider = new ContextProvider(this, { context: encodingContext });
         this.modelProvider = new ContextProvider(this, { context: modelContext });
+
+        /**
+         * Cuando se reciba el evento `rebuildEditor` del canal lml-scratch, se creará un nuevo
+         * dataset correspondiente con el que Scratch ha dejado en el localStorage al cargar 
+         * el fichero sb3S
+         */
+        this.bcScratch = new BroadcastChannel('lml-scratch');
+        this.bcScratch.addEventListener('message', message => {
+
+            if (message.data == 'rebuildEditor') {
+                this.datasetProvider.setValue(getDatasetFromLocalStorage('dataset'));
+                this.requestUpdate();
+            }
+        })
 
         this.statusProvider.setValue({
             modelEditor: 'text',

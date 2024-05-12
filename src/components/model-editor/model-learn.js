@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { confusionMatrix, saveDatasetInLocalStorage } from 'lml-algorithms';
+import { confusionMatrix, saveDatasetInLocalStorage, getDatasetFromLocalStorage } from 'lml-algorithms';
 import {
   statusContext,
   datasetContext,
