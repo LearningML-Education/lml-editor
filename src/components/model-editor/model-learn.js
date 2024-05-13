@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { confusionMatrix, saveDatasetInLocalStorage, getDatasetFromLocalStorage } from 'lml-algorithms';
+import { confusionMatrix, serializeMap } from 'lml-algorithms';
 import {
   statusContext,
   datasetContext,
@@ -115,9 +115,18 @@ export class ModelLearn extends LitElement {
         console.log(result);
         return result;
       }).then(r => {
-        let text_labels = Array.from(this._featuresConsumer.value.keys());
-        localStorage.setItem('lml-labels', text_labels);
-        saveDatasetInLocalStorage('dataset', this._datasetConsumer.value);
+        let lmlModelMetadata = {
+          model: {
+            labels: this._modelConsumer.value.labels,
+            modelAlgorithm: this._modelConsumer.value.getName(),
+            hyperParameters: this._modelConsumer.value.hyperparams,
+          },
+          modelDataType: this._statusConsumer.value.modelEditor,
+          modelName: this._statusConsumer.value.modelName,
+          dataset: serializeMap(this._datasetConsumer.value),          
+        };
+        localStorage.setItem('lmlModelMetadata', JSON.stringify(lmlModelMetadata));
+
         if ('save' in this._modelConsumer.value.model) {
           this._modelConsumer.value.model.save('localstorage://lml').then(r => {
             this.bcEditor.postMessage('updateModel');
@@ -126,7 +135,7 @@ export class ModelLearn extends LitElement {
         } else {
           alert("Atención: Los modelos KNN aún no son exportados a Scratch");
         }
-        let dataForPlotly = confusionMatrix(r.validationDataset, text_labels, this._modelConsumer.value)
+        let dataForPlotly = confusionMatrix(r.validationDataset, lmlModelMetadata.labels, this._modelConsumer.value)
         return dataForPlotly;
       }).then(d => {
         console.log(d);

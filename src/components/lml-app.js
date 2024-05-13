@@ -23,7 +23,7 @@ import {
     numericalEncoder,
     LMLSequential,
     KNN,
-    getDatasetFromLocalStorage
+    deserializeToMap
 } from 'lml-algorithms';
 
 
@@ -61,7 +61,7 @@ class LMLApp extends LitElement {
         this.bcScratch.addEventListener('message', message => {
 
             if (message.data == 'rebuildEditor') {
-                this.datasetProvider.setValue(getDatasetFromLocalStorage('dataset'));
+                this.datasetProvider.setValue(deserializeToMap(localStorage.getItem('dataset')));
                 this.requestUpdate();
             }
         })

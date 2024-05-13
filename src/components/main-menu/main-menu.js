@@ -27,15 +27,8 @@ export class MainMenu extends LitElement {
 
     initScratch(){        
 
-        // ATENCIÓN: en lml-editor, modelEditor es un parámetro que representa el tipo de
-        // datos que se desean clasificar/reconocer, que puede ser text, image y numeric.
-        // En lml-scratch el parámetro que almacena esta información se llama modelType, que 
-        // puede ser text, image, number.
-        // HAY QUE HOMOGENEIZAR LA NOMENCLATURA ENTRE AMBAS APLICACIONES PARA ESTE PARÁMETRO
-        let modelType = this._statusConsumer.value.modelEditor == 'numerical'? 'number' : this._statusConsumer.value.modelEditor;
         let urlScratch = this._configConsumer.value.urlScratch + 
-            "?modelType=" + modelType +
-            "&url_models=" + this._configConsumer.value.urlBase;
+            "?url_models=" + this._configConsumer.value.urlBase;
         if(this.advancedMode.enabled){
             urlScratch += '&advanced=1';
         }
