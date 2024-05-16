@@ -41,6 +41,8 @@ class LMLApp extends LitElement {
     constructor() {
         super();
 
+        localStorage.clear();
+
         this.loading = true;
         this.page = 'home';
         this.advancedMode = false;
