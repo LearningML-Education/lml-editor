@@ -7,7 +7,7 @@ import './model-card.js';
 
 export class ModelSelector extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
+  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
 
 
   constructor() {

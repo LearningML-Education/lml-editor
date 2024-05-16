@@ -68,7 +68,12 @@ class LMLApp extends LitElement {
                 this.featuresProvider.setValue(new Map());
                 switch(lmlModelMetadata.model.modelAlgorithm){
                     case 'sequential':
-                        this.modelProvider.setValue(new LMLSequential);
+                        let m = new LMLSequential();
+                        m.setHyperParameters(lmlModelMetadata.model.hyperParameters);
+                        m.labels = lmlModelMetadata.model.labels;
+                        m.load("localstorage://lml").then(r => {
+                            this.modelProvider.setValue(m);
+                        });                    
                         break;
                     case 'knn':
                         this.modelProvider.setValue(new KNN);

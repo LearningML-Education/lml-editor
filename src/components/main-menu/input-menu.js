@@ -6,8 +6,8 @@ import { configContext, statusContext } from '../../contexts.js';
 
 export class InputMenu extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
-  _statusConsumer = new ContextConsumer(this, { context: statusContext });
+  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
   static properties = {
     name: { type:String }

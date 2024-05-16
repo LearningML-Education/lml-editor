@@ -532,6 +532,7 @@ export class DatasetManager extends LitElement {
   }
 
   render() {
+    console.log("IUUUUUU");
     return html`
 <nav class="panel mb-3">
   <p class="panel-heading">

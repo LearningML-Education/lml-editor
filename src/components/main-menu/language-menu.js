@@ -13,7 +13,7 @@ const localeNames = {
 
 export class LanguageMenu extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
+  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
 
   constructor() {
     super();

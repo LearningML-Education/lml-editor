@@ -7,7 +7,7 @@ import { uploadImages } from './uploadImages.js';
 export class ModelEval extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
-  _encodingConsumer = new ContextConsumer(this, { context: encodingContext });
+  _encodingConsumer = new ContextConsumer(this, { context: encodingContext, subscribe: true });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
   static properties = {

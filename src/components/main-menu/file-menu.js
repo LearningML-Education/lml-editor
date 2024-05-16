@@ -7,9 +7,9 @@ import { saveAs } from 'file-saver-es';
 
 export class FileMenu extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext });
+  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true  });
-  _statusConsumer = new ContextConsumer(this, { context: statusContext });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
   static properties = {
     showSave: { type: Boolean }

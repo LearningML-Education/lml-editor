@@ -6,7 +6,7 @@ import { configContext } from '../../contexts.js';
 
 export class InitMessage extends LitElement {
 
-    _configConsumer = new ContextConsumer(this, { context: configContext });
+    _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
 
     static properties = {
         title: { type: String },

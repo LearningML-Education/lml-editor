@@ -6,7 +6,7 @@ import { statusContext } from '../../contexts.js';
 
 export class ModelCard extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext });
+  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
 
   static properties = {

@@ -11,41 +11,41 @@ import './about-menu';
 
 export class MainMenu extends LitElement {
 
-    _configConsumer = new ContextConsumer(this, { context: configContext });
-    _modelConsumer = new ContextConsumer(this, {context: modelContext});
-    _statusConsumer = new ContextConsumer(this, {context: statusContext});
+    _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
+    _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
+    _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
 
     static properties = {
         advancedMode: { type: Object, attribute: 'advanced-mode' },
-        menu: {type: String}
+        menu: { type: String }
     }
 
-    constructor(){
+    constructor() {
         super();
         updateWhenLocaleChanges(this);
     }
 
-    initScratch(){        
+    initScratch() {
 
-        let urlScratch = this._configConsumer.value.urlScratch + 
+        let urlScratch = this._configConsumer.value.urlScratch +
             "?url_models=" + this._configConsumer.value.urlBase;
-        if(this.advancedMode.enabled){
+        if (this.advancedMode.enabled) {
             urlScratch += '&advanced=1';
         }
-        if(this._modelConsumer.value.model){
+        if (this._modelConsumer.value.model) {
             urlScratch += '&loadModel=1';
         }
         window.open(urlScratch);
     }
 
-    templateMenu(){
-        if(this.menu == 'home'){
+    templateMenu() {
+        if (this.menu == 'home') {
             return html`
                 <language-menu class="component"></language-menu>                
                 <file-menu class="component"></file-menu>                
                 <learn-menu class="component"></learn-menu>   
             `;
-        }else{
+        } else {
             return html`
             <language-menu class="component"></language-menu>                
             <file-menu showSave class="component"></file-menu>  
