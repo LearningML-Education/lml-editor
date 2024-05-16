@@ -15,9 +15,9 @@ import Plotly from 'plotly.js-dist-min'
 export class ModelLearn extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
-  _datasetConsumer = new ContextConsumer(this, { context: datasetContext });
-  _featuresConsumer = new ContextConsumer(this, { context: featuresContext });
-  _encoderComsumer = new ContextConsumer(this, { context: encodingContext });
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true});
+  _featuresConsumer = new ContextConsumer(this, { context: featuresContext, subscribe: true });
+  _encoderComsumer = new ContextConsumer(this, { context: encodingContext, subscribe: true });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
   bcEditor = new BroadcastChannel('lml-editor');
@@ -116,13 +116,8 @@ export class ModelLearn extends LitElement {
         return result;
       }).then(r => {
         let lmlModelMetadata = {
-          model: {
-            labels: this._modelConsumer.value.labels,
-            modelAlgorithm: this._modelConsumer.value.getName(),
-            hyperParameters: this._modelConsumer.value.hyperparams,
-          },
-          modelDataType: this._statusConsumer.value.modelEditor,
-          modelName: this._statusConsumer.value.modelName,
+          model: this._modelConsumer.value.serialize(),
+          status: this._statusConsumer.value,          
           dataset: serializeMap(this._datasetConsumer.value),          
         };
         localStorage.setItem('lmlModelMetadata', JSON.stringify(lmlModelMetadata));

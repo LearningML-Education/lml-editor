@@ -61,7 +61,19 @@ class LMLApp extends LitElement {
         this.bcScratch.addEventListener('message', message => {
 
             if (message.data == 'rebuildEditor') {
-                this.datasetProvider.setValue(deserializeToMap(localStorage.getItem('dataset')));
+                let lmlModelMetadata = JSON.parse(localStorage.getItem('lmlModelMetadata'));  
+
+                this.statusProvider.setValue(lmlModelMetadata.status);
+                this.datasetProvider.setValue(deserializeToMap(lmlModelMetadata.dataset));
+                this.featuresProvider.setValue(new Map());
+                switch(lmlModelMetadata.model.modelAlgorithm){
+                    case 'sequential':
+                        this.modelProvider.setValue(new LMLSequential);
+                        break;
+                    case 'knn':
+                        this.modelProvider.setValue(new KNN);
+                        break;
+                }
                 this.requestUpdate();
             }
         })
