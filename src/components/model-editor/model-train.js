@@ -13,7 +13,8 @@ export class ModelTrain extends LitElement {
 
 
   static properties = {
-    dataset: { type: Set }
+    dataset: { type: Set },
+    advancedMode: { type: Object, attribute: 'advanced-mode' }
   }
 
   constructor() {
@@ -81,7 +82,8 @@ export class ModelTrain extends LitElement {
 
     return html`
 
-    <h4 class="title is-4">${msg('Training')}</h4>
+    <h4 ?hidden="${this.advancedMode}" class="title is-4">${msg('Training')}</h4>
+
     <h6 class="subtitle is-6">${this.trainingText(this._statusConsumer.value.modelEditor)}</h6>
     <div class="field has-addons">
       <div class="control">

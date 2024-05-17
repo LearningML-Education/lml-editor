@@ -79,7 +79,7 @@ export class ModelEditor extends LitElement {
 
   templateAdvanced(){
     return html`
-      <div class="tabs is-centered is-boxed">
+      <div class="tabs is-left is-boxed">
         <ul>
           <li class=${classMap({ "is-active": this.showTrain})}>
             <a id="trainTab" @click=${this.showTag}>
@@ -101,7 +101,7 @@ export class ModelEditor extends LitElement {
       </div>
 
       <div ?hidden=${!this.showTrain}>
-        <model-train id="model-train"></model-train>
+        <model-train advanced-mode='{"enabled": ${this.advancedMode.enabled}}' id="model-train"></model-train>
       </div>
 
       <div ?hidden=${!this.showLearn}>

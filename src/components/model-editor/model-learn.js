@@ -218,17 +218,14 @@ export class ModelLearn extends LitElement {
       <div class="modal-background"></div>
       <div class="modal-content">
         <p class="image is-9by4">
-          <img src="/images/robot.gif">
+          <img src="/images/modern-times.gif">
         </p>
       </div>
     </div>
 
-    
-    <h4 class="title is-4">${msg('Learn')}</h4>    
+ 
     <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
-    
-    <h4 class="title is-4 mt-2">${msg("Advanced mode")}</h4>
-    
+        
     <div class="columns">
       <div class="column">
         <div class="box">
@@ -273,7 +270,7 @@ export class ModelLearn extends LitElement {
       
     </div>
 
-                        
+  </div>                   
     `;
   }
 
@@ -283,7 +280,7 @@ export class ModelLearn extends LitElement {
       <div class="modal-background"></div>
       <div class="modal-content">
         <p class="image is-9by4">
-          <img src="/images/robot.gif">
+          <img src="/images/modern-times.gif">
         </p>
       </div>
     </div>

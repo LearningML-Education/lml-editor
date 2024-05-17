@@ -164,7 +164,7 @@ export class ModelEval extends LitElement {
     return html`
     <h6 class="subtitle is-6">${msg("Introduces new images and checks they are correctly classified")}</h6> 
     
-    <div class="field is-grouped is-grouped-centered">
+    <div class="field is-grouped">
     ${!this.cameraOpened
         ? html`
         <p class="control">      
@@ -245,7 +245,7 @@ export class ModelEval extends LitElement {
 
 <div class="columns">
     <div class="column">
-      <h4 class="title is-4" > ${msg('Try')}</h4 >
+      <h4 ?hidden="${this.advancedMode}" class="title is-4" > ${msg('Try')}</h4 >
       ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
     </div>
     <div class="column">
