@@ -84,8 +84,23 @@ export class ModelLearn extends LitElement {
     return params;
   }
 
+  notEnoughDataToLearn(){
+    let notEnoughData = false;
+    this._datasetConsumer.value.forEach((element) => {
+      if(element.size <= 2){
+        notEnoughData = true;
+        return;
+      }
+    });
+
+    return notEnoughData;
+  }
+
   learn() {
-    console.log(this.algorithm);
+    if(this.notEnoughDataToLearn()){
+      alert(msg('There are not enough data to learn. Add more example,please'));
+      return;
+    }
     if (this.advancedMode.enabled) {
       this._modelConsumer.value.setHyperParameters(this.getHyperParameters());
     }
