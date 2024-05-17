@@ -156,13 +156,7 @@ export class ModelEval extends LitElement {
         <button @click=${this.checkInput} class="button is-primary">
           ${msg("Check")}
         </button>
-      </p>
-      <p class="control">
-        <button class="button">          
-          <img src="/images/scratch_icon.svg">          
-        </button>
-      </p>
-      
+      </p>            
     </div>`;
   }
 
@@ -232,12 +226,6 @@ export class ModelEval extends LitElement {
           ${msg("Check")}
         </button>
       </p>
-      <p class="control">
-        <button class="button">          
-          <img src="/images/scratch_icon.svg">          
-        </button>
-      </p>
-      
     </div>`;
   }
 
