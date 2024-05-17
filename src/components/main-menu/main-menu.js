@@ -53,11 +53,11 @@ export class MainMenu extends LitElement {
             <input-menu class="component"></input-menu>              
             <learn-menu class="component"></learn-menu>
             <mode-toggle-menu class="component"></mode-toggle-menu> 
-            <div class="navbar-item">
-                <a  @click="${this.initScratch}">                
-                    <img src="/images/scratch_icon.svg"                
+            
+                <a class="navbar-item" @click="${this.initScratch}">                
+                <img src="/images/scratch_icon.svg">  ${msg('Open Scratch')}
                 </a>
-            </div>
+            
             `;
         }
     }
