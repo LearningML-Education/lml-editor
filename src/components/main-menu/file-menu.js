@@ -62,8 +62,8 @@ export class FileMenu extends LitElement {
 
     try {
       inputData = JSON.parse(file);
-      Object.keys(inputData.data).forEach(key => {
-        this._statusConsumer.value.modelEditor = inputData.type;
+      this._statusConsumer.value.modelEditor = inputData.type;
+      Object.keys(inputData.data).forEach(key => {        
         let data = inputData.data[key];
         for (let d of data) {
           if (!this._datasetConsumer.value.has(key)){
@@ -77,6 +77,9 @@ export class FileMenu extends LitElement {
           this._datasetConsumer.value.get(key).add(d);
         }
       });
+
+      let bc = new BroadcastChannel('lml-internal');
+      bc.postMessage('requestUpdate');
     }
     catch {
       alert("Fichero erróneo. No puedo interpretar ese fichero. ¿Seguro que está bien construido?");

@@ -23,6 +23,13 @@ export class ModelEval extends LitElement {
     this.cameraOpened = false;
     this.results = [];
     updateWhenLocaleChanges(this);
+
+    this.bc = new BroadcastChannel('lml-internal');
+    this.bc.addEventListener('message', message => {
+      if(message.data == 'requestUpdate'){
+        this.requestUpdate();
+      }
+    });
   }
 
   checkInput(e) {

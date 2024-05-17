@@ -145,9 +145,7 @@ class LMLApp extends LitElement {
                     this.modelProvider.setValue(new KNN);
                     break;
             }
-
             this.requestUpdate();
-
         });
     }
 
