@@ -40,30 +40,25 @@ export class AboutMenu extends LitElement {
     <div class="modal-content">
         <div class="card">
             <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                <figure">
+                    <img src="images/genio_maquina.jpg" alt="Placeholder image">
                 </figure>
             </div>
             <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                        </figure>
-                    </div>
+                <div class="media">                   
                     <div class="media-content">
-                        <p class="title is-4">John Smith</p>
-                        <p class="subtitle is-6">@johnsmith</p>
+                        <p>LearningML® Copyright ©2024 Juan David Rodríguez García</p>
+                        <p class="is-size-7">Todos los derechos reservados. "LearningML®" es una marca registrada de Juan David Rodríguez García.</p>
                     </div>
                 </div>
 
                 <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                    <a href="#">#css</a> <a href="#">#responsive</a>
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                  <p>Aprende Machine Learning de la manera más fácil y divertida</p>
+                  <a target="_blank" href="https://web.learningml.org/agradecimientos/">Agradecimientos</a> |
+                  <a target="_blank" href="https://web.learningml.org/patrocinadores-de-learningml/">Patrocinadores</a> |
+                  <a target="_blank" href="https://web.learningml.org/acerca-de-learningml-y-su-autor/">El Proyecto</a>
                 </div>
+              
             </div>
         </div>
     </div>
