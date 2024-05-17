@@ -33,6 +33,9 @@ export class ModelEval extends LitElement {
   }
 
   checkInput(e) {
+    if(!this._modelConsumer.value.model){
+      alert(msg('You must generate a model before trying to classify'));
+    }
     let textToEncode = this.querySelector("#textInput").value;
     let encode = this._encodingConsumer.value.text;
     encode([textToEncode]).then(features => {
@@ -44,6 +47,10 @@ export class ModelEval extends LitElement {
   }
 
   checkImage(image) {
+    if(!this._modelConsumer.value.model){
+      alert(msg('You must generate a model before trying to classify'));
+    }
+
     let encode = this._encodingConsumer.value.image;
     encode([image]).then(features => {
       return this._modelConsumer.value.classify(features);
@@ -54,6 +61,10 @@ export class ModelEval extends LitElement {
   }
 
   checkNumber() {
+    if(!this._modelConsumer.value.model){
+      alert(msg('You must generate a model before trying to classify'));
+    }
+    
     let that = this;
     function isValidNumberEntry(entry) {
       let items = entry.split(",").map(v => parseFloat(v));;
