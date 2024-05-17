@@ -47,7 +47,7 @@ export class ModelCard extends LitElement {
     return html`
   <div class="card">
     <div class="card-image">
-      <figure class="image is-4by3">
+      <figure @click=${this.loadEditor} class="image is-4by3 is-clickable">
         <img src="/images/${this.image}" alt="Placeholder image">
       </figure>
     </div>
@@ -55,9 +55,7 @@ export class ModelCard extends LitElement {
       <div class="content">
         <h3 class="has-text-centered">${this.title}</h3>
         <p class="has-text-centered">${this.description}</p>
-        <div class="buttons">
-          <button @click=${this.loadEditor} class="button is-success is-fullwidth">${msg("Start!")}</button>
-        </div>
+        
       </div>
     </div>
   </div>
