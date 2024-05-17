@@ -83,7 +83,14 @@ class LMLApp extends LitElement {
                 }
                 this.requestUpdate();
             }
-        })
+        });
+
+        this.bcInternal = new BroadcastChannel('lml-internal');
+        this.bcInternal.addEventListener('message', message => {
+            if (message.data == 'requestUpdate'){
+                this.page = 'model-editor';
+            }
+        });
 
         this.statusProvider.setValue({
             modelEditor: 'text',
