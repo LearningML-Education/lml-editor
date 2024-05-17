@@ -83,20 +83,17 @@ export class ModelEditor extends LitElement {
         <ul>
           <li class=${classMap({ "is-active": this.showTrain})}>
             <a id="trainTab" @click=${this.showTag}>
-            <span class="icon is-small"><i class="fas fa-play" aria-hidden="true"></i></span>
               ${msg("Training")}
             </a>
           
           </li>
           <li class=${classMap({ "is-active": this.showLearn})}>
             <a id="learnTab" @click=${this.showTag}>
-            <span class="icon is-small"><i class="fas fa-play" aria-hidden="true"></i></span>
               ${msg("Learn")}
             </a>
         </li>
           <li class=${classMap({ "is-active": this.showEval})}>
             <a id="evalTab" @click=${this.showTag}>
-              <span class="icon is-small"><i class="fas fa-eye" aria-hidden="true"></i></span>
               ${msg("Try")}
             </a>
           </li>
