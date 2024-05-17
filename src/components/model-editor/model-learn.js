@@ -145,7 +145,7 @@ export class ModelLearn extends LitElement {
         } else {
           alert("Atención: Los modelos KNN aún no son exportados a Scratch");
         }
-        let dataForPlotly = confusionMatrix(r.validationDataset, lmlModelMetadata.labels, this._modelConsumer.value)
+        let dataForPlotly = confusionMatrix(r.validationDataset, lmlModelMetadata.model.labels, this._modelConsumer.value)
         return dataForPlotly;
       }).then(d => {
         console.log(d);
