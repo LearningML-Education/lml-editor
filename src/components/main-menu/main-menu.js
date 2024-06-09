@@ -28,7 +28,7 @@ export class MainMenu extends LitElement {
     initScratch() {
 
         let urlScratch = this._configConsumer.value.urlScratch +
-            "?url_models=" + this._configConsumer.value.urlBase +
+            "?url_mobilenet_models=" + this._configConsumer.value.urlBase +
             "&loadModel=1";
         if (this.advancedMode.enabled) {
             urlScratch += '&advanced=1';
