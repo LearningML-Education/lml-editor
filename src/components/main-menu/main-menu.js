@@ -31,7 +31,7 @@ export class MainMenu extends LitElement {
             "?url_mobilenet_models=" + this._configConsumer.value.urlBase +
             "&loadModel=1";
         if (this.advancedMode.enabled) {
-            urlScratch += '&advanced=1';
+            urlScratch += '&mode=advanced';
         }
         // if (this._modelConsumer.value.model) {
         //     urlScratch += '&loadModel=1';

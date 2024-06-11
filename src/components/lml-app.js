@@ -66,7 +66,7 @@ class LMLApp extends LitElement {
                 let lmlModelMetadata = JSON.parse(localStorage.getItem('lmlModelMetadata'));  
 
                 this.statusProvider.setValue(lmlModelMetadata.status);
-                this.datasetProvider.setValue(deserializeToMap(lmlModelMetadata.dataset));
+                //this.datasetProvider.setValue(deserializeToMap(lmlModelMetadata.dataset));
                 this.featuresProvider.setValue(new Map());
                 switch(lmlModelMetadata.model.modelAlgorithm){
                     case 'sequential':

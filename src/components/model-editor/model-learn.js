@@ -15,7 +15,7 @@ import Plotly from 'plotly.js-dist-min'
 export class ModelLearn extends LitElement {
 
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
-  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true});
+  _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext, subscribe: true });
   _encoderComsumer = new ContextConsumer(this, { context: encodingContext, subscribe: true });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
@@ -84,10 +84,10 @@ export class ModelLearn extends LitElement {
     return params;
   }
 
-  notEnoughDataToLearn(){
+  notEnoughDataToLearn() {
     let notEnoughData = false;
     this._datasetConsumer.value.forEach((element) => {
-      if(element.size <= 2){
+      if (element.size <= 2) {
         notEnoughData = true;
         return;
       }
@@ -97,7 +97,7 @@ export class ModelLearn extends LitElement {
   }
 
   learn() {
-    if(this.notEnoughDataToLearn()){
+    if (this.notEnoughDataToLearn()) {
       alert(msg('There are not enough data to learn. Add more example,please'));
       return;
     }
@@ -132,8 +132,8 @@ export class ModelLearn extends LitElement {
       }).then(r => {
         let lmlModelMetadata = {
           model: this._modelConsumer.value.serialize(),
-          status: this._statusConsumer.value,          
-          dataset: serializeMap(this._datasetConsumer.value),          
+          status: this._statusConsumer.value,
+          //dataset: serializeMap(this._datasetConsumer.value),          
         };
         localStorage.setItem('lmlModelMetadata', JSON.stringify(lmlModelMetadata));
 
