@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, datasetContext, statusContext } from '../../contexts.js';
+import { configContext, datasetContext, statusContext, modelContext } from '../../contexts.js';
 import { saveAs } from 'file-saver-es';
 
 
@@ -10,9 +10,11 @@ export class FileMenu extends LitElement {
   _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true  });
   _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
   static properties = {
-    showSave: { type: Boolean }
+    showSaveDataset: { type: Boolean },
+    showSaveModel: { type: Boolean}
   }
 
   constructor() {
@@ -40,6 +42,13 @@ export class FileMenu extends LitElement {
 
     const blob = new Blob([jsonString], { type: 'application/json' });
     saveAs(blob, this._statusConsumer.value.modelName);
+  }
+
+  saveModel(e){
+    this._modelConsumer.value.save().then(r => {      
+      console.log('Model saved to disk');
+      console.log(r);
+    })
   }
 
   truncateNumbers(numbersCSV){
@@ -123,11 +132,15 @@ export class FileMenu extends LitElement {
         <div class="navbar-dropdown">
           
           <a href="${this._configConsumer.value.urlBase}" class="navbar-item">${msg("New")}</a>
-          <a @click=${this.openFileBrowser} class="navbar-item">${msg("Upload from your computer")}</a>
-          ${this.showSave
-        ? html`<a @click=${this.saveDataset}  class="navbar-item">${msg("Save to your computer")}</a>`
+          <a @click=${this.openFileBrowser} class="navbar-item">${msg("Upload dataset from your computer")}</a>
+          ${this.showSaveDataset
+        ? html`<a @click=${this.saveDataset}  class="navbar-item">${msg("Save dataset to your computer")}</a>`
         : html``
-      }
+          }
+          ${this.showSaveModel
+        ? html`<a @click=${this.saveModel}  class="navbar-item">${msg("Save model to your computer")}</a>`
+        : html``
+          }
         </div>
     </div>
         `

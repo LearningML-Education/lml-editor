@@ -49,7 +49,7 @@ export class MainMenu extends LitElement {
         } else {
             return html`
             <language-menu class="component"></language-menu>                
-            <file-menu showSave class="component"></file-menu>  
+            <file-menu showSaveDataset showSaveModel class="component"></file-menu>  
             <input-menu class="component"></input-menu>              
             <learn-menu class="component"></learn-menu>
             <mode-toggle-menu class="component"></mode-toggle-menu> 
