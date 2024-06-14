@@ -49,7 +49,7 @@ export class FileMenu extends LitElement {
       model: this._modelConsumer.value.serialize(),
       status: this._statusConsumer.value,
     };
-    this._modelConsumer.value.save(this._statusConsumer.value.modelName, lmlModelMetadata).then(r => {      
+    this._modelConsumer.value.saveToDisk(this._statusConsumer.value.modelName, lmlModelMetadata).then(r => {      
       console.log('Model saved to disk');
       console.log(r);
     })
