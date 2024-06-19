@@ -71,7 +71,7 @@ class LMLApp extends LitElement {
                 switch(lmlModelMetadata.model.modelAlgorithm){
                     case 'sequential':
                         let m = new LMLSequential();
-                        m.setHyperParameters(lmlModelMetadata.model.hyperParameters);
+                        m.setHyperParameters(lmlModelMetadata.model.hyperparameters);
                         m.labels = lmlModelMetadata.model.labels;
                         m.load("localstorage://lml").then(r => {
                             this.modelProvider.setValue(m);
