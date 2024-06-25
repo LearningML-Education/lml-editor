@@ -246,7 +246,7 @@ export class ModelEval extends LitElement {
 <div class="columns">
     <div class="column">
       <h4 ?hidden="${this.advancedMode}" class="title is-4" > ${msg('Try')}</h4 >
-      ${this.templateFormEval(this._statusConsumer.value.modelEditor)}
+      ${this.templateFormEval(this._statusConsumer.value.modelDataType)}
     </div>
     <div class="column">
       ${this.results.map((r) => {
@@ -268,7 +268,7 @@ export class ModelEval extends LitElement {
   templateBasic(){
     return html`
 <h4 class="title is-4" > ${msg('Try')}</h4 >
-${this.templateFormEval(this._statusConsumer.value.modelEditor)}
+${this.templateFormEval(this._statusConsumer.value.modelDataType)}
 
   ${this.results.map((r) => {
     let result = parseFloat(100 * r[1]).toFixed(3).toString();

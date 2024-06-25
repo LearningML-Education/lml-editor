@@ -27,7 +27,7 @@ export class ModelCard extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener("load-model-editor", e => {
-      this._statusConsumer.value.modelEditor = e.detail;
+      this._statusConsumer.value.modelDataType = e.detail;
     });
   }
 

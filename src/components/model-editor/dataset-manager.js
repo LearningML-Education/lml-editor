@@ -35,7 +35,7 @@ export class DatasetManager extends LitElement {
     this.bcScratch.addEventListener('message', message => {
       console.log(message);
       if (message.data.operation == 'addItemToLabel' && message.data.label == this.labelName) {
-        if (this._statusConsumer.value.modelEditor == 'image') {
+        if (this._statusConsumer.value.modelDataType == 'image') {
           this.addImageToDataset(message.data.item);
         } else {
           this.addTextToDataset(message.data.item);
@@ -120,7 +120,7 @@ export class DatasetManager extends LitElement {
   addTextToDataset(texts) {
     texts.split("\n").forEach(entry => {
       if (entry == "") return;
-      if (this._statusConsumer.value.modelEditor == 'numerical' && !this.isValidNumberEntry(entry)) {
+      if (this._statusConsumer.value.modelDataType == 'numerical' && !this.isValidNumberEntry(entry)) {
         alert(msg("Invalid entry"));
         return;
       }
@@ -547,9 +547,9 @@ export class DatasetManager extends LitElement {
         
   </p>
   
-  ${this.templateData(this._statusConsumer.value.modelEditor)}
+  ${this.templateData(this._statusConsumer.value.modelDataType)}
 
-  ${this.templateButtons(this._statusConsumer.value.modelEditor)}
+  ${this.templateButtons(this._statusConsumer.value.modelDataType)}
    
 </nav>
     `

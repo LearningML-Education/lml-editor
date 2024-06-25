@@ -32,7 +32,7 @@ export class FileMenu extends LitElement {
     });
 
     jsonDataset = {
-      type: this._statusConsumer.value.modelEditor,
+      type: this._statusConsumer.value.modelDataType,
       data: jsonDataset
     }
 
@@ -75,14 +75,14 @@ export class FileMenu extends LitElement {
 
     try {
       inputData = JSON.parse(file);
-      this._statusConsumer.value.modelEditor = inputData.type;
+      this._statusConsumer.value.modelDataType = inputData.type;
       Object.keys(inputData.data).forEach(key => {        
         let data = inputData.data[key];
         for (let d of data) {
           if (!this._datasetConsumer.value.has(key)){
             this._datasetConsumer.value.set(key, new Set());
           }                   
-          if (this._statusConsumer.value.modelEditor == 'numerical') {
+          if (this._statusConsumer.value.modelDataType == 'numerical') {
               d = this.truncateNumbers(d);
               this._statusConsumer.value.dimension = d.split(",").length;
           }

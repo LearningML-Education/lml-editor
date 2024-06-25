@@ -112,8 +112,8 @@ export class ModelLearn extends LitElement {
     }
 
     let promises = [];
-    let modelEditor = this._statusConsumer.value.modelEditor;
-    let encode = this._encoderComsumer.value[modelEditor]
+    let modelDataType = this._statusConsumer.value.modelDataType;
+    let encode = this._encoderComsumer.value[modelDataType]
     this.buttonLoading = true;
     this._featuresConsumer.value.clear();
     this._datasetConsumer.value.forEach((element, key) => {
@@ -224,7 +224,7 @@ export class ModelLearn extends LitElement {
     </div>
 
  
-    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
+    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelDataType)}</h6>
         
     <div class="columns">
       <div class="column">
@@ -250,7 +250,7 @@ export class ModelLearn extends LitElement {
         <div class="block mt-2">
           <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.buttonLoading })}>
             <span class="icon"><i class="fa-solid fa-gears"></i></span>
-            <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
+            <span>${this.learnButtonText(this._statusConsumer.value.modelDataType)}</span>
           </button> 
       </div >  
         </div>
@@ -287,13 +287,13 @@ export class ModelLearn extends LitElement {
 
     
     <h4 class="title is-4">${msg('Learn')}</h4>    
-    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelEditor)}</h6>
+    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelDataType)}</h6>
       
 
       <div class="block mt-2">
         <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>
         <span class="icon"><i class="fa-solid fa-gears"></i></span>
-        <span>${this.learnButtonText(this._statusConsumer.value.modelEditor)}</span>
+        <span>${this.learnButtonText(this._statusConsumer.value.modelDataType)}</span>
       </button> 
     </div >
     `;

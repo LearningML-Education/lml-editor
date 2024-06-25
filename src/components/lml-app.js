@@ -93,7 +93,7 @@ class LMLApp extends LitElement {
         });
 
         this.statusProvider.setValue({
-            modelEditor: 'text',
+            modelDataType: 'text',
             modelName: "Untitled",
             dimension: 0
         });
