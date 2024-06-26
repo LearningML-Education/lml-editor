@@ -17,12 +17,22 @@ export class MainMenu extends LitElement {
 
     static properties = {
         advancedMode: { type: Object, attribute: 'advanced-mode' },
-        menu: { type: String }
+        menu: { type: String },
+        modelName: {type: String}
     }
 
     constructor() {
         super();
-        updateWhenLocaleChanges(this);
+        this.modelName = "";
+        updateWhenLocaleChanges(this);        
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener("change-input-name", e => {
+            console.log("cambio nombre modelo");
+            this.modelName = e.detail;
+        });
     }
 
     initScratch() {
@@ -50,7 +60,7 @@ export class MainMenu extends LitElement {
             return html`
             <language-menu class="component"></language-menu>                
             <file-menu showSaveDataset showSaveModel class="component"></file-menu>  
-            <input-menu class="component"></input-menu>              
+            <input-menu name="${this.modelName}" class="component"></input-menu>              
             <learn-menu class="component"></learn-menu>
             <mode-toggle-menu class="component"></mode-toggle-menu> 
             

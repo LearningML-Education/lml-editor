@@ -105,6 +105,11 @@ export class FileMenu extends LitElement {
 
     this._dataTypeConsumer.value.name = inputDataName;
 
+    this.dispatchEvent(new CustomEvent('change-input-name', {
+      bubbles: true,
+      detail: inputDataName
+    }));
+
     let fileReader = new FileReader();
 
     fileReader.readAsText(file);

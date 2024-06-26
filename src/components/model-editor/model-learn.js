@@ -35,6 +35,13 @@ export class ModelLearn extends LitElement {
     this.algorithm = "ann";
     updateWhenLocaleChanges(this);
 
+    this.bc = new BroadcastChannel('lml-internal');
+    this.bc.addEventListener('message', message => {
+      if(message.data == 'requestUpdate'){
+        this.requestUpdate();
+      }
+    });
+
     this.bcScratch = new BroadcastChannel('lml-scratch');
     this.bcScratch.addEventListener('message', message => {
       if (message.data == 'updateModel') {
