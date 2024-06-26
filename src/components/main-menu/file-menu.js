@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, datasetContext, statusContext, modelContext } from '../../contexts.js';
+import { configContext, datasetContext, dataTypeContext, modelContext } from '../../contexts.js';
 import { saveAs } from 'file-saver-es';
 
 
@@ -9,7 +9,7 @@ export class FileMenu extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true  });
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
   static properties = {
@@ -32,7 +32,7 @@ export class FileMenu extends LitElement {
     });
 
     jsonDataset = {
-      type: this._statusConsumer.value.modelDataType,
+      type: this._dataTypeConsumer.value.type,
       data: jsonDataset
     }
 
@@ -41,11 +41,11 @@ export class FileMenu extends LitElement {
     console.log(jsonString);
 
     const blob = new Blob([jsonString], { type: 'application/json' });
-    saveAs(blob, this._statusConsumer.value.modelName);
+    saveAs(blob, this._dataTypeConsumer.value.name);
   }
 
   saveModel(e){    
-    this._modelConsumer.value.saveToDisk(this._statusConsumer.value).then(r => {      
+    this._modelConsumer.value.saveToDisk(this._dataTypeConsumer.value).then(r => {      
       console.log('Model saved to disk');
       console.log(r);
     })
@@ -71,16 +71,16 @@ export class FileMenu extends LitElement {
 
     try {
       inputData = JSON.parse(file);
-      this._statusConsumer.value.modelDataType = inputData.type;
+      this._dataTypeConsumer.value.type = inputData.type;
       Object.keys(inputData.data).forEach(key => {        
         let data = inputData.data[key];
         for (let d of data) {
           if (!this._datasetConsumer.value.has(key)){
             this._datasetConsumer.value.set(key, new Set());
           }                   
-          if (this._statusConsumer.value.modelDataType == 'numerical') {
+          if (this._dataTypeConsumer.value.type == 'numerical') {
               d = this.truncateNumbers(d);
-              this._statusConsumer.value.dimension = d.split(",").length;
+              this._dataTypeConsumer.value.dimension = d.split(",").length;
           }
           
           this._datasetConsumer.value.get(key).add(d);
@@ -103,7 +103,7 @@ export class FileMenu extends LitElement {
     let file = e.target.files[0];
     let inputDataName = file.name.replace(/\.[^/.]+$/, "");
 
-    this._statusConsumer.value.modelName = inputDataName;
+    this._dataTypeConsumer.value.name = inputDataName;
 
     let fileReader = new FileReader();
 

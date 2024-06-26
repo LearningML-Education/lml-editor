@@ -1,12 +1,12 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext } from '../../contexts.js';
+import { dataTypeContext } from '../../contexts.js';
 
 
 export class ModelCard extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
 
 
   static properties = {
@@ -27,7 +27,7 @@ export class ModelCard extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener("load-model-editor", e => {
-      this._statusConsumer.value.modelDataType = e.detail;
+      this._dataTypeConsumer.value.type = e.detail;
     });
   }
 

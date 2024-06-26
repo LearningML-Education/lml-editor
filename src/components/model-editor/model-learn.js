@@ -3,7 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { confusionMatrix, serializeMap } from 'lml-algorithms';
 import {
-  statusContext,
+  dataTypeContext,
   datasetContext,
   featuresContext,
   encodingContext,
@@ -14,7 +14,7 @@ import Plotly from 'plotly.js-dist-min'
 
 export class ModelLearn extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
   _featuresConsumer = new ContextConsumer(this, { context: featuresContext, subscribe: true });
   _encoderComsumer = new ContextConsumer(this, { context: encodingContext, subscribe: true });
@@ -112,8 +112,8 @@ export class ModelLearn extends LitElement {
     }
 
     let promises = [];
-    let modelDataType = this._statusConsumer.value.modelDataType;
-    let encode = this._encoderComsumer.value[modelDataType]
+    let type = this._dataTypeConsumer.value.type;
+    let encode = this._encoderComsumer.value[type]
     this.buttonLoading = true;
     this._featuresConsumer.value.clear();
     this._datasetConsumer.value.forEach((element, key) => {
@@ -142,7 +142,7 @@ export class ModelLearn extends LitElement {
       }).then(serializedModel => {
         let lmlModel = {
           model: serializedModel,
-          status: this._statusConsumer.value,
+          data: this._dataTypeConsumer.value,
         };
         localStorage.setItem('lmlModel', JSON.stringify(lmlModel));   
         this.bcEditor.postMessage('updateModel');     
@@ -216,7 +216,7 @@ export class ModelLearn extends LitElement {
     </div>
 
  
-    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelDataType)}</h6>
+    <h6 class="subtitle is-6">${this.learningText(this._dataTypeConsumer.value.type)}</h6>
         
     <div class="columns">
       <div class="column">
@@ -242,7 +242,7 @@ export class ModelLearn extends LitElement {
         <div class="block mt-2">
           <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.buttonLoading })}>
             <span class="icon"><i class="fa-solid fa-gears"></i></span>
-            <span>${this.learnButtonText(this._statusConsumer.value.modelDataType)}</span>
+            <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
           </button> 
       </div >  
         </div>
@@ -279,13 +279,13 @@ export class ModelLearn extends LitElement {
 
     
     <h4 class="title is-4">${msg('Learn')}</h4>    
-    <h6 class="subtitle is-6">${this.learningText(this._statusConsumer.value.modelDataType)}</h6>
+    <h6 class="subtitle is-6">${this.learningText(this._dataTypeConsumer.value.type)}</h6>
       
 
       <div class="block mt-2">
         <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>
         <span class="icon"><i class="fa-solid fa-gears"></i></span>
-        <span>${this.learnButtonText(this._statusConsumer.value.modelDataType)}</span>
+        <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
       </button> 
     </div >
     `;

@@ -1,12 +1,12 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { modelContext, statusContext, encodingContext } from '../../contexts.js';
+import { modelContext, dataTypeContext, encodingContext } from '../../contexts.js';
 import { uploadImages } from './uploadImages.js';
 
 export class ModelEval extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
   _encodingConsumer = new ContextConsumer(this, { context: encodingContext, subscribe: true });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
 
@@ -73,7 +73,7 @@ export class ModelEval extends LitElement {
       if (items.some(item => isNaN(item))) return false;
 
       // comprobamos que la dimensión del array items coincida con this.dimension
-      if (that._statusConsumer.value.dimension != items.length) return false;
+      if (that._dataTypeConsumer.value.dimension != items.length) return false;
 
       // si hemos llegado hasta aquí, todo está bien
       return true;
@@ -246,7 +246,7 @@ export class ModelEval extends LitElement {
 <div class="columns">
     <div class="column">
       <h4 ?hidden="${this.advancedMode}" class="title is-4" > ${msg('Try')}</h4 >
-      ${this.templateFormEval(this._statusConsumer.value.modelDataType)}
+      ${this.templateFormEval(this._dataTypeConsumer.value.type)}
     </div>
     <div class="column">
       ${this.results.map((r) => {
@@ -268,7 +268,7 @@ export class ModelEval extends LitElement {
   templateBasic(){
     return html`
 <h4 class="title is-4" > ${msg('Try')}</h4 >
-${this.templateFormEval(this._statusConsumer.value.modelDataType)}
+${this.templateFormEval(this._dataTypeConsumer.value.type)}
 
   ${this.results.map((r) => {
     let result = parseFloat(100 * r[1]).toFixed(3).toString();

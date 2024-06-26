@@ -2,14 +2,14 @@ import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { datasetContext, statusContext } from '../../contexts.js';
+import { datasetContext, dataTypeContext } from '../../contexts.js';
 import './dataset-manager.js';
 
 
 export class ModelTrain extends LitElement {
 
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
 
 
   static properties = {
@@ -84,7 +84,7 @@ export class ModelTrain extends LitElement {
 
     <h4 ?hidden="${this.advancedMode}" class="title is-4">${msg('Training')}</h4>
 
-    <h6 class="subtitle is-6">${this.trainingText(this._statusConsumer.value.modelDataType)}</h6>
+    <h6 class="subtitle is-6">${this.trainingText(this._dataTypeConsumer.value.type)}</h6>
     <div class="field has-addons">
       <div class="control">
         <input id="inputLabelName" class="input" type="text" placeholder="${msg('New class name')}">

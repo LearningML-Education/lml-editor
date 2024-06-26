@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
 import {
     configContext,
-    statusContext,
+    dataTypeContext,
     datasetContext,
     featuresContext,
     encodingContext,
@@ -48,7 +48,7 @@ class LMLApp extends LitElement {
         this.advancedMode = false;
         //this.page = 'model-editor';
         this.configProvider = new ContextProvider(this, { context: configContext });
-        this.statusProvider = new ContextProvider(this, { context: statusContext });
+        this.dataTypeProvider = new ContextProvider(this, { context: dataTypeContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
         this.featuresProvider = new ContextProvider(this, { context: featuresContext });
         this.encodingProvider = new ContextProvider(this, { context: encodingContext });
@@ -65,7 +65,7 @@ class LMLApp extends LitElement {
             if (message.data == 'rebuildEditor') {
                 let lmlModelMetadata = JSON.parse(localStorage.getItem('lmlModelMetadata'));  
 
-                this.statusProvider.setValue(lmlModelMetadata.status);
+                this.dataTypeProvider.setValue(lmlModelMetadata.status);
                 //this.datasetProvider.setValue(deserializeToMap(lmlModelMetadata.dataset));
                 this.featuresProvider.setValue(new Map());
                 switch(lmlModelMetadata.model.modelAlgorithm){
@@ -92,9 +92,9 @@ class LMLApp extends LitElement {
             }
         });
 
-        this.statusProvider.setValue({
-            modelDataType: 'text',
-            modelName: "Untitled",
+        this.dataTypeProvider.setValue({
+            type: 'text',
+            name: "Untitled",
             dimension: 0
         });
 
@@ -212,7 +212,7 @@ class LMLApp extends LitElement {
 
     kaka() {
         console.log(this.datasetProvider.value);
-        console.log(this.statusProvider.value);
+        console.log(this.dataTypeProvider.value);
         console.log(this.childNodes);
     }
 

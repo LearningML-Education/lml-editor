@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, modelContext, statusContext } from '../../contexts';
+import { configContext, modelContext, dataTypeContext } from '../../contexts';
 import './language-menu';
 import './file-menu';
 import './input-menu';
@@ -13,7 +13,7 @@ export class MainMenu extends LitElement {
 
     _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
     _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
-    _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+    _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
 
     static properties = {
         advancedMode: { type: Object, attribute: 'advanced-mode' },

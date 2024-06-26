@@ -1,13 +1,13 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, statusContext } from '../../contexts.js';
+import { configContext, dataTypeContext } from '../../contexts.js';
 
 
 export class InputMenu extends LitElement {
 
   _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
 
   static properties = {
     name: { type:String }
@@ -20,14 +20,14 @@ export class InputMenu extends LitElement {
 
   changeFileName(e){
     console.log(e);
-    this._statusConsumer.value.modelName = e.target.value;
+    this._dataTypeConsumer.value.name = e.target.value;
   }
 
   render() {
 
     return html`
     <div class="navbar-item">
-      <input class="input" @change=${this.changeFileName} type="text" .value="${msg(this._statusConsumer.value.modelName)}">
+      <input class="input" @change=${this.changeFileName} type="text" .value="${msg(this._dataTypeConsumer.value.name)}">
     </div>
         `
   }

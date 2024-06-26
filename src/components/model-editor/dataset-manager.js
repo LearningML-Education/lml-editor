@@ -1,14 +1,14 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext, datasetContext } from '../../contexts.js';
+import { dataTypeContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { uploadImages } from './uploadImages.js';
 
 
 export class DatasetManager extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true });
 
   static properties = {
@@ -35,7 +35,7 @@ export class DatasetManager extends LitElement {
     this.bcScratch.addEventListener('message', message => {
       console.log(message);
       if (message.data.operation == 'addItemToLabel' && message.data.label == this.labelName) {
-        if (this._statusConsumer.value.modelDataType == 'image') {
+        if (this._dataTypeConsumer.value.type == 'image') {
           this.addImageToDataset(message.data.item);
         } else {
           this.addTextToDataset(message.data.item);
@@ -104,12 +104,12 @@ export class DatasetManager extends LitElement {
 
     // después comprobamos si this.dimension es nulo, lo cual significa que es
     // la primera entrada y será la que define la dimensión de los vectores
-    if (this._statusConsumer.value.dimension == undefined) {
-      this._statusConsumer.value.dimension = items.length;
+    if (this._dataTypeConsumer.value.dimension == undefined) {
+      this._dataTypeConsumer.value.dimension = items.length;
     }
 
     // por último comprobamos que la dimensión del array items coincida con this.dimension
-    if (this._statusConsumer.value.dimension != items.length) return false;
+    if (this._dataTypeConsumer.value.dimension != items.length) return false;
 
     // si hemos llegado hasta aquí, todo está bien
 
@@ -120,7 +120,7 @@ export class DatasetManager extends LitElement {
   addTextToDataset(texts) {
     texts.split("\n").forEach(entry => {
       if (entry == "") return;
-      if (this._statusConsumer.value.modelDataType == 'numerical' && !this.isValidNumberEntry(entry)) {
+      if (this._dataTypeConsumer.value.type == 'numerical' && !this.isValidNumberEntry(entry)) {
         alert(msg("Invalid entry"));
         return;
       }
@@ -547,9 +547,9 @@ export class DatasetManager extends LitElement {
         
   </p>
   
-  ${this.templateData(this._statusConsumer.value.modelDataType)}
+  ${this.templateData(this._dataTypeConsumer.value.type)}
 
-  ${this.templateButtons(this._statusConsumer.value.modelDataType)}
+  ${this.templateButtons(this._dataTypeConsumer.value.type)}
    
 </nav>
     `

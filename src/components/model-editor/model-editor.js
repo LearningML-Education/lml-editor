@@ -2,14 +2,14 @@ import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { statusContext } from '../../contexts.js';
+import { dataTypeContext } from '../../contexts.js';
 import './model-train.js';
 import './model-learn.js';
 import './model-eval.js';
 
 export class ModelEditor extends LitElement {
 
-  _statusConsumer = new ContextConsumer(this, { context: statusContext, subscribe: true });
+  _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
 
   static properties = {
     advancedMode: { type: Object, attribute: 'advanced-mode' },
