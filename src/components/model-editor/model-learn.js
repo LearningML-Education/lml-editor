@@ -144,7 +144,8 @@ export class ModelLearn extends LitElement {
           model: serializedModel,
           status: this._statusConsumer.value,
         };
-        localStorage.setItem('lmlModel', JSON.stringify(lmlModel));        
+        localStorage.setItem('lmlModel', JSON.stringify(lmlModel));   
+        this.bcEditor.postMessage('updateModel');     
       });
     });
 
