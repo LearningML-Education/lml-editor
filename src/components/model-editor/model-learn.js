@@ -129,31 +129,22 @@ export class ModelLearn extends LitElement {
         this.buttonLoading = false;
         console.log(result);
         return result;
-      }).then(r => {
-        let lmlModelMetadata = {
-          model: this._modelConsumer.value.serialize(),
-          status: this._statusConsumer.value,
-          //dataset: serializeMap(this._datasetConsumer.value),          
-        };
-        localStorage.setItem('lmlModelMetadata', JSON.stringify(lmlModelMetadata));
-
-        if ('save' in this._modelConsumer.value.model) {
-          this._modelConsumer.value.model.save('localstorage://lml').then(r => {
-            this.bcEditor.postMessage('updateModel');
-          });
-
-        } else {
-          alert("Atención: Los modelos KNN aún no son exportados a Scratch");
-        }
-        let dataForPlotly = confusionMatrix(r.validationDataset, lmlModelMetadata.model.labels, this._modelConsumer.value)
-        return dataForPlotly;
+      }).then(r => {        
+        let dataForPlotly = confusionMatrix(r.validationDataset, this._modelConsumer.value)
+        return dataForPlotly;        
       }).then(d => {
         console.log(d);
-
         let confusionMatrixElem = this.querySelector("#confusionMatrix");
         if (this.advancedMode.enabled && this.percentageForValidation != 0) {
           Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
         }
+        return this._modelConsumer.value.serialize();
+      }).then(serializedModel => {
+        let lmlModel = {
+          model: serializedModel,
+          status: this._statusConsumer.value,
+        };
+        localStorage.setItem('lmlModel', JSON.stringify(lmlModel));        
       });
     });
 
