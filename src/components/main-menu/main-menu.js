@@ -38,14 +38,11 @@ export class MainMenu extends LitElement {
     initScratch() {
 
         let urlScratch = this._configConsumer.value.urlScratch +
-            "?url_mobilenet_models=" + this._configConsumer.value.urlBase +
-            "&loadModel=1";
+            "?url_mobilenet_models=" + this._configConsumer.value.urlBase;
         if (this.advancedMode.enabled) {
             urlScratch += '&mode=advanced';
         }
-        // if (this._modelConsumer.value.model) {
-        //     urlScratch += '&loadModel=1';
-        // }
+               
         window.open(urlScratch);
     }
 
