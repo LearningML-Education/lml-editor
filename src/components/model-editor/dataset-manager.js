@@ -30,22 +30,6 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
     updateWhenLocaleChanges(this);
-
-    this.bcScratch = new BroadcastChannel('lml-scratch');
-    this.bcScratch.addEventListener('message', message => {
-      console.log(message);
-      if (message.data.operation == 'addItemToLabel' && message.data.label == this.labelName) {
-        if (this._dataTypeConsumer.value.type == 'image') {
-          this.addImageToDataset(message.data.item);
-        } else {
-          this.addTextToDataset(message.data.item);
-        }
-      }
-
-      if (message.data.operation == 'removeLabel' && message.data.label == this.labelName) {
-        this._removeClass();
-      }
-    })
   }
 
   connectedCallback() {

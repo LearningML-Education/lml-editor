@@ -41,15 +41,6 @@ export class ModelLearn extends LitElement {
         this.requestUpdate();
       }
     });
-
-    this.bcScratch = new BroadcastChannel('lml-scratch');
-    this.bcScratch.addEventListener('message', message => {
-      if (message.data == 'updateModel') {
-        if ('tensorflowjs_models/lml/weight_data' in localStorage) {
-          this._modelConsumer.value.load('localstorage://lml');
-        }
-      }
-    });
   }
 
   learningText(editorType) {

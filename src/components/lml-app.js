@@ -54,37 +54,6 @@ class LMLApp extends LitElement {
         this.encodingProvider = new ContextProvider(this, { context: encodingContext });
         this.modelProvider = new ContextProvider(this, { context: modelContext });
 
-        /**
-         * Cuando se reciba el evento `rebuildEditor` del canal lml-scratch, se creará un nuevo
-         * dataset correspondiente con el que Scratch ha dejado en el localStorage al cargar 
-         * el fichero sb3S
-         */
-        this.bcScratch = new BroadcastChannel('lml-scratch');
-        this.bcScratch.addEventListener('message', message => {
-
-            if (message.data == 'rebuildEditor') {
-                let lmlModelMetadata = JSON.parse(localStorage.getItem('lmlModelMetadata'));  
-
-                this.dataTypeProvider.setValue(lmlModelMetadata.status);
-                //this.datasetProvider.setValue(deserializeToMap(lmlModelMetadata.dataset));
-                this.featuresProvider.setValue(new Map());
-                switch(lmlModelMetadata.model.modelAlgorithm){
-                    case 'sequential':
-                        let m = new LMLSequential();
-                        m.setHyperParameters(lmlModelMetadata.model.hyperparameters);
-                        m.labels = lmlModelMetadata.model.labels;
-                        m.load("localstorage://lml").then(r => {
-                            this.modelProvider.setValue(m);
-                        });                    
-                        break;
-                    case 'knn':
-                        this.modelProvider.setValue(new KNN);
-                        break;
-                }
-                this.requestUpdate();
-            }
-        });
-
         this.bcInternal = new BroadcastChannel('lml-internal');
         this.bcInternal.addEventListener('message', message => {
             if (message.data == 'requestUpdate'){
