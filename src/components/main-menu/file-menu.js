@@ -45,6 +45,10 @@ export class FileMenu extends LitElement {
   }
 
   saveModel(e){    
+    if(this._modelConsumer.value.model == null){
+      alert(msg("You have to build a model first"));
+      return;
+    }
     this._modelConsumer.value.saveToDisk(this._dataTypeConsumer.value).then(r => {      
       console.log('Model saved to disk');
       console.log(r);
