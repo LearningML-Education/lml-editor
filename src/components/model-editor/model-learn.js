@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { confusionMatrix, serializeMap } from 'lml-algorithms';
+import { confusionMatrix } from 'lml-algorithms';
 import {
   dataTypeContext,
   datasetContext,
@@ -94,7 +94,16 @@ export class ModelLearn extends LitElement {
     return notEnoughData;
   }
 
+  notEnoughClassesToLearn() {
+    return this._datasetConsumer.value.size <= 1;
+  }
+
   learn() {
+    if(this.notEnoughClassesToLearn()){
+      alert(msg('There are not enough classes to learn. Two classes are needed to learn'));
+      return;
+    }
+
     if (this.notEnoughDataToLearn()) {
       alert(msg('There are not enough data to learn. Add more example,please'));
       return;
