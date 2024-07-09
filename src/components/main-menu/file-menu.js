@@ -76,6 +76,15 @@ export class FileMenu extends LitElement {
     try {
       inputData = JSON.parse(file);
       this._dataTypeConsumer.value.type = inputData.type;
+
+      const event = new CustomEvent('change-algorithm', {
+        bubbles: true,
+        composed: true,
+        detail: 'ann'
+      });
+  
+      this.dispatchEvent(event);
+
       Object.keys(inputData.data).forEach(key => {        
         let data = inputData.data[key];
         for (let d of data) {

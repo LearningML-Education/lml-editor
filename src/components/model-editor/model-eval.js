@@ -35,6 +35,7 @@ export class ModelEval extends LitElement {
   checkInput(e) {
     if(!this._modelConsumer.value.model){
       alert(msg('You must generate a model before trying to classify'));
+      return;
     }
     let textToEncode = this.querySelector("#textInput").value;
     let encode = this._encodingConsumer.value.text;
@@ -51,6 +52,7 @@ export class ModelEval extends LitElement {
   checkImage(image) {
     if(!this._modelConsumer.value.model){
       alert(msg('You must generate a model before trying to classify'));
+      return;
     }
 
     let encode = this._encodingConsumer.value.image;
@@ -67,6 +69,7 @@ export class ModelEval extends LitElement {
   checkNumber() {
     if(!this._modelConsumer.value.model){
       alert(msg('You must generate a model before trying to classify'));
+      return;
     }
     
     let that = this;
