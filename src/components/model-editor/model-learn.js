@@ -1,16 +1,16 @@
-import { LitElement, html } from 'lit';
-import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
+import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import { LitElement, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { confusionMatrix } from 'lml-algorithms';
+import Plotly from 'plotly.js-dist-min';
 import {
   dataTypeContext,
   datasetContext,
-  featuresContext,
   encodingContext,
+  featuresContext,
   modelContext
 } from '../../contexts.js';
-import { classMap } from 'lit/directives/class-map.js';
-import Plotly from 'plotly.js-dist-min'
 
 export class ModelLearn extends LitElement {
 
@@ -87,7 +87,6 @@ export class ModelLearn extends LitElement {
     this._datasetConsumer.value.forEach((element) => {
       if (element.size <= 2) {
         notEnoughData = true;
-        return;
       }
     });
 
