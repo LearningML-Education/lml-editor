@@ -43,6 +43,8 @@ export class ModelEval extends LitElement {
     }).then(results => {
       console.log(results);
       this.results = results
+    }).catch(error => {
+      alert(error);
     })
   }
 
@@ -57,6 +59,8 @@ export class ModelEval extends LitElement {
     }).then(results => {
       console.log(results);
       this.results = results;
+    }).catch(error => {
+      alert(error);
     })
   }
 
@@ -91,6 +95,8 @@ export class ModelEval extends LitElement {
     }).then(results => {
       console.log(results);
       this.results = results;
+    }).catch(error => {
+      alert(error);
     })
 
   }
