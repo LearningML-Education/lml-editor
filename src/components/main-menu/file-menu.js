@@ -80,7 +80,7 @@ export class FileMenu extends LitElement {
       const event = new CustomEvent('change-algorithm', {
         bubbles: true,
         composed: true,
-        detail: 'ann'
+        detail: this._modelConsumer.value.constructor.name
       });
   
       this.dispatchEvent(event);

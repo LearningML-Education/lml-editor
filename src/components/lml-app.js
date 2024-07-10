@@ -112,14 +112,11 @@ class LMLApp extends LitElement {
         });
 
         this.addEventListener("change-algorithm", e => {
-            switch (e.detail) {
-                case 'ann':
-                    this.modelProvider.setValue(new LMLSequential);
-                    break;
-                case 'knn':
-                    this.modelProvider.setValue(new KNN);
-                    break;
-            }
+            if(e.detail == 'ann' || e.detail == 'LMLSequential' ){
+                this.modelProvider.setValue(new LMLSequential);
+            } else if(e.detail == 'knn' || e.detail == 'KNN'){
+                this.modelProvider.setValue(new KNN);
+            }            
             this.requestUpdate();
         });
     }
