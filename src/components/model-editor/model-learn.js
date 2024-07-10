@@ -144,13 +144,10 @@ export class ModelLearn extends LitElement {
         if (this.advancedMode.enabled && this.percentageForValidation != 0) {
           Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
         }
-        return this._modelConsumer.value.serialize();
-      }).then(serializedModel => {
-        let lmlModel = {
-          model: serializedModel,
-          data: this._dataTypeConsumer.value,
-        };
-        localStorage.setItem('lmlModel', JSON.stringify(lmlModel));   
+        return this._modelConsumer.value.saveToLocalstorage(this._dataTypeConsumer.value);
+      }).then(lmlModel => {
+        console.log("This model has been built right now:");
+        console.log(lmlModel);  
         this.bcEditor.postMessage('updateModel');     
       });
     });

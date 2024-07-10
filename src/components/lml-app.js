@@ -22,8 +22,7 @@ import {
     getMobilenetEncoder,
     numericalEncoder,
     LMLSequential,
-    KNN,
-    deserializeToMap
+    KNN
 } from 'lml-algorithms';
 
 
