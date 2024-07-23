@@ -4,9 +4,16 @@ import { allLocales } from './locale-codes.js';
 import { updateWhenLocaleChanges } from '@lit/localize';
 
 const localeNames = {
-  en: 'English',
+  'en': 'English',
   'es': 'Español',
   'ca': 'Catalá',
+  'gl': 'Galego',
+  'eu': 'Euskara',
+  'it': 'Italiano',
+  'de': 'Deutsch',
+  'el': 'Ελληνικά',
+  'pt': 'Português',
+  'nl': 'Nederlands'
 };
 
 export class LanguageMenu extends LitElement {
