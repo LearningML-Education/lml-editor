@@ -186,7 +186,7 @@ class LMLApp extends LitElement {
             return this.loadingTemplate();
         } else {
             return html`
-            ${this.configProvider.value.initMessage.show
+            ${process.env.INIT_MESSAGE_SHOW
                     ? this.initMessageTemplate()
                     : html``
                 }

@@ -19,8 +19,8 @@ export class InitMessage extends LitElement {
     }
 
     updated(){
-        this.title = this._configConsumer.value.initMessage.title;
-        this.message = this._configConsumer.value.initMessage.message;
+        this.title = process.env.INIT_MESSAGE_TITLE;
+        this.message = process.env.INIT_MESSAGE_DESCRIPTION;
     }
 
     render() {
