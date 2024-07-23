@@ -1,6 +1,8 @@
 // configLoader.js
 async function configLoader() {
-    const response = await fetch('/config/config.json');
+    const baseElement = document.querySelector('base');
+    const baseHref = baseElement ? baseElement.getAttribute('href') : '';
+    const response = await fetch(`${baseHref}/config/config.json`);
     const config = await response.json();
     return config;
 }
