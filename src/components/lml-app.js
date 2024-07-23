@@ -89,7 +89,7 @@ class LMLApp extends LitElement {
                 this.configProvider.setValue(config);
             }, 1000)
 
-            let mobilenetEncoder = getMobilenetEncoder(config.urlBase);
+            let mobilenetEncoder = getMobilenetEncoder(process.env.URL_BASE);
             this.encodingProvider.setValue({
                 text: useEncoder,
                 image: mobilenetEncoder,

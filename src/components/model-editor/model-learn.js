@@ -213,7 +213,7 @@ export class ModelLearn extends LitElement {
       <div class="modal-background"></div>
       <div class="modal-content">
         <p class="image is-9by4">
-          <img src="/images/modern-times.gif">
+          <img src="${process.env.URL_BASE}/images/modern-times.gif">
         </p>
       </div>
     </div>
@@ -275,7 +275,7 @@ export class ModelLearn extends LitElement {
       <div class="modal-background"></div>
       <div class="modal-content">
         <p class="image is-9by4">
-          <img src="/images/modern-times.gif">
+          <img src="${process.env.URL_BASE}/images/modern-times.gif">
         </p>
       </div>
     </div>

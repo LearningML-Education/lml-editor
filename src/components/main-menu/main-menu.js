@@ -38,7 +38,7 @@ export class MainMenu extends LitElement {
     initScratch() {
 
         let urlScratch = this._configConsumer.value.urlScratch +
-            "?url_mobilenet_models=" + this._configConsumer.value.urlBase;
+            "?url_mobilenet_models=" + process.env.URL_BASE;
         if (this.advancedMode.enabled) {
             urlScratch += '&mode=advanced';
         }
@@ -62,7 +62,7 @@ export class MainMenu extends LitElement {
             <mode-toggle-menu class="component"></mode-toggle-menu> 
             
                 <a class="navbar-item" @click="${this.initScratch}">                
-                <img src="/images/scratch_icon.svg">  ${msg('Open Scratch')}
+                <img src="${process.env.URL_BASE}/images/scratch_icon.svg">  ${msg('Open Scratch')}
                 </a>
             
             `;
@@ -73,8 +73,8 @@ export class MainMenu extends LitElement {
         return html`
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="${this._configConsumer.value.urlBase}">
-                <img src="/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
+                <a class="navbar-item" href="${process.env.URL_BASE}">
+                <img src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
                 </a>
 
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">

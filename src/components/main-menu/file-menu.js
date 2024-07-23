@@ -149,7 +149,7 @@ export class FileMenu extends LitElement {
     
         <div class="navbar-dropdown">
           
-          <a href="${this._configConsumer.value.urlBase}" class="navbar-item">${msg("New")}</a>
+          <a href="${process.env.URL_BASE}" class="navbar-item">${msg("New")}</a>
           <a @click=${this.openFileBrowser} class="navbar-item">${msg("Upload dataset from your computer")}</a>
           ${this.showSaveDataset
         ? html`<a @click=${this.saveDataset}  class="navbar-item">${msg("Save dataset to your computer")}</a>`

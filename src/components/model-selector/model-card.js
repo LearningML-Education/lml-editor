@@ -48,7 +48,7 @@ export class ModelCard extends LitElement {
   <div class="card">
     <div class="card-image">
       <figure @click=${this.loadEditor} class="image is-4by3 is-clickable">
-        <img src="/images/${this.image}" alt="Placeholder image">
+        <img src="${process.env.URL_BASE}/images/${this.image}" alt="Placeholder image">
       </figure>
     </div>
     <div class="card-content">

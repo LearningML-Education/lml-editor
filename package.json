@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build --base /editor/",
+    "dev": "eval $(grep '^URL_BASE' .env) && vite --base $URL_BASE",
+    "build": "eval $(grep '^URL_BASE' .env) && vite build --base $URL_BASE",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,7 +17,8 @@
     "file-saver-es": "^2.0.5",
     "lit": "^3.0.2",
     "lml-algorithms": "^1.0.20",
-    "plotly.js-dist-min": "^2.30.1"
+    "plotly.js-dist-min": "^2.30.1",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.7.1",
