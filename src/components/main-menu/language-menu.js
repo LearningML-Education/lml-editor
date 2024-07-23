@@ -2,8 +2,6 @@ import { LitElement, html } from 'lit';
 import { getLocale, setLocaleFromUrl } from './localization.js';
 import { allLocales } from './locale-codes.js';
 import { updateWhenLocaleChanges } from '@lit/localize';
-import { ContextConsumer } from '@lit/context';
-import { configContext } from '../../contexts';
 
 const localeNames = {
   en: 'English',
@@ -12,8 +10,6 @@ const localeNames = {
 };
 
 export class LanguageMenu extends LitElement {
-
-  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
 
   constructor() {
     super();

@@ -1,13 +1,12 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, datasetContext, dataTypeContext, modelContext } from '../../contexts.js';
+import { datasetContext, dataTypeContext, modelContext } from '../../contexts.js';
 import { saveAs } from 'file-saver-es';
 
 
 export class FileMenu extends LitElement {
 
-  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
   _datasetConsumer = new ContextConsumer(this, { context: datasetContext, subscribe: true  });
   _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
   _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });

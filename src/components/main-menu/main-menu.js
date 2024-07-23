@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
-import { configContext, modelContext, dataTypeContext } from '../../contexts';
+import { modelContext, dataTypeContext } from '../../contexts';
 import './language-menu';
 import './file-menu';
 import './input-menu';
@@ -11,7 +11,6 @@ import './about-menu';
 
 export class MainMenu extends LitElement {
 
-    _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
     _modelConsumer = new ContextConsumer(this, { context: modelContext, subscribe: true });
     _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
 
@@ -37,7 +36,7 @@ export class MainMenu extends LitElement {
 
     initScratch() {
 
-        let urlScratch = this._configConsumer.value.urlScratch +
+        let urlScratch = process.env.URL_SCRATCH +
             "?url_mobilenet_models=" + process.env.URL_BASE;
         if (this.advancedMode.enabled) {
             urlScratch += '&mode=advanced';

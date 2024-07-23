@@ -1,9 +1,0 @@
-{
-    "defaultLanguage": "es",
-    "initMessage": {
-        "show": true,
-        "title": "Atención",
-        "message": "LearningML necesita tu ayuda."
-    },
-    "urlScratch": "http://localhost:8888/scratch/"
-}

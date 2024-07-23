@@ -1,8 +1,6 @@
-import configLoader from '../config-loader';
 import { LitElement, html } from 'lit';
 import { ContextProvider } from '@lit/context';
 import {
-    configContext,
     dataTypeContext,
     datasetContext,
     featuresContext,
@@ -26,10 +24,6 @@ import {
 } from 'lml-algorithms';
 
 
-
-// Configuration is loaded
-const configLoaderPromise = configLoader();
-
 class LMLApp extends LitElement {
 
     static properties = {
@@ -46,7 +40,6 @@ class LMLApp extends LitElement {
         this.page = 'home';
         this.advancedMode = false;
         //this.page = 'model-editor';
-        this.configProvider = new ContextProvider(this, { context: configContext });
         this.dataTypeProvider = new ContextProvider(this, { context: dataTypeContext });
         this.datasetProvider = new ContextProvider(this, { context: datasetContext });
         this.featuresProvider = new ContextProvider(this, { context: featuresContext });
@@ -55,7 +48,7 @@ class LMLApp extends LitElement {
 
         this.bcInternal = new BroadcastChannel('lml-internal');
         this.bcInternal.addEventListener('message', message => {
-            if (message.data == 'requestUpdate'){
+            if (message.data == 'requestUpdate') {
                 this.page = 'model-editor';
             }
         });
@@ -83,20 +76,17 @@ class LMLApp extends LitElement {
 
         updateWhenLocaleChanges(this);
 
-        configLoaderPromise.then(config => {
-            setTimeout(() => {
-                this.loading = false;
-                this.configProvider.setValue(config);
-            }, 1000)
+        setTimeout(() => {
+            this.loading = false;
+         }, 1000)
 
-            let mobilenetEncoder = getMobilenetEncoder(process.env.URL_BASE);
-            this.encodingProvider.setValue({
-                text: useEncoder,
-                image: mobilenetEncoder,
-                numerical: numericalEncoder
-            });
-
+        let mobilenetEncoder = getMobilenetEncoder(process.env.URL_BASE);
+        this.encodingProvider.setValue({
+            text: useEncoder,
+            image: mobilenetEncoder,
+            numerical: numericalEncoder
         });
+
     }
 
     connectedCallback() {
@@ -112,11 +102,11 @@ class LMLApp extends LitElement {
         });
 
         this.addEventListener("change-algorithm", e => {
-            if(e.detail == 'ann' || e.detail == 'LMLSequential' ){
+            if (e.detail == 'ann' || e.detail == 'LMLSequential') {
                 this.modelProvider.setValue(new LMLSequential);
-            } else if(e.detail == 'knn' || e.detail == 'KNN'){
+            } else if (e.detail == 'knn' || e.detail == 'KNN') {
                 this.modelProvider.setValue(new KNN);
-            }            
+            }
             this.requestUpdate();
         });
     }

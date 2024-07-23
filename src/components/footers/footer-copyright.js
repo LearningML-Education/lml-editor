@@ -1,13 +1,7 @@
 import { LitElement, html } from 'lit';
-import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import { ContextConsumer } from '@lit/context';
-import { configContext } from '../../contexts.js';
-
+import { updateWhenLocaleChanges } from '@lit/localize';
 
 export class FooterCopyRight extends LitElement {
-
-  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
-
 
   constructor() {
     super();

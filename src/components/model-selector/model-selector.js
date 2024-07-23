@@ -1,14 +1,9 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import { ContextConsumer } from '@lit/context';
-import { configContext } from '../../contexts.js';
 import './model-card.js';
 
 
 export class ModelSelector extends LitElement {
-
-  _configConsumer = new ContextConsumer(this, { context: configContext, subscribe: true });
-
 
   constructor() {
     super();
