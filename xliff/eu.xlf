@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="eu" source-language="en" original="lit-localize-inputs"
-    datatype="plaintext">
+  <file target-language="eu" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="s933f2ff188367947">
         <source>You have to build a model first</source>
@@ -256,7 +255,7 @@
         <target>Sarrera hau ez da baliogarria</target>
       </trans-unit>
       <trans-unit id="s2b9140bc2d0fd104">
-        <source>Introduces new terms and checks they are correctly classified</source>
+        <source>Introduces new terms and checks they are correctly classified </source>
         <target>Sartu termino berriak eta egiaztatu ondo sailkatzen diren</target>
       </trans-unit>
       <trans-unit id="s42cbd8dca939a9c7">
@@ -284,7 +283,7 @@
         <target>Itxi kamera</target>
       </trans-unit>
       <trans-unit id="s02377725a94d0f9d">
-        <source>Introduces new numbers and checks they are correctly classified</source>
+        <source>Introduces new numbers and checks they are correctly classified </source>
         <target>Sartu zenbaki berriak eta egiaztatu ondo sailkatzen diren</target>
       </trans-unit>
       <trans-unit id="s6d13e119e22d304e">

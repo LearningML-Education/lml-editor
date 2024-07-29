@@ -47,7 +47,7 @@ En el archivo `lit-localize.json` se configura el sistema de traducción. Lo imp
 Para construir los archivos xliff se ejecuta el comando:
 ```
 
-./node_modules/.bin/lit-localize.js extract
+./node_modules/.bin/lit-localize extract
 
 ```
 Que genera la carpeta `xliff` con los archivos de traducción. Se editan estos ficheros con las traducciones correspondientes.
@@ -55,7 +55,7 @@ Que genera la carpeta `xliff` con los archivos de traducción. Se editan estos f
 A continuación se generan los archivos javascript que usa la aplicación para traducir lanzando el comando:
 ```
 
-./node_modules/.bin/lit-localize.js build
+./node_modules/.bin/lit-localize build
 
 ```
 Referencia: https://lit.dev/docs/localization/overview/

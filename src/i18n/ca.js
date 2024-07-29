@@ -64,6 +64,7 @@
 's9edd996e35665cd5': `Reconeixement d'imatges`,
 'sa4a8a29de42efe18': `Carrega el conjunt de dades des del teu ordinador`,
 'sa77b3aa47147e6de': `Mida del lot:`,
+'saa2fc8f012369fa9': `Desa el conjunt de dades al teu ordinador`,
 'sc394009d3f5832bd': `Has de generar un model abans de provar de classificar`,
 'sc980050b0fd2affc': `No es pot iniciar la càmera. L'estàs utilitzant en una altra aplicació?`,
 'scab7db6101037bce': `Afegeix nova classe`,
@@ -81,6 +82,5 @@
 'sf20e0069f14e0ea7': `Ara és el moment d'aprendre a classificar imatges`,
 'sf99b9ce15b8600b8': `Primer necessito alguns vectors d'exemple`,
 'sffcc465055a84a01': `Reconeixement de text`,
-'saa2fc8f012369fa9': `Save dataset to your computer`,
     };
   

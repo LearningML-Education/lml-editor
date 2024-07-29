@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="ca" source-language="en" original="lit-localize-inputs"
-    datatype="plaintext">
+  <file target-language="ca" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="sd1f81284eeb7b503">
         <source>File</source>
@@ -61,7 +60,7 @@
       </trans-unit>
       <trans-unit id="saa2fc8f012369fa9">
         <source>Save dataset to your computer</source>
-        <target Desa el conjunt de dades al teu ordinador</target>
+        <target>Desa el conjunt de dades al teu ordinador</target>
       </trans-unit>
       <trans-unit id="s30e35f136e8c35a2">
         <source>Save model to your computer</source>

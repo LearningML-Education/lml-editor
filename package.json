@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "eval $(grep '^URL_BASE' .env) && vite --base $URL_BASE",
     "build": "eval $(grep '^URL_BASE' .env) && vite build --base $URL_BASE",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "translate-extract": "lit-localize extract",
+    "translate-build": "lit-localize build"
   },
   "dependencies": {
     "@lit/context": "^1.1.0",

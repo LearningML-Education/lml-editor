@@ -199,7 +199,7 @@
         <target>No hay suficientes clases para aprender. Se necesitan dos clases para aprender</target>
       </trans-unit>
       <trans-unit id="s0d8e6f00eccca681">
-        <source>There are not enough data to learn. Add more example, please</source>
+        <source>There are not enough data to learn. Add more example,please</source>
         <target>No hay suficientes datos para aprender. Por favor, añade más ejemplos</target>
       </trans-unit>
       <trans-unit id="se5765125577b1d4f">
@@ -255,7 +255,7 @@
         <target>Esta entrada no es válida</target>
       </trans-unit>
       <trans-unit id="s2b9140bc2d0fd104">
-        <source>Introduces new terms and checks they are correctly classified</source>
+        <source>Introduces new terms and checks they are correctly classified </source>
         <target>Introduce nuevos términos y verifica que estén correctamente clasificados</target>
       </trans-unit>
       <trans-unit id="s42cbd8dca939a9c7">
@@ -283,7 +283,7 @@
         <target>Cerrar cámara</target>
       </trans-unit>
       <trans-unit id="s02377725a94d0f9d">
-        <source>Introduces new numbers and checks they are correctly classified</source>
+        <source>Introduces new numbers and checks they are correctly classified </source>
         <target>Introduce nuevos números y verifica que estén correctamente clasificados</target>
       </trans-unit>
       <trans-unit id="s6d13e119e22d304e">
