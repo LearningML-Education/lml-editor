@@ -17,13 +17,13 @@ export class MainMenu extends LitElement {
     static properties = {
         advancedMode: { type: Object, attribute: 'advanced-mode' },
         menu: { type: String },
-        modelName: {type: String}
+        modelName: { type: String }
     }
 
     constructor() {
         super();
         this.modelName = "";
-        updateWhenLocaleChanges(this);        
+        updateWhenLocaleChanges(this);
     }
 
     connectedCallback() {
@@ -36,12 +36,15 @@ export class MainMenu extends LitElement {
 
     initScratch() {
 
+        const url = new URL(window.location.href);
+        const locale = url.searchParams.get('locale');
+
         let urlScratch = process.env.URL_SCRATCH +
             "?url_mobilenet_models=" + process.env.URL_BASE;
-        if (this.advancedMode.enabled) {
-            urlScratch += '&mode=advanced';
+        if (locale != null) {
+            urlScratch += '&locale=' + locale;
         }
-               
+
         window.open(urlScratch);
     }
 
