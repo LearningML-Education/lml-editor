@@ -38,6 +38,7 @@ La aplicación se configura a través de variables de entorno que se declara en 
 |`INIT_MESSAGE_SHOW`|true| Para mostrar un mensaje de inicio|
 |`INIT_MESSAGE_TITLE`|Atención|Título del mensaje de inicio|
 |`INIT_MESSAGE_DESCRIPTION`|LearningML necesita tu ayuda|Descripción del mensahe de incio|
+|`INIT_MESSAGE_TIMEOUT`|3000|Tiempo en milisegundos durante el que se mostrará el mensaje de incio|
 |`SHOW_FOOTER_SPONSORS`|true|Mostrar o no la parte del footer dedicada a patrocinadores|
 |`URL_SCRATCH`|http://localhost:8888/scratch|URL de la instancia de Scratch|
 

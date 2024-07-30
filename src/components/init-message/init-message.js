@@ -5,7 +5,8 @@ export class InitMessage extends LitElement {
 
     static properties = {
         title: { type: String },
-        message: { type: String }
+        message: { type: String },
+        timeout: { type: Number}
     };
 
     constructor() {
@@ -16,6 +17,9 @@ export class InitMessage extends LitElement {
     updated(){
         this.title = process.env.INIT_MESSAGE_TITLE;
         this.message = process.env.INIT_MESSAGE_DESCRIPTION;
+        this.timeout = process.env.INIT_MESSAGE_TIMEOUT;
+
+        setTimeout(() => {this.parentElement.style.display='none'}, this.timeout);
     }
 
     render() {
