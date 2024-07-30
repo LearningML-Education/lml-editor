@@ -35,8 +35,9 @@ class LMLApp extends LitElement {
     constructor() {
         super();
 
+        console.log(process.env);
         setLocaleFromUrl();
-        
+
         localStorage.clear();
 
         this.loading = true;
@@ -81,7 +82,7 @@ class LMLApp extends LitElement {
 
         setTimeout(() => {
             this.loading = false;
-         }, 1000)
+        }, 1000)
 
         let mobilenetEncoder = getMobilenetEncoder(process.env.URL_BASE);
         this.encodingProvider.setValue({
@@ -194,7 +195,10 @@ class LMLApp extends LitElement {
                 }  
         
             ${this.footerCopyrigthTemplate()}
-            ${this.footerSponsorsTemplate()}
+            ${process.env.SHOW_FOOTER_SPONSORS
+                    ? this.footerSponsorsTemplate()
+                    : html``
+                }
             `;
         }
     }
