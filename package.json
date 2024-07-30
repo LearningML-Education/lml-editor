@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "eval $(grep '^URL_BASE' .env) && vite --base $URL_BASE",
-    "build": "eval $(grep '^URL_BASE' .env) && vite build --base $URL_BASE",
+    "dev": "vite",
+    "build": "vite build",
     "preview": "vite preview",
     "translate-extract": "lit-localize extract",
     "translate-build": "lit-localize build"
