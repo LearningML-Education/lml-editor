@@ -8,6 +8,7 @@ import {
     modelContext
 } from '../contexts';
 import { updateWhenLocaleChanges } from '@lit/localize';
+import { setLocaleFromUrl } from './main-menu/localization';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
 import './footers/footer-copyright';
@@ -34,6 +35,8 @@ class LMLApp extends LitElement {
     constructor() {
         super();
 
+        setLocaleFromUrl();
+        
         localStorage.clear();
 
         this.loading = true;
