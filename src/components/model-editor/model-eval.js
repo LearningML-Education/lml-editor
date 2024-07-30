@@ -150,7 +150,7 @@ export class ModelEval extends LitElement {
 
       this.checkImage(base64String);
 
-      this.closeCamera();
+      //this.closeCamera();
       this.requestUpdate();
     }
   }
