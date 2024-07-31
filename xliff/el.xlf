@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="el" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+  <file target-language="el" source-language="en" original="lit-localize-inputs"
+    datatype="plaintext">
     <body>
       <trans-unit id="s933f2ff188367947">
         <source>You have to build a model first</source>
@@ -98,14 +99,6 @@
         <source>Can't init camera. Are you using it in another application?</source>
         <target>Δεν μπορώ να αρχικοποιήσω την κάμερα. Την χρησιμοποιείτε σε άλλη εφαρμογή;</target>
       </trans-unit>
-      <trans-unit id="s547ef735a417b89a">
-        <source>Add new texts</source>
-        <target>Προσθέστε νέα κείμενα</target>
-      </trans-unit>
-      <trans-unit id="sd2613c0dac9e8a67">
-        <source>Load texts from file</source>
-        <target>Φόρτωση κειμένων από αρχείο</target>
-      </trans-unit>
       <trans-unit id="s96668830629e0dfc">
         <source>Upload</source>
         <target>Μεταφόρτωση</target>
@@ -121,14 +114,6 @@
       <trans-unit id="s5e8250fb85d64c23">
         <source>Close</source>
         <target>Κλείσιμο</target>
-      </trans-unit>
-      <trans-unit id="s561c299c9f7e43ba">
-        <source>Add numbers</source>
-        <target>Προσθέστε αριθμούς</target>
-      </trans-unit>
-      <trans-unit id="s8c6db637490b6715">
-        <source>Load numbers from file</source>
-        <target>Φόρτωση αριθμών από αρχείο</target>
       </trans-unit>
       <trans-unit id="s6ab1e861a730571c">
         <source>Add one or more text examples</source>
@@ -200,7 +185,8 @@
       </trans-unit>
       <trans-unit id="s0d8e6f00eccca681">
         <source>There are not enough data to learn. Add more example,please</source>
-        <target>Δεν υπάρχουν αρκετά δεδομένα για μάθηση. Προσθέστε περισσότερα παραδείγματα, παρακαλώ</target>
+        <target>Δεν υπάρχουν αρκετά δεδομένα για μάθηση. Προσθέστε περισσότερα παραδείγματα,
+          παρακαλώ</target>
       </trans-unit>
       <trans-unit id="se5765125577b1d4f">
         <source>Epochs:</source>
@@ -294,6 +280,14 @@
         <source>Loading ...</source>
         <target>Φόρτωση ...</target>
       </trans-unit>
+      <trans-unit id="sf9aee319a006c9b4">
+        <source>Add</source>
+        <target>Προσθήκη</target>
+      </trans-unit>
+      <trans-unit id="s4f20edb48a6287c9">
+        <source>Load</source>
+        <target>Φόρτωση</target>
+      </trans-unit>      
     </body>
   </file>
 </xliff>

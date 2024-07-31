@@ -99,14 +99,6 @@
         <source>Can't init camera. Are you using it in another application?</source>
         <target>Kan camera niet initialiseren. Gebruikt u deze in een andere applicatie?</target>
       </trans-unit>
-      <trans-unit id="s547ef735a417b89a">
-        <source>Add new texts</source>
-        <target>Nieuwe teksten toevoegen</target>
-      </trans-unit>
-      <trans-unit id="sd2613c0dac9e8a67">
-        <source>Load texts from file</source>
-        <target>Teksten laden uit bestand</target>
-      </trans-unit>
       <trans-unit id="s96668830629e0dfc">
         <source>Upload</source>
         <target>Uploaden</target>
@@ -122,14 +114,6 @@
       <trans-unit id="s5e8250fb85d64c23">
         <source>Close</source>
         <target>Sluiten</target>
-      </trans-unit>
-      <trans-unit id="s561c299c9f7e43ba">
-        <source>Add numbers</source>
-        <target>Getallen toevoegen</target>
-      </trans-unit>
-      <trans-unit id="s8c6db637490b6715">
-        <source>Load numbers from file</source>
-        <target>Getallen laden uit bestand</target>
       </trans-unit>
       <trans-unit id="s6ab1e861a730571c">
         <source>Add one or more text examples</source>
@@ -295,6 +279,15 @@
         <source>Loading ...</source>
         <target>Laden ...</target>
       </trans-unit>
+      <trans-unit id="sf9aee319a006c9b4">
+        <source>Add</source>
+        <target>Toevoegen</target>
+      </trans-unit>
+      <trans-unit id="s4f20edb48a6287c9">
+        <source>Load</source>
+        <target>Laden</target>
+      </trans-unit>
+      
     </body>
   </file>
 </xliff>
