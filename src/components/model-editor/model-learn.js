@@ -2,7 +2,7 @@ import { ContextConsumer } from '@lit/context';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { confusionMatrix } from 'lml-algorithms';
+import { confusionMatrix, buildVocabulary } from 'lml-algorithms';
 import Plotly from 'plotly.js-dist-min';
 import {
   dataTypeContext,
@@ -122,6 +122,10 @@ export class ModelLearn extends LitElement {
     let encode = this._encoderComsumer.value[type]
     this.buttonLoading = true;
     this._featuresConsumer.value.clear();
+    if(type == 'text'){
+      let texts = Array.from(this._datasetConsumer.value.values()).map(set => Array.from(set)).flat();
+      buildVocabulary(texts);
+    }
     this._datasetConsumer.value.forEach((element, key) => {
       promises.push(encode(Array.from(element)).then(features => {
         this._featuresConsumer.value.set(key, features);

@@ -18,6 +18,7 @@ import './model-editor/model-editor';
 import './loading-message/loading-message';
 import {
     useEncoder,
+    bowEncoder,
     getMobilenetEncoder,
     numericalEncoder,
     LMLSequential,
@@ -86,7 +87,7 @@ class LMLApp extends LitElement {
 
         let mobilenetEncoder = getMobilenetEncoder(process.env.URL_BASE);
         this.encodingProvider.setValue({
-            text: useEncoder,
+            text: bowEncoder,
             image: mobilenetEncoder,
             numerical: numericalEncoder
         });
