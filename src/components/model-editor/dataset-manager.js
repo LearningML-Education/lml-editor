@@ -281,14 +281,14 @@ export class DatasetManager extends LitElement {
 
   templateTextButtons() {
     return html`
-    <div class="panel-block">    
+    <div class="panel-block is-justify-content-center">    
       <div class="field is-grouped">
         <p class="control">      
           <button @click=${this.openAddTextWindow} class="button  is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-regular fa-keyboard"></i>
             </span>
-            <span>${msg('Add new texts')}</span>
+            <span>${msg('Add')}</span>
           </button>
         </p>
         <p class="control">
@@ -296,7 +296,7 @@ export class DatasetManager extends LitElement {
             <span class="icon">
             <i class="fa-solid fa-upload"></i>
             </span>
-            <span>${msg('Load texts from file')}</span>
+            <span>${msg('Load')}</span>
           </button>
         </p>
       </div>
@@ -306,7 +306,7 @@ export class DatasetManager extends LitElement {
 
   templateImageButtons() {
     return html`
-    <div class="panel-block">
+    <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
       ${!this.cameraOpened
         ? html`
@@ -353,14 +353,14 @@ export class DatasetManager extends LitElement {
 
   templateNumberButtons() {
     return html`
-    <div class="panel-block">
+    <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
         <p class="control">
           <button @click="${this.openAddTextWindow}" class="button is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-regular fa-keyboard"></i>
             </span>
-            <span>${msg('Add numbers')}</span>
+            <span>${msg('Add')}</span>
           </button>
         </p>
         <p class="control">
@@ -368,7 +368,7 @@ export class DatasetManager extends LitElement {
             <span class="icon">
             <i class="fa-solid fa-upload"></i>
             </span>
-            <span>${msg('Load numbers from file')}</span>
+            <span>${msg('Load')}</span>
           </button>
         </p>
       </div>
@@ -525,9 +525,9 @@ export class DatasetManager extends LitElement {
         : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this._datasetConsumer.value.get(this.labelName).size}</span>`
       }
 
-      <a @click=${this.editlabelName} class="m-2"><i class=${classMap({ "fa-solid": true, "fa-check": this.editinglabelName, "fa-pen-to-square": !this.editinglabelName })}></i></a>
+      <a @click=${this.editlabelName} class="m-2 has-text-white"><i class=${classMap({ "fa-solid": true, "fa-check": this.editinglabelName, "fa-pen-to-square": !this.editinglabelName })}></i></a>
       
-      <a @click=${this.removeClass} class="m-2"><i class="fa-regular fa-trash-can"></i></a> 
+      <a @click=${this.removeClass} class="m-2 has-text-white"><i class="fa-regular fa-trash-can"></i></a> 
         
   </p>
   
