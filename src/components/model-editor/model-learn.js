@@ -122,9 +122,10 @@ export class ModelLearn extends LitElement {
     let encode = this._encoderComsumer.value[type]
     this.buttonLoading = true;
     this._featuresConsumer.value.clear();
+    let vocabulary;
     if(type == 'text'){
       let texts = Array.from(this._datasetConsumer.value.values()).map(set => Array.from(set)).flat();
-      buildVocabulary(texts);
+      vocabulary = buildVocabulary(texts);
     }
     this._datasetConsumer.value.forEach((element, key) => {
       promises.push(encode(Array.from(element)).then(features => {
@@ -148,7 +149,11 @@ export class ModelLearn extends LitElement {
         if (this.advancedMode.enabled && this.percentageForValidation != 0) {
           Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
         }
-        return this._modelConsumer.value.saveToLocalstorage(this._dataTypeConsumer.value);
+        let encoder = {
+          name: this._encoderComsumer.value[this._dataTypeConsumer.value.type].name,
+          vocabulary: vocabulary
+        }
+        return this._modelConsumer.value.saveToLocalstorage(this._dataTypeConsumer.value, encoder);
       }).then(lmlModel => {
         console.log("This model has been built right now:");
         console.log(lmlModel);  
