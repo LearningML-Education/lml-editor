@@ -40,7 +40,7 @@ export class MainMenu extends LitElement {
         const locale = url.searchParams.get('locale');
 
         let urlScratch = process.env.URL_SCRATCH +
-            "?url_mobilenet_models=" + process.env.URL_BASE;
+            "?url_mobilenet_models=" + process.env.URL_BASE + '&autonomous';
         if (locale != null) {
             urlScratch += '&locale=' + locale;
         }
