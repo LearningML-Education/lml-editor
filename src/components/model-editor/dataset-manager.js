@@ -431,6 +431,14 @@ export class DatasetManager extends LitElement {
     `;
   }
 
+  deleteImage(label, image) {
+    let removeImage = confirm(msg("Surely you want to delete this item?"));
+    if (removeImage) {
+      this._datasetConsumer.value.get(label).delete(image);
+      this.requestUpdate();
+    }
+  }
+
   templateImageData() {
     return html`
       <div class="container itemdata p-3">    
@@ -439,7 +447,7 @@ export class DatasetManager extends LitElement {
       ${this._datasetConsumer.value.get(this.labelName) && !this.cameraOpened
         ? Array.from(this._datasetConsumer.value.get(this.labelName)).reverse().map((image, index) =>
           html`
-            <img class="image-item" src=${image}/>
+            <img @click=${() => { this.deleteImage(this.labelName, image) }} class="image-item" src=${image}/>
           `
         )
         : html``

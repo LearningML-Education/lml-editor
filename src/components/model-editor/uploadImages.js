@@ -10,7 +10,7 @@ export function uploadImages(multiple = true) {
       {
         description: "Images",
         accept: {
-          "images/*": [".jpg", ".png"],
+          "images/*": [".jpg", ".jpeg", ".png", ".webp", ".svg"],
         },
       },
     ],
