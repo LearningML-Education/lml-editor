@@ -86,9 +86,9 @@ export class DatasetManager extends LitElement {
     // primero miramos que todas los items separados por coma sean números
     if (items.some(item => isNaN(item))) return false;
 
-    // después comprobamos si this.dimension es nulo, lo cual significa que es
+    // después comprobamos si this.dimension es 0, lo cual significa que es
     // la primera entrada y será la que define la dimensión de los vectores
-    if (this._dataTypeConsumer.value.dimension == undefined) {
+    if (this._dataTypeConsumer.value.dimension == 0) {
       this._dataTypeConsumer.value.dimension = items.length;
     }
 
@@ -102,17 +102,17 @@ export class DatasetManager extends LitElement {
   }
 
   addTextToDataset(texts) {
-    texts.split("\n").forEach(entry => {
-      if (entry == "") return;
+    console.log("KUKUUUUU");
+    for (let entry of texts.split("\n")) {
+      if (entry == "") continue;
       if (this._dataTypeConsumer.value.type == 'numerical' && !this.isValidNumberEntry(entry)) {
         alert(msg("Invalid entry"));
-        return;
+        break;
       }
 
       this._datasetConsumer.value.set(this.labelName,
         this._datasetConsumer.value.get(this.labelName).add(entry));
-
-    });
+    }
 
     this.requestUpdate();
   }
