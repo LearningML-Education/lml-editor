@@ -26,7 +26,7 @@ export class InputMenu extends LitElement {
 
     return html`
     <div class="navbar-item">
-      <input class="input" @change=${this.changeFileName} type="text" placeholder="${msg('Model name')}" value="${this.name}">
+      <input class="input" @change=${this.changeFileName} type="text" size="10" placeholder="${msg('Model name')}" value="${this.name}">
     </div>
         `
   }

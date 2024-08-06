@@ -1,4 +1,5 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, dataTypeContext } from '../../contexts';
@@ -17,12 +18,14 @@ export class MainMenu extends LitElement {
     static properties = {
         advancedMode: { type: Object, attribute: 'advanced-mode' },
         menu: { type: String },
-        modelName: { type: String }
+        modelName: { type: String },
+        navBarMenuActive: { type: Boolean }
     }
 
     constructor() {
         super();
         this.modelName = "";
+        this.navBarMenuActive = false;
         updateWhenLocaleChanges(this);
     }
 
@@ -64,7 +67,7 @@ export class MainMenu extends LitElement {
             <mode-toggle-menu class="component"></mode-toggle-menu> 
             
                 <a class="navbar-item" @click="${this.initScratch}">                
-                <img src="${process.env.URL_BASE}/images/scratch_icon.svg">  ${msg('Open Scratch')}
+                <img src="${process.env.URL_BASE}/images/scratch_icon.svg">
                 </a>
             
             `;
@@ -79,13 +82,14 @@ export class MainMenu extends LitElement {
                     <img src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
                 </a>
 
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
+                <a @click=${() => {this.navBarMenuActive = !this.navBarMenuActive;}} role="button" class=${classMap({ "navbar-burger": true, "is-active": this.navBarMenuActive})} aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
                 </a>
             </div>
-            <div class="navbar-menu">
+            <div  class=${classMap({ "navbar-menu": true, "is-active": this.navBarMenuActive})}>
                 <div class="navbar-start">                            
                     ${this.templateMenu()}               
                 </div>

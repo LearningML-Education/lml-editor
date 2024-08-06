@@ -36,7 +36,7 @@ export class ModeToggleMenu extends LitElement {
         <span class="icon">
           <i class=${classMap({ "fas": true, "fa-toggle-off": !this.advanced, "fa-toggle-on": this.advanced })}></i>
         </span>
-        <span>${this.advanced ? msg("Advanced mode on") : msg("Advanced mode off")}</span>
+        <span>${this.advanced ? msg("Advanced on") : msg("Advanced off")}</span>
       </button>
     </div>
         `
