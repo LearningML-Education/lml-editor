@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="ca" source-language="en" original="lit-localize-inputs"
-    datatype="plaintext">
+  <file target-language="ca" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="sd1f81284eeb7b503">
         <source>File</source>
@@ -70,18 +69,6 @@
       <trans-unit id="s01a06d93f923852d">
         <source>Model name</source>
         <target>Nom del model</target>
-      </trans-unit>
-      <trans-unit id="s1ea65ab4fcc36553">
-        <source>Advanced mode on</source>
-        <target>Mode avançat activat</target>
-      </trans-unit>
-      <trans-unit id="sd82c4689801ba597">
-        <source>Advanced mode off</source>
-        <target>Mode avançat desactivat</target>
-      </trans-unit>
-      <trans-unit id="sef28fbfc09085d87">
-        <source>Open Scratch</source>
-        <target>Obre Scratch</target>
       </trans-unit>
       <trans-unit id="s268ecd1cef45a9a8">
         <source>Are you sure?</source>
@@ -287,6 +274,11 @@
         <source>Load</source>
         <target>Carregar</target>
       </trans-unit>
+      <trans-unit id="s21b06c38fc4164db">
+        <source>Advanced</source>
+        <target>Avançat</target>
+      </trans-unit>
+      
 
     </body>
   </file>

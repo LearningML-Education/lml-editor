@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="de" source-language="en" original="lit-localize-inputs"
-    datatype="plaintext">
+  <file target-language="de" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="s933f2ff188367947">
         <source>You have to build a model first</source>
@@ -46,18 +45,6 @@
       <trans-unit id="s0487f33d9ddaabde">
         <source>About</source>
         <target>Über</target>
-      </trans-unit>
-      <trans-unit id="s1ea65ab4fcc36553">
-        <source>Advanced mode on</source>
-        <target>Erweiterter Modus ein</target>
-      </trans-unit>
-      <trans-unit id="sd82c4689801ba597">
-        <source>Advanced mode off</source>
-        <target>Erweiterter Modus aus</target>
-      </trans-unit>
-      <trans-unit id="sef28fbfc09085d87">
-        <source>Open Scratch</source>
-        <target>Scratch öffnen</target>
       </trans-unit>
       <trans-unit id="sffcc465055a84a01">
         <source>Text recognition</source>
@@ -287,7 +274,10 @@
         <source>Load</source>
         <target>Laden</target>
       </trans-unit>
-
+      <trans-unit id="s21b06c38fc4164db">
+        <source>Advanced</source>
+        <target>Erweitert</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
