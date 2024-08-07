@@ -26,13 +26,15 @@ export class ModelLearn extends LitElement {
   static properties = {
     buttonLoading: { type: Boolean },
     algorithm: { type: String },
-    advancedMode: { type: Object, attribute: 'advanced-mode' }
+    advancedMode: { type: Object, attribute: 'advanced-mode' },
+    showModalTrainedModel: { type: Boolean }
   }
 
   constructor() {
     super();
     this.buttonLoading = false;
     this.algorithm = "ann";
+    this.showModalTrainedModel = false;
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -157,6 +159,8 @@ export class ModelLearn extends LitElement {
       }).then(lmlModel => {
         console.log("This model has been built right now:");
         console.log(lmlModel);  
+        this.showModalTrainedModel = true;
+        setTimeout(() => {this.showModalTrainedModel = false;}, 5000);
         this.bcEditor.postMessage('updateModel');     
       });
     });
@@ -214,6 +218,31 @@ export class ModelLearn extends LitElement {
     <input class="input" type="number" id="numofneighbours" name="numofneighbours" min="1" value="5" />            
   </div>
 </div>`
+  }
+
+  templateModalTrainedModel(){
+    return html`
+    <div class=${classMap({"modal": true, "is-active": this.showModalTrainedModel})} class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">${msg("Great!")}</p>
+          <button @click=${() => { 
+            this.showModalTrainedModel = false;}} class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="columns">
+            <div class="column is-one-quarter ">
+              <img width="100" src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML Genius">
+            </div>
+            <div class="column">
+              <p class="is-size-4"> ${msg('The model has been trained!, you can now test it and use it in LML-Scratch')}</p>
+            </div>
+          </div>
+        </section>        
+      </div>
+    </div>
+    `
   }
 
   templateAdvanced() {
@@ -274,7 +303,9 @@ export class ModelLearn extends LitElement {
       
     </div>
 
-  </div>                   
+  </div>     
+  
+  ${this.templateModalTrainedModel()}
     `;
   }
 
@@ -300,6 +331,8 @@ export class ModelLearn extends LitElement {
         <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
       </button> 
     </div >
+
+    ${this.templateModalTrainedModel()}
     `;
   }
 
