@@ -307,17 +307,24 @@ export class ModelLearn extends LitElement {
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="notification">   
-          <div class="columns">
-            <div class="column">
-              <span class="tag is-info">Batch</span> ${this.batch}
-            </div>
-            <div class="column">
-              <span class="tag is-info">Accuracy</span> ${this.acc}
-            </div>
-            <div class="column">
-              <span class="tag is-info">Loss</span> ${this.loss}
-            </div>
-          </div>                                        
+          ${(this.advancedMode.enabled)
+            ? html`
+            <div class="columns">
+              <div class="column">
+                <span class="tag is-info">Batch</span> ${this.batch}
+              </div>
+              <div class="column">
+                <span class="tag is-info">Accuracy</span> ${this.acc}
+              </div>
+              <div class="column">
+                <span class="tag is-info">Loss</span> ${this.loss}
+              </div>
+            </div> 
+            `
+            : html``
+
+          }
+                                                 
           <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
             ${this.learningPercentage}%
           </progress>  
@@ -389,6 +396,8 @@ export class ModelLearn extends LitElement {
 
   templateBasic() {
     return html`
+
+    ${this.templateModalLearn()}
     
     <h4 class="title is-4">${msg('Learn')}</h4>    
     <h6 class="subtitle is-6">${this.learningText(this._dataTypeConsumer.value.type)}</h6>
