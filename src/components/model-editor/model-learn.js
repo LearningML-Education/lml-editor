@@ -307,7 +307,7 @@ export class ModelLearn extends LitElement {
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="notification">   
-          ${(this.advancedMode.enabled)
+          ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
             ? html`
             <div class="columns">
               <div class="column">
@@ -324,10 +324,15 @@ export class ModelLearn extends LitElement {
             : html``
 
           }
-                                                 
-          <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
-            ${this.learningPercentage}%
-          </progress>  
+          
+          ${this._modelConsumer.value.constructor.name == 'LMLSequential'
+            ? html`
+            <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
+              ${this.learningPercentage}%
+            </progress> 
+            `
+            : html ``
+          }           
           <p class="image is-9by4">
             <img src="${process.env.URL_BASE}/images/modern-times.gif">
           </p> 
