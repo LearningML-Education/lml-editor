@@ -33,7 +33,8 @@ export class ModelLearn extends LitElement {
     batch: { type: Number },
     acc: { type: Number },
     loss: { type: Number },
-    learningPercentage: { type: Number }
+    learningPercentage: { type: Number },
+    learningTime: { type: Number}
   }
 
   constructor() {
@@ -45,6 +46,7 @@ export class ModelLearn extends LitElement {
     this.acc = 0;
     this.loss = 0;
     this.learningPercentage = 0;
+    this.learningTime = 0;
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -147,6 +149,8 @@ export class ModelLearn extends LitElement {
 
     console.log(this._featuresConsumer.value);
 
+    const startTime = new Date().getTime();
+
     Promise.all(promises).then(() => {
       function totalElementsInDataset(map) {
         let total = 0;
@@ -168,7 +172,7 @@ export class ModelLearn extends LitElement {
 
         console.log('Batch:', batch);
         console.log('logs', logs);
-      }
+      }      
 
       this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {
         this.buttonLoading = false;
@@ -177,13 +181,13 @@ export class ModelLearn extends LitElement {
       }).then(r => {
         if (this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential') {
           let learningHistory = this.querySelector("#learningHistory");
-          learningHistory.style.display='block';
+          learningHistory.style.display = 'block';
           let d = this._modelConsumer.value.dataForHistoryPlotly();
           Plotly.newPlot(learningHistory, d.data, d.layout);
-        }else{
-          this.querySelector("#learningHistory").style.display='none';
+        } else if(this.advancedMode.enabled) {
+          this.querySelector("#learningHistory").style.display = 'none';
         }
-        
+
         return r;
       }).then(r => {
         let dataForPlotly = confusionMatrix(r.validationDataset, this._modelConsumer.value)
@@ -206,6 +210,16 @@ export class ModelLearn extends LitElement {
         this.showModalTrainedModel = true;
         setTimeout(() => { this.showModalTrainedModel = false; }, 10000);
         this.bcEditor.postMessage('updateModel');
+
+        // Capturar el tiempo de finalización
+        const endTime = new Date().getTime();
+
+        // Calcular la duración del entrenamiento en milisegundos
+        const duration = endTime - startTime;
+
+        // Convertir la duración a un formato más legible (por ejemplo, en segundos)
+        this.learningTime = (duration / 1000).toFixed(2);
+        console.log(`Training completed in ${this.learningTime} seconds.`);
       });
     });
 
@@ -280,7 +294,7 @@ export class ModelLearn extends LitElement {
 
     let pill = (locale in pills)
       ? pills[locale]['machine_learning_tips'][tipIndex]['description']
-      : pilss['en']['machine_learning_tips'][tipIndex]['description'];
+      : pills['en']['machine_learning_tips'][tipIndex]['description'];
 
 
     return html`
@@ -299,6 +313,7 @@ export class ModelLearn extends LitElement {
               <img width="100" src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML Genius">
             </div>
             <div class="column">
+              <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
               <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
               <hr/>
               <div class="notification">
