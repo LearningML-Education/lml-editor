@@ -160,13 +160,13 @@ export class ModelLearn extends LitElement {
       let totalIterations = batchPerEpoch * this._modelConsumer.value.hyperparams.epochs;
       let iteration = 0;
       let onBatchEnd = (batch, logs) => {
-        iteration ++;
+        iteration++;
         this.learningPercentage = parseInt(100 * (iteration / totalIterations));
         this.batch = batch;
         this.loss = Math.trunc(logs.loss * 1000) / 1000;
         this.acc = Math.trunc(logs.acc * 1000) / 1000;
-        
-          console.log('Batch:', batch);
+
+        console.log('Batch:', batch);
         console.log('logs', logs);
       }
 
@@ -174,6 +174,17 @@ export class ModelLearn extends LitElement {
         this.buttonLoading = false;
         console.log(result);
         return result;
+      }).then(r => {
+        if (this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential') {
+          let learningHistory = this.querySelector("#learningHistory");
+          learningHistory.style.display='block';
+          let d = this._modelConsumer.value.dataForHistoryPlotly();
+          Plotly.newPlot(learningHistory, d.data, d.layout);
+        }else{
+          this.querySelector("#learningHistory").style.display='none';
+        }
+        
+        return r;
       }).then(r => {
         let dataForPlotly = confusionMatrix(r.validationDataset, this._modelConsumer.value)
         return dataForPlotly;
@@ -183,6 +194,7 @@ export class ModelLearn extends LitElement {
         if (this.advancedMode.enabled && this.percentageForValidation != 0) {
           Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
         }
+
         let encoder = {
           name: this._encoderComsumer.value[this._dataTypeConsumer.value.type].name,
           vocabulary: vocabulary
@@ -308,7 +320,7 @@ export class ModelLearn extends LitElement {
       <div class="modal-content">
         <div class="notification">   
           ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
-            ? html`
+        ? html`
             <div class="columns">
               <div class="column">
                 <span class="tag is-info">Batch</span> ${this.batch}
@@ -321,18 +333,18 @@ export class ModelLearn extends LitElement {
               </div>
             </div> 
             `
-            : html``
+        : html``
 
-          }
+      }
           
           ${this._modelConsumer.value.constructor.name == 'LMLSequential'
-            ? html`
+        ? html`
             <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
               ${this.learningPercentage}%
             </progress> 
             `
-            : html ``
-          }           
+        : html``
+      }           
           <p class="image is-9by4">
             <img src="${process.env.URL_BASE}/images/modern-times.gif">
           </p> 
@@ -370,13 +382,14 @@ export class ModelLearn extends LitElement {
         :
         this.templateKNNParams()}
 
-        <div class="block mt-2">
-          <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.buttonLoading })}>
-            <span class="icon"><i class="fa-solid fa-gears"></i></span>
-            <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
-          </button> 
-      </div >  
+          <div class="block mt-2">
+            <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.buttonLoading })}>
+              <span class="icon"><i class="fa-solid fa-gears"></i></span>
+              <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
+            </button> 
+          </div >  
         </div>
+        <div id="learningHistory"></div>
       </div>
       <div class="column">
         <div class="box">
