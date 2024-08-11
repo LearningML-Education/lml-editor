@@ -12,6 +12,8 @@ import {
   modelContext
 } from '../../contexts.js';
 
+import * as pills from './pills/pills.json';
+
 export class ModelLearn extends LitElement {
 
   _dataTypeConsumer = new ContextConsumer(this, { context: dataTypeContext, subscribe: true });
@@ -39,7 +41,7 @@ export class ModelLearn extends LitElement {
 
     this.bc = new BroadcastChannel('lml-internal');
     this.bc.addEventListener('message', message => {
-      if(message.data == 'requestUpdate'){
+      if (message.data == 'requestUpdate') {
         this.requestUpdate();
       }
     });
@@ -100,7 +102,7 @@ export class ModelLearn extends LitElement {
   }
 
   learn() {
-    if(this.notEnoughClassesToLearn()){
+    if (this.notEnoughClassesToLearn()) {
       alert(msg('There are not enough classes to learn. Two classes are needed to learn'));
       return;
     }
@@ -125,7 +127,7 @@ export class ModelLearn extends LitElement {
     this.buttonLoading = true;
     this._featuresConsumer.value.clear();
     let vocabulary;
-    if(type == 'text'){
+    if (type == 'text') {
       let texts = Array.from(this._datasetConsumer.value.values()).map(set => Array.from(set)).flat();
       vocabulary = buildVocabulary(texts);
     }
@@ -142,9 +144,9 @@ export class ModelLearn extends LitElement {
         this.buttonLoading = false;
         console.log(result);
         return result;
-      }).then(r => {        
+      }).then(r => {
         let dataForPlotly = confusionMatrix(r.validationDataset, this._modelConsumer.value)
-        return dataForPlotly;        
+        return dataForPlotly;
       }).then(d => {
         console.log(d);
         let confusionMatrixElem = this.querySelector("#confusionMatrix");
@@ -158,10 +160,10 @@ export class ModelLearn extends LitElement {
         return this._modelConsumer.value.saveToLocalstorage(this._dataTypeConsumer.value, encoder);
       }).then(lmlModel => {
         console.log("This model has been built right now:");
-        console.log(lmlModel);  
+        console.log(lmlModel);
         this.showModalTrainedModel = true;
-        setTimeout(() => {this.showModalTrainedModel = false;}, 5000);
-        this.bcEditor.postMessage('updateModel');     
+        setTimeout(() => { this.showModalTrainedModel = false; }, 10000);
+        this.bcEditor.postMessage('updateModel');
       });
     });
 
@@ -220,15 +222,34 @@ export class ModelLearn extends LitElement {
 </div>`
   }
 
-  templateModalTrainedModel(){
+  templateModalTrainedModel() {
+    const url = new URL(window.location.href);
+    let locale = url.searchParams.get('locale');
+
+    locale = (locale == null)? 'en' : locale;
+
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const tipIndex = getRandomInt(1, 100);
+
+    let pill = (locale in pills)
+      ? pills[locale]['machine_learning_tips'][tipIndex]['description']
+      : pilss['en']['machine_learning_tips'][tipIndex]['description'];
+
+
     return html`
-    <div class=${classMap({"modal": true, "is-active": this.showModalTrainedModel})} class="modal is-active">
+    <div class=${classMap({ "modal": true, "is-active": this.showModalTrainedModel })} class="modal is-active">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">${msg("Great!")}</p>
-          <button @click=${() => { 
-            this.showModalTrainedModel = false;}} class="delete" aria-label="close"></button>
+          <p class="modal-card-title">${msg("Great! The model has been trained!")}</p>
+          <button @click=${() => {
+        this.showModalTrainedModel = false;
+      }} class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <div class="columns">
@@ -236,7 +257,12 @@ export class ModelLearn extends LitElement {
               <img width="100" src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML Genius">
             </div>
             <div class="column">
-              <p class="is-size-4"> ${msg('The model has been trained!, you can now test it and use it in LML-Scratch')}</p>
+              <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+              <hr/>
+              <div class="notification">
+                <p class="is-size-5"> ${msg('Did you know that...?')}</p>
+                <p>${pill}</p>
+              </div>              
             </div>
           </div>
         </section>        
