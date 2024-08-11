@@ -163,7 +163,7 @@ export class ModelLearn extends LitElement {
         iteration ++;
         this.learningPercentage = parseInt(100 * (iteration / totalIterations));
         this.batch = batch;
-        this.loss = logs.loss;
+        this.loss = Math.trunc(logs.loss * 1000) / 1000;
         this.acc = Math.trunc(logs.acc * 1000) / 1000;
         
           console.log('Batch:', batch);
@@ -306,18 +306,26 @@ export class ModelLearn extends LitElement {
     <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
       <div class="modal-background"></div>
       <div class="modal-content">
-        <div class="notification">          
-          <p>Batch: ${this.batch}</p>
-          <p>Accuracy: ${this.acc}</p>    
-          <p>Loss: ${this.loss}</p>    
+        <div class="notification">   
+          <div class="columns">
+            <div class="column">
+              <span class="tag is-info">Batch</span> ${this.batch}
+            </div>
+            <div class="column">
+              <span class="tag is-info">Accuracy</span> ${this.acc}
+            </div>
+            <div class="column">
+              <span class="tag is-info">Loss</span> ${this.loss}
+            </div>
+          </div>                                        
+          <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
+            ${this.learningPercentage}%
+          </progress>  
+          <p class="image is-9by4">
+            <img src="${process.env.URL_BASE}/images/modern-times.gif">
+          </p> 
         </div>
-         
-        <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
-          ${this.learningPercentage}%
-        </progress>
-        <p class="image is-9by4">
-          <img src="${process.env.URL_BASE}/images/modern-times.gif">
-        </p>
+                 
       </div>
     </div>
     `
