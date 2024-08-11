@@ -29,7 +29,11 @@ export class ModelLearn extends LitElement {
     buttonLoading: { type: Boolean },
     algorithm: { type: String },
     advancedMode: { type: Object, attribute: 'advanced-mode' },
-    showModalTrainedModel: { type: Boolean }
+    showModalTrainedModel: { type: Boolean },
+    batch: { type: Number },
+    acc: { type: Number },
+    loss: { type: Number },
+    learningPercentage: { type: Number }
   }
 
   constructor() {
@@ -37,6 +41,10 @@ export class ModelLearn extends LitElement {
     this.buttonLoading = false;
     this.algorithm = "ann";
     this.showModalTrainedModel = false;
+    this.batch = 0;
+    this.acc = 0;
+    this.loss = 0;
+    this.learningPercentage = 0;
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -140,7 +148,29 @@ export class ModelLearn extends LitElement {
     console.log(this._featuresConsumer.value);
 
     Promise.all(promises).then(() => {
-      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation).then(result => {
+      function totalElementsInDataset(map) {
+        let total = 0;
+        for (let set of map.values()) {
+          total += set.size;
+        }
+        return total;
+      }
+
+      let batchPerEpoch = totalElementsInDataset(this._datasetConsumer.value) / this._modelConsumer.value.hyperparams.batchSize;
+      let totalIterations = batchPerEpoch * this._modelConsumer.value.hyperparams.epochs;
+      let iteration = 0;
+      let onBatchEnd = (batch, logs) => {
+        iteration ++;
+        this.learningPercentage = parseInt(100 * (iteration / totalIterations));
+        this.batch = batch;
+        this.loss = logs.loss;
+        this.acc = Math.trunc(logs.acc * 1000) / 1000;
+        
+          console.log('Batch:', batch);
+        console.log('logs', logs);
+      }
+
+      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {
         this.buttonLoading = false;
         console.log(result);
         return result;
@@ -226,7 +256,7 @@ export class ModelLearn extends LitElement {
     const url = new URL(window.location.href);
     let locale = url.searchParams.get('locale');
 
-    locale = (locale == null)? 'en' : locale;
+    locale = (locale == null) ? 'en' : locale;
 
     function getRandomInt(min, max) {
       min = Math.ceil(min);
@@ -271,18 +301,32 @@ export class ModelLearn extends LitElement {
     `
   }
 
-  templateAdvanced() {
+  templateModalLearn() {
     return html`
     <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
       <div class="modal-background"></div>
       <div class="modal-content">
+        <div class="notification">          
+          <p>Batch: ${this.batch}</p>
+          <p>Accuracy: ${this.acc}</p>    
+          <p>Loss: ${this.loss}</p>    
+        </div>
+         
+        <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
+          ${this.learningPercentage}%
+        </progress>
         <p class="image is-9by4">
           <img src="${process.env.URL_BASE}/images/modern-times.gif">
         </p>
       </div>
     </div>
+    `
+  }
 
- 
+  templateAdvanced() {
+    return html`
+    ${this.templateModalLearn()}
+
     <h6 class="subtitle is-6">${this.learningText(this._dataTypeConsumer.value.type)}</h6>
         
     <div class="columns">
@@ -337,15 +381,6 @@ export class ModelLearn extends LitElement {
 
   templateBasic() {
     return html`
-<div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
-      <div class="modal-background"></div>
-      <div class="modal-content">
-        <p class="image is-9by4">
-          <img src="${process.env.URL_BASE}/images/modern-times.gif">
-        </p>
-      </div>
-    </div>
-
     
     <h4 class="title is-4">${msg('Learn')}</h4>    
     <h6 class="subtitle is-6">${this.learningText(this._dataTypeConsumer.value.type)}</h6>
