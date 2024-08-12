@@ -345,22 +345,23 @@ export class ModelLearn extends LitElement {
     <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
       <div class="modal-background"></div>
       <div class="modal-content">
-        <div class="notification">   
+        <div class="notification">  
+          <p class="is-size-4">${msg("Running ML algorithm to build the model.")}</p> 
           ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
-        ? html`
-            <div class="columns">
-              <div class="column">
-                <span class="tag is-info">Batch</span> ${this.batch}
-              </div>
-              <div class="column">
-                <span class="tag is-info">Accuracy</span> ${this.acc}
-              </div>
-              <div class="column">
-                <span class="tag is-info">Loss</span> ${this.loss}
-              </div>
-            </div> 
-            `
-        : html``
+            ? html`
+                <div class="columns">
+                  <div class="column">
+                    <span class="tag is-info">Batch</span> ${this.batch}
+                  </div>
+                  <div class="column">
+                    <span class="tag is-info">Accuracy</span> ${this.acc}
+                  </div>
+                  <div class="column">
+                    <span class="tag is-info">Loss</span> ${this.loss}
+                  </div>
+                </div> 
+                `
+            : html``
 
       }
          
@@ -371,18 +372,10 @@ export class ModelLearn extends LitElement {
             </progress> 
             `
         : html``
-      }           
-      <div class="columns">
-        <div class="column is-one-third">
-          <p class="image">
-            <img width="100" src="${process.env.URL_BASE}/images/matrix.gif">
-          </p> 
-        </div>
-        <div class="column">
-          ${this.templatePill()}
-        </div>
-      </div>
-          
+        }           
+
+        ${this.templatePill()}  
+                
         </div>
                  
       </div>
