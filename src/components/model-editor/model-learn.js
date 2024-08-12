@@ -34,7 +34,7 @@ export class ModelLearn extends LitElement {
     acc: { type: Number },
     loss: { type: Number },
     learningPercentage: { type: Number },
-    learningTime: { type: Number}
+    learningTime: { type: Number }
   }
 
   constructor() {
@@ -47,6 +47,7 @@ export class ModelLearn extends LitElement {
     this.loss = 0;
     this.learningPercentage = 0;
     this.learningTime = 0;
+    this.pill = null;
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -132,6 +133,7 @@ export class ModelLearn extends LitElement {
     }
 
     let promises = [];
+    this.generateNewPill();
     let type = this._dataTypeConsumer.value.type;
     let encode = this._encoderComsumer.value[type]
     this.buttonLoading = true;
@@ -172,7 +174,7 @@ export class ModelLearn extends LitElement {
 
         console.log('Batch:', batch);
         console.log('logs', logs);
-      }      
+      }
 
       this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {
         this.buttonLoading = false;
@@ -184,7 +186,7 @@ export class ModelLearn extends LitElement {
           learningHistory.style.display = 'block';
           let d = this._modelConsumer.value.dataForHistoryPlotly();
           Plotly.newPlot(learningHistory, d.data, d.layout);
-        } else if(this.advancedMode.enabled) {
+        } else if (this.advancedMode.enabled) {
           this.querySelector("#learningHistory").style.display = 'none';
         }
 
@@ -208,7 +210,7 @@ export class ModelLearn extends LitElement {
         console.log("This model has been built right now:");
         console.log(lmlModel);
         this.showModalTrainedModel = true;
-        setTimeout(() => { this.showModalTrainedModel = false; }, 10000);
+        //setTimeout(() => { this.showModalTrainedModel = false; }, 10000);
         this.bcEditor.postMessage('updateModel');
 
         // Capturar el tiempo de finalización
@@ -278,7 +280,7 @@ export class ModelLearn extends LitElement {
 </div>`
   }
 
-  templateModalTrainedModel() {
+  generateNewPill() {
     const url = new URL(window.location.href);
     let locale = url.searchParams.get('locale');
 
@@ -292,10 +294,23 @@ export class ModelLearn extends LitElement {
 
     const tipIndex = getRandomInt(1, 100);
 
-    let pill = (locale in pills)
+    this.pill = (locale in pills)
       ? pills[locale]['machine_learning_tips'][tipIndex]['description']
       : pills['en']['machine_learning_tips'][tipIndex]['description'];
+  }
 
+  templatePill() {
+
+    return html`
+      <div class="notification">
+        <p class="is-size-5"> ${msg('Did you know that...?')}</p>
+        <p>${this.pill}</p>
+      </div>
+      `;
+
+  }
+
+  templateModalTrainedModel() {
 
     return html`
     <div class=${classMap({ "modal": true, "is-active": this.showModalTrainedModel })} class="modal is-active">
@@ -315,11 +330,8 @@ export class ModelLearn extends LitElement {
             <div class="column">
               <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
               <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
-              <hr/>
-              <div class="notification">
-                <p class="is-size-5"> ${msg('Did you know that...?')}</p>
-                <p>${pill}</p>
-              </div>              
+              <hr/>              
+              ${this.templatePill()}              
             </div>
           </div>
         </section>        
@@ -351,8 +363,8 @@ export class ModelLearn extends LitElement {
         : html``
 
       }
-          
-          ${this._modelConsumer.value.constructor.name == 'LMLSequential'
+         
+        ${this._modelConsumer.value.constructor.name == 'LMLSequential'
         ? html`
             <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
               ${this.learningPercentage}%
@@ -360,9 +372,17 @@ export class ModelLearn extends LitElement {
             `
         : html``
       }           
-          <p class="image is-9by4">
-            <img src="${process.env.URL_BASE}/images/modern-times.gif">
+      <div class="columns">
+        <div class="column is-one-third">
+          <p class="image">
+            <img width="100" src="${process.env.URL_BASE}/images/matrix.gif">
           </p> 
+        </div>
+        <div class="column">
+          ${this.templatePill()}
+        </div>
+      </div>
+          
         </div>
                  
       </div>
