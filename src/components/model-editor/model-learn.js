@@ -26,10 +26,10 @@ export class ModelLearn extends LitElement {
 
 
   static properties = {
-    buttonLoading: { type: Boolean },
+    showModalLearn: { type: Boolean },
     algorithm: { type: String },
     advancedMode: { type: Object, attribute: 'advanced-mode' },
-    showModalTrainedModel: { type: Boolean },
+    modelHasBeenTrained: { type: Boolean },
     batch: { type: Number },
     acc: { type: Number },
     loss: { type: Number },
@@ -39,9 +39,9 @@ export class ModelLearn extends LitElement {
 
   constructor() {
     super();
-    this.buttonLoading = false;
+    this.showModalLearn = false;
     this.algorithm = "ann";
-    this.showModalTrainedModel = false;
+    this.modelHasBeenTrained = false;
     this.batch = 0;
     this.acc = 0;
     this.loss = 0;
@@ -136,7 +136,8 @@ export class ModelLearn extends LitElement {
     this.generateNewPill();
     let type = this._dataTypeConsumer.value.type;
     let encode = this._encoderComsumer.value[type]
-    this.buttonLoading = true;
+    this.showModalLearn = true;
+    this.modelHasBeenTrained = false;
     this._featuresConsumer.value.clear();
     let vocabulary;
     if (type == 'text') {
@@ -176,8 +177,7 @@ export class ModelLearn extends LitElement {
         console.log('logs', logs);
       }
 
-      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {
-        this.buttonLoading = false;
+      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {        
         console.log(result);
         return result;
       }).then(r => {
@@ -208,9 +208,8 @@ export class ModelLearn extends LitElement {
         return this._modelConsumer.value.saveToLocalstorage(this._dataTypeConsumer.value, encoder);
       }).then(lmlModel => {
         console.log("This model has been built right now:");
-        console.log(lmlModel);
-        this.showModalTrainedModel = true;
-        //setTimeout(() => { this.showModalTrainedModel = false; }, 10000);
+        console.log(lmlModel);        
+        this.modelHasBeenTrained = true;
         this.bcEditor.postMessage('updateModel');
 
         // Capturar el tiempo de finalización
@@ -313,13 +312,13 @@ export class ModelLearn extends LitElement {
   templateModalTrainedModel() {
 
     return html`
-    <div class=${classMap({ "modal": true, "is-active": this.showModalTrainedModel })} class="modal is-active">
+    <div class=${classMap({ "modal": true, "is-active": this.modelHasBeenTrained })} class="modal is-active">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">${msg("Great! The model has been trained!")}</p>
           <button @click=${() => {
-        this.showModalTrainedModel = false;
+        this.modelHasBeenTrained = false;
       }} class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
@@ -342,7 +341,79 @@ export class ModelLearn extends LitElement {
 
   templateModalLearn() {
     return html`
-    <div class=${classMap({ "modal": true, "is-active": this.buttonLoading })}>
+
+    <div class=${classMap({ "modal": true, "is-active": this.showModalLearn })} class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">
+            ${this.modelHasBeenTrained
+              ? html`
+                ${msg("Great! The model has been trained!")}
+              `
+              : html`${msg("Running ML algorithm to build the model.")}`
+            }
+            
+          </p>          
+          ${this.modelHasBeenTrained
+            ? html`<button @click=${() => { this.showModalLearn = false;}} class="delete" aria-label="close"></button>`
+            : html``
+          }
+          
+        </header>
+        <section class="modal-card-body">
+          <div class="columns">
+            <div class="column is-one-quarter ">
+              <img width="100" src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML Genius">
+            </div>
+            <div class="column">
+              ${this.modelHasBeenTrained
+                ? html`
+                  <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
+                  <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+                `
+                : html``
+              }
+              
+              ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
+              ? html`
+                  <div class="columns">
+                    <div class="column">
+                      <span class="tag is-info">Batch</span> ${this.batch}
+                    </div>
+                    <div class="column">
+                      <span class="tag is-info">Accuracy</span> ${this.acc}
+                    </div>
+                    <div class="column">
+                      <span class="tag is-info">Loss</span> ${this.loss}
+                    </div>
+                  </div> 
+                  `
+              : html``
+              }
+         
+              ${this._modelConsumer.value.constructor.name == 'LMLSequential'
+              ? html`
+                  <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
+                    ${this.learningPercentage}%
+                  </progress> 
+                  `
+              : html``
+              }    
+              
+              ${this.templatePill()} 
+              
+            </div>
+          </div>
+        </section>        
+      </div>
+    </div>
+
+
+
+
+
+    <!-- <div class=${classMap({ "modal": true, "is-active": this.showModalLearn })}>
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="notification">  
@@ -362,8 +433,7 @@ export class ModelLearn extends LitElement {
                 </div> 
                 `
             : html``
-
-      }
+          }
          
         ${this._modelConsumer.value.constructor.name == 'LMLSequential'
         ? html`
@@ -379,7 +449,7 @@ export class ModelLearn extends LitElement {
         </div>
                  
       </div>
-    </div>
+    </div> -->
     `
   }
 
@@ -411,7 +481,7 @@ export class ModelLearn extends LitElement {
         this.templateKNNParams()}
 
           <div class="block mt-2">
-            <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.buttonLoading })}>
+            <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.showModalLearn })}>
               <span class="icon"><i class="fa-solid fa-gears"></i></span>
               <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
             </button> 
@@ -436,7 +506,6 @@ export class ModelLearn extends LitElement {
 
   </div>     
   
-  ${this.templateModalTrainedModel()}
     `;
   }
 
@@ -450,13 +519,12 @@ export class ModelLearn extends LitElement {
       
 
       <div class="block mt-2">
-        <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.buttonLoading })}>
+        <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.showModalLearn })}>
         <span class="icon"><i class="fa-solid fa-gears"></i></span>
         <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
       </button> 
     </div >
 
-    ${this.templateModalTrainedModel()}
     `;
   }
 
