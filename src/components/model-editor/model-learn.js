@@ -362,49 +362,42 @@ export class ModelLearn extends LitElement {
           
         </header>
         <section class="modal-card-body">
-          <div class="columns">
-            <div class="column is-one-quarter ">
-              <img width="100" src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML Genius">
-            </div>
-            <div class="column">
-              ${this.modelHasBeenTrained
-                ? html`
-                  <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
-                  <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
-                `
-                : html``
-              }
               
-              ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
-              ? html`
-                  <div class="columns">
-                    <div class="column">
-                      <span class="tag is-info">Batch</span> ${this.batch}
-                    </div>
-                    <div class="column">
-                      <span class="tag is-info">Accuracy</span> ${this.acc}
-                    </div>
-                    <div class="column">
-                      <span class="tag is-info">Loss</span> ${this.loss}
-                    </div>
-                  </div> 
-                  `
-              : html``
-              }
-         
-              ${this._modelConsumer.value.constructor.name == 'LMLSequential'
-              ? html`
-                  <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
-                    ${this.learningPercentage}%
-                  </progress> 
-                  `
-              : html``
-              }    
-              
-              ${this.templatePill()} 
-              
-            </div>
-          </div>
+          ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
+          ? html`
+              <div class="columns">
+                <div class="column">
+                  <span class="tag is-info">Batch</span> ${this.batch}
+                </div>
+                <div class="column">
+                  <span class="tag is-info">Accuracy</span> ${this.acc}
+                </div>
+                <div class="column">
+                  <span class="tag is-info">Loss</span> ${this.loss}
+                </div>
+              </div> 
+              `
+          : html``
+          }
+      
+          ${this._modelConsumer.value.constructor.name == 'LMLSequential'
+          ? html`
+              <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
+                ${this.learningPercentage}%
+              </progress> 
+              `
+          : html``
+          }    
+          
+          ${this.templatePill()}
+
+          ${this.modelHasBeenTrained
+          ? html`
+            <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
+            <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+          `
+          : html``
+        }
         </section>        
       </div>
     </div>
