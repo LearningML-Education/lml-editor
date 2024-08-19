@@ -172,7 +172,7 @@ export class ModelEval extends LitElement {
   templateImageEval() {
     return html`
     <h6 class="subtitle is-6">${msg("Introduces new images and checks they are correctly classified")}</h6> 
-    
+    <hr/>
     <div class="field is-grouped">
     ${!this.cameraOpened
         ? html`
@@ -227,6 +227,7 @@ export class ModelEval extends LitElement {
   templateNumberEval() {
     return html`
     <h6 class="subtitle is-6">${msg("Introduces new numbers and checks they are correctly classified ")}</h6>
+    <hr/>
     <input class="input" type="text" placeholder="Introduce numbers separated by commas" id="numberInput" />
     
     <div class="field mt-2 is-grouped is-justify-content-center">

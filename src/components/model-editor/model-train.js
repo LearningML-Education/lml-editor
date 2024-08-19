@@ -76,6 +76,7 @@ export class ModelTrain extends LitElement {
     <h4 ?hidden="${this.advancedMode}" class="title is-4">${msg('Training')}</h4>
 
     <h6 class="subtitle is-6">${this.trainingText(this._dataTypeConsumer.value.type)}</h6>
+    <hr/>
     <div class="field has-addons">
       <div class="control">
         <input id="inputLabelName" class="input" type="text" placeholder="${msg('New class name')}">

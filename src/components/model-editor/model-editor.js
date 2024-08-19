@@ -62,16 +62,22 @@ export class ModelEditor extends LitElement {
     return html`
     <div class="columns">
       <div class="column">
-        <model-train id="model-train"></model-train>
+        <div class="box">
+          <model-train id="model-train"></model-train>
+        </div>
       </div>
 
       <div class="column">
-        <model-learn advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-learn>
+        <div class="box">
+          <model-learn advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-learn>
+        </div>
       </div>
 
 
       <div class="column">
-        <model-eval advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-eval>
+        <div class="box">
+          <model-eval advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-eval>
+        </div>
       </div>
     </div>
     `

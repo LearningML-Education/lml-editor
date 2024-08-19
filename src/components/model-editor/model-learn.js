@@ -309,36 +309,6 @@ export class ModelLearn extends LitElement {
 
   }
 
-  templateModalTrainedModel() {
-
-    return html`
-    <div class=${classMap({ "modal": true, "is-active": this.modelHasBeenTrained })} class="modal is-active">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">${msg("Great! The model has been trained!")}</p>
-          <button @click=${() => {
-        this.modelHasBeenTrained = false;
-      }} class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="columns">
-            <div class="column is-one-quarter ">
-              <img width="100" src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML Genius">
-            </div>
-            <div class="column">
-              <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
-              <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
-              <hr/>              
-              ${this.templatePill()}              
-            </div>
-          </div>
-        </section>        
-      </div>
-    </div>
-    `
-  }
-
   templateModalLearn() {
     return html`
 
@@ -401,48 +371,6 @@ export class ModelLearn extends LitElement {
         </section>        
       </div>
     </div>
-
-
-
-
-
-    <!-- <div class=${classMap({ "modal": true, "is-active": this.showModalLearn })}>
-      <div class="modal-background"></div>
-      <div class="modal-content">
-        <div class="notification">  
-          <p class="is-size-4">${msg("Running ML algorithm to build the model.")}</p> 
-          ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
-            ? html`
-                <div class="columns">
-                  <div class="column">
-                    <span class="tag is-info">Batch</span> ${this.batch}
-                  </div>
-                  <div class="column">
-                    <span class="tag is-info">Accuracy</span> ${this.acc}
-                  </div>
-                  <div class="column">
-                    <span class="tag is-info">Loss</span> ${this.loss}
-                  </div>
-                </div> 
-                `
-            : html``
-          }
-         
-        ${this._modelConsumer.value.constructor.name == 'LMLSequential'
-        ? html`
-            <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
-              ${this.learningPercentage}%
-            </progress> 
-            `
-        : html``
-        }           
-
-        ${this.templatePill()}  
-                
-        </div>
-                 
-      </div>
-    </div> -->
     `
   }
 
@@ -509,7 +437,7 @@ export class ModelLearn extends LitElement {
     
     <h4 class="title is-4">${msg('Learn')}</h4>    
     <h6 class="subtitle is-6">${this.learningText(this._dataTypeConsumer.value.type)}</h6>
-      
+    <hr/>
 
       <div class="block mt-2">
         <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.showModalLearn })}>
