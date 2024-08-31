@@ -349,8 +349,9 @@ export class ModelLearn extends LitElement {
               `
           : html``
           }
-      
-          ${this._modelConsumer.value.constructor.name == 'LMLSequential'
+
+          
+          ${this._modelConsumer.value.getAlgorithmName() == 'LMLSequential'
           ? html`
               <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
                 ${this.learningPercentage}%

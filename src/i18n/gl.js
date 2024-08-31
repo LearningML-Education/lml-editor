@@ -2,18 +2,20 @@
     // Do not modify this file by hand!
     // Re-generate this file by running lit-localize
 
-    
+    import {html} from 'lit';
     
 
     /* eslint-disable no-irregular-whitespace */
     /* eslint-disable @typescript-eslint/no-explicit-any */
 
     export const templates = {
-      's00af465b478e19c8': `Aprender a recoñecer imaxes`,
+      'h29842057cedc0d1b': html`O modelo tardou <b>${0}</b> segundos en construírse.`,
+'s00af465b478e19c8': `Aprender a recoñecer imaxes`,
 's01a06d93f923852d': `Nome do modelo`,
 's02377725a94d0f9d': `Introduce novos números e comproba que están clasificados correctamente`,
 's0487f33d9ddaabde': `Acerca de`,
 's0d8e6f00eccca681': `Non hai suficientes datos para aprender. Engade máis exemplos, por favor`,
+'s1225fec6649f41fa': `Agora podes probalo e usalo nun programa de Scratch.`,
 's19b10d1a8593ca55': `Aprender`,
 's1b823424b5e88dda': `Escolle Algoritmo de Aprendizaxe Automática:`,
 's1ec86aed43519f5f': `Recoñecemento de números`,
@@ -63,9 +65,11 @@
 'sa4a8a29de42efe18': `Subir conxunto de datos dende o teu ordenador`,
 'sa77b3aa47147e6de': `Tamaño do lote:`,
 'saa2fc8f012369fa9': `Gardar conxunto de datos no teu ordenador`,
+'sba58a534ec22cd97': `Executando o algoritmo ML para construír o modelo.`,
 'sc394009d3f5832bd': `Debes xerar un modelo antes de tentar clasificar`,
 'sc980050b0fd2affc': `Non se pode iniciar a cámara. Estás usándoa noutra aplicación?`,
 'scab7db6101037bce': `Engadir nova clase`,
+'scc4d8ca49d0bb4bf': `Xenial! O modelo foi adestrado!`,
 'sd0c6f858a4096211': `Colle da cámara`,
 'sd1f81284eeb7b503': `Arquivo`,
 'sd61653ebe961b17a': `Validación`,
@@ -77,6 +81,7 @@
 'sf20e0069f14e0ea7': `Agora é momento de aprender a clasificar imaxes`,
 'sf99b9ce15b8600b8': `primeiro necesito algúns vectores de exemplo`,
 'sf9aee319a006c9b4': `Engadir`,
+'sfbfac884c01f1002': `Sabías que...?`,
 'sffcc465055a84a01': `Recoñecemento de texto`,
     };
   

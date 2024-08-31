@@ -2,18 +2,20 @@
     // Do not modify this file by hand!
     // Re-generate this file by running lit-localize
 
-    
+    import {html} from 'lit';
     
 
     /* eslint-disable no-irregular-whitespace */
     /* eslint-disable @typescript-eslint/no-explicit-any */
 
     export const templates = {
-      's00af465b478e19c8': `Aprèn a reconèixer imatges`,
+      'h29842057cedc0d1b': html`El model ha tardat <b>${0}</b> segons a construir-se.`,
+'s00af465b478e19c8': `Aprèn a reconèixer imatges`,
 's01a06d93f923852d': `Nom del model`,
 's02377725a94d0f9d': `Introdueix nous números i comprova que estiguin correctament classificats`,
 's0487f33d9ddaabde': `Sobre`,
 's0d8e6f00eccca681': `No hi ha dades suficients per aprendre. Afegeix més exemples, si us plau`,
+'s1225fec6649f41fa': `Ara pots provar-lo i utilitzar-lo en un programa de Scratch.`,
 's19b10d1a8593ca55': `Aprèn`,
 's1b823424b5e88dda': `Tria l'algorisme d'aprenentatge automàtic:`,
 's1ec86aed43519f5f': `Reconeixement de números`,
@@ -63,9 +65,11 @@
 'sa4a8a29de42efe18': `Carrega el conjunt de dades des del teu ordinador`,
 'sa77b3aa47147e6de': `Mida del lot:`,
 'saa2fc8f012369fa9': `Desa el conjunt de dades al teu ordinador`,
+'sba58a534ec22cd97': `Executant l'algorisme de ML per construir el model.`,
 'sc394009d3f5832bd': `Has de generar un model abans de provar de classificar`,
 'sc980050b0fd2affc': `No es pot iniciar la càmera. L'estàs utilitzant en una altra aplicació?`,
 'scab7db6101037bce': `Afegeix nova classe`,
+'scc4d8ca49d0bb4bf': `Genial! El model ha estat entrenat!`,
 'sd0c6f858a4096211': `Captura des de la càmera`,
 'sd1f81284eeb7b503': `Fitxer`,
 'sd61653ebe961b17a': `Validació`,
@@ -77,6 +81,7 @@
 'sf20e0069f14e0ea7': `Ara és el moment d'aprendre a classificar imatges`,
 'sf99b9ce15b8600b8': `Primer necessito alguns vectors d'exemple`,
 'sf9aee319a006c9b4': `Afegir`,
+'sfbfac884c01f1002': `Saps que...?`,
 'sffcc465055a84a01': `Reconeixement de text`,
     };
   

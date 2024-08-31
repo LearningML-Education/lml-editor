@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="de" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+  <file target-language="de" source-language="en" original="lit-localize-inputs"
+    datatype="plaintext">
     <body>
       <trans-unit id="s933f2ff188367947">
         <source>You have to build a model first</source>
@@ -278,6 +279,27 @@
         <source>Advanced</source>
         <target>Erweitert</target>
       </trans-unit>
+      <trans-unit id="sfbfac884c01f1002">
+        <source>Did you know that...?</source>
+        <target>Wusstest du, dass...?</target>
+      </trans-unit>
+      <trans-unit id="scc4d8ca49d0bb4bf">
+        <source>Great! The model has been trained!</source>
+        <target>Super! Das Modell wurde trainiert!</target>
+      </trans-unit>
+      <trans-unit id="sba58a534ec22cd97">
+        <source>Running ML algorithm to build the model.</source>
+        <target>Der ML-Algorithmus wird ausgeführt, um das Modell zu erstellen.</target>
+      </trans-unit>
+      <trans-unit id="h29842057cedc0d1b">
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
+        <target>Das Modell hat <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> Sekunden benötigt, um erstellt zu werden.</target>
+      </trans-unit>
+      <trans-unit id="s1225fec6649f41fa">
+        <source>Now you can test it and use it in a Scratch program.</source>
+        <target>Jetzt kannst du es testen und in einem Scratch-Programm verwenden.</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

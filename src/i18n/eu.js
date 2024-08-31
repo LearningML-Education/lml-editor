@@ -2,18 +2,20 @@
     // Do not modify this file by hand!
     // Re-generate this file by running lit-localize
 
-    
+    import {html} from 'lit';
     
 
     /* eslint-disable no-irregular-whitespace */
     /* eslint-disable @typescript-eslint/no-explicit-any */
 
     export const templates = {
-      's00af465b478e19c8': `Ikasi irudiak ezagutzen`,
+      'h29842057cedc0d1b': html`Eredua sortzeko <b>${0}</b> segundo behar izan ditu.`,
+'s00af465b478e19c8': `Ikasi irudiak ezagutzen`,
 's01a06d93f923852d': `Ereduaren izena`,
 's02377725a94d0f9d': `Sartu zenbaki berriak eta egiaztatu ondo sailkatzen diren`,
 's0487f33d9ddaabde': `Honi buruz`,
 's0d8e6f00eccca681': `Ez dago ikasteko nahikoa datu. Gehitu gehiago adibide, mesedez`,
+'s1225fec6649f41fa': `Orain probatu eta Scratch programan erabil dezakezu.`,
 's19b10d1a8593ca55': `Ikasi`,
 's1b823424b5e88dda': `Hautatu Ikasketa Automatikoaren Algoritmoa:`,
 's1ec86aed43519f5f': `Zenbaki aitortza`,
@@ -63,9 +65,11 @@
 'sa4a8a29de42efe18': `Kargatu datu-multzoa zure ordenagailutik`,
 'sa77b3aa47147e6de': `Batch tamaina:`,
 'saa2fc8f012369fa9': `Gorde datu-multzoa zure ordenagailura`,
+'sba58a534ec22cd97': `ML algoritmoa exekutatzen eredua sortzeko.`,
 'sc394009d3f5832bd': `Eredu bat sortu behar duzu sailkatu baino lehen`,
 'sc980050b0fd2affc': `Ezin da kamera hasieratu. Beste aplikazio batean erabiltzen ari zara?`,
 'scab7db6101037bce': `Gehitu klase berria`,
+'scc4d8ca49d0bb4bf': `Bikain! Eredua prest dago!`,
 'sd0c6f858a4096211': `Hartu kameratik`,
 'sd1f81284eeb7b503': `Fitxategia`,
 'sd61653ebe961b17a': `Balidazioa`,
@@ -77,6 +81,7 @@
 'sf20e0069f14e0ea7': `Orain irudiak sailkatzen ikasteko garaia da`,
 'sf99b9ce15b8600b8': `Lehenik, bektore adibide batzuk behar ditut`,
 'sf9aee319a006c9b4': `Gehitu`,
+'sfbfac884c01f1002': `Ba al zenekien...?`,
 'sffcc465055a84a01': `Testu aitortza`,
     };
   

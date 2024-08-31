@@ -277,7 +277,28 @@
       <trans-unit id="s21b06c38fc4164db">
         <source>Advanced</source>
         <target>Aurreratua</target>
-      </trans-unit>      
+      </trans-unit>
+      <trans-unit id="sfbfac884c01f1002">
+        <source>Did you know that...?</source>
+        <target>Ba al zenekien...?</target>
+      </trans-unit>
+      <trans-unit id="scc4d8ca49d0bb4bf">
+        <source>Great! The model has been trained!</source>
+        <target>Bikain! Eredua prest dago!</target>
+      </trans-unit>
+      <trans-unit id="sba58a534ec22cd97">
+        <source>Running ML algorithm to build the model.</source>
+        <target>ML algoritmoa exekutatzen eredua sortzeko.</target>
+      </trans-unit>
+      <trans-unit id="h29842057cedc0d1b">
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
+        <target>Eredua sortzeko <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> segundo behar izan ditu.</target>
+      </trans-unit>
+      <trans-unit id="s1225fec6649f41fa">
+        <source>Now you can test it and use it in a Scratch program.</source>
+        <target>Orain probatu eta Scratch programan erabil dezakezu.</target>
+      </trans-unit>
+     
     </body>
   </file>
 </xliff>

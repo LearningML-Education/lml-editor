@@ -2,18 +2,20 @@
     // Do not modify this file by hand!
     // Re-generate this file by running lit-localize
 
-    
+    import {html} from 'lit';
     
 
     /* eslint-disable no-irregular-whitespace */
     /* eslint-disable @typescript-eslint/no-explicit-any */
 
     export const templates = {
-      's00af465b478e19c8': `Leer afbeeldingen herkennen`,
+      'h29842057cedc0d1b': html`Het model had <b>${0}</b> seconden nodig om te bouwen.`,
+'s00af465b478e19c8': `Leer afbeeldingen herkennen`,
 's01a06d93f923852d': `Modelnaam`,
 's02377725a94d0f9d': `Introduceert nieuwe getallen en controleert of ze correct geclassificeerd zijn`,
 's0487f33d9ddaabde': `Over`,
 's0d8e6f00eccca681': `Er zijn niet genoeg gegevens om te leren. Voeg meer voorbeelden toe, alstublieft`,
+'s1225fec6649f41fa': `Nu kun je het testen en gebruiken in een Scratch-programma.`,
 's19b10d1a8593ca55': `Leren`,
 's1b823424b5e88dda': `Kies een Machine Learning-algoritme:`,
 's1ec86aed43519f5f': `Getalherkenning`,
@@ -63,9 +65,11 @@
 'sa4a8a29de42efe18': `Dataset uploaden vanaf uw computer`,
 'sa77b3aa47147e6de': `Batch grootte:`,
 'saa2fc8f012369fa9': `Dataset opslaan op uw computer`,
+'sba58a534ec22cd97': `ML-algoritme wordt uitgevoerd om het model te bouwen.`,
 'sc394009d3f5832bd': `U moet een model genereren voordat u probeert te classificeren`,
 'sc980050b0fd2affc': `Kan camera niet initialiseren. Gebruikt u deze in een andere applicatie?`,
 'scab7db6101037bce': `Nieuwe klasse toevoegen`,
+'scc4d8ca49d0bb4bf': `Geweldig! Het model is getraind!`,
 'sd0c6f858a4096211': `Opnemen vanaf camera`,
 'sd1f81284eeb7b503': `Bestand`,
 'sd61653ebe961b17a': `Validatie`,
@@ -77,6 +81,7 @@
 'sf20e0069f14e0ea7': `Nu is het tijd om afbeeldingen te leren classificeren`,
 'sf99b9ce15b8600b8': `Eerst heb ik enkele voorbeeldvectoren nodig`,
 'sf9aee319a006c9b4': `Toevoegen`,
+'sfbfac884c01f1002': `Wist je dat...?`,
 'sffcc465055a84a01': `Tekstherkenning`,
     };
   

@@ -277,7 +277,28 @@
       <trans-unit id="s21b06c38fc4164db">
         <source>Advanced</source>
         <target>Avanzado</target>
-      </trans-unit>      
+      </trans-unit>
+      <trans-unit id="sfbfac884c01f1002">
+        <source>Did you know that...?</source>
+        <target>¿Sabías que...?</target>
+      </trans-unit>
+      <trans-unit id="scc4d8ca49d0bb4bf">
+        <source>Great! The model has been trained!</source>
+        <target>¡Genial! ¡El modelo ha sido entrenado!</target>
+      </trans-unit>
+      <trans-unit id="sba58a534ec22cd97">
+        <source>Running ML algorithm to build the model.</source>
+        <target>Ejecutando el algoritmo de ML para construir el modelo.</target>
+      </trans-unit>
+      <trans-unit id="h29842057cedc0d1b">
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
+        <target>El modelo tardó <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> segundos en construirse.</target>
+      </trans-unit>
+      <trans-unit id="s1225fec6649f41fa">
+        <source>Now you can test it and use it in a Scratch program.</source>
+        <target>Ahora puedes probarlo y usarlo en un programa de Scratch.</target>
+      </trans-unit>
+     
     </body>
   </file>
 </xliff>
