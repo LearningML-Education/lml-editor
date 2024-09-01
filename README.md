@@ -22,12 +22,12 @@ docker build -t lml-editor:dev . -f Dockerfile-dev
 
 ```bash
 docker run -v ${PWD}/src:/app/src \
-           -v ${PWD}/public:/app/public \
-           -v ${PWD}/xliff:/app/xliff \
-           -v ${PWD}/vite.config.js:/app/vite.config.js 
-           -v ${PWD}/../lml-algorithms:/app/node_modules/lml-algorithms 
-           -p 5173:5173 \
-           --rm -d lml-editor:dev
+    -v ${PWD}/public:/app/public \
+    -v ${PWD}/xliff:/app/xliff \
+    -v ${PWD}/vite.config.js:/app/vite.config.js \
+    -v ${PWD}/../lml-algorithms:/app/node_modules/lml-algorithms \
+    -p 5173:5173 \
+    --rm -d lml-editor:dev
 ```
 
 Se accede a través de `http://localhost:5173`
