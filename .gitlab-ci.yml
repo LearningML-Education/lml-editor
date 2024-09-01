@@ -30,8 +30,9 @@ build:
   image: $DOCKER_IMAGE
   services:
     - $DOCKER_DIND_IMAGE
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   script:
-    - docker build -t ${DOCKER_REGISTRY}lml-editor-lit:$ENTORNO --build-arg ENTORNO=$ENTORNO --build-arg API_URL=$API_URL .
-    - docker login -u "juanda@juandarodriguez.es" -p "***REMOVED-GITLAB-TOKEN***" "$CI_REGISTRY"  # Iniciar sesión en el Container Registry de GitLab usando el token
-    - docker push ${DOCKER_REGISTRY}lml-editor-lit:$ENTORNO
-    - docker rmi ${DOCKER_REGISTRY}lml-editor-lit:$ENTORNO || true
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
