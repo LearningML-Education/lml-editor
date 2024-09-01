@@ -1,6 +1,25 @@
-FROM node:20.11.0
+ARG URL_BASE=/editor
+ARG INIT_MESSAGE_SHOW=true
+ARG INIT_MESSAGE_TITLE=Atención
+ARG INIT_MESSAGE_DESCRIPTION='LearningML necesita tu ayuda'
+ARG SHOW_FOOTER_SPONSORS=true
+ARG INIT_MESSAGE_TIMEOUT=3000
+ARG URL_SCRATCH=http://localhost/scratch
+
+FROM node:20.11.0 AS builder
+
+ARG URL_BASE
+ARG INIT_MESSAGE_SHOW
+ARG INIT_MESSAGE_TITLE
+ARG INIT_MESSAGE_DESCRIPTION
+ARG SHOW_FOOTER_SPONSORS
+ARG INIT_MESSAGE_TIMEOUT
+ARG URL_SCRATCH
+
 WORKDIR /app
 COPY . /app
-RUN npm install -g vite
-RUN npm install
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+RUN npm install -g vite && npm install && vite build --base ${URL_BASE}
+
+FROM nginx
+ARG URL_BASE
+COPY --from=builder /app/dist /usr/share/nginx/html${URL_BASE}

@@ -1,17 +1,38 @@
 ## Entorno de desarrollo
 
-Requisitos: node 20.11.0
+Requisitos: docker 27.1.1
 
-1. clonar el proyecto: 
+1. Clonar el proyecto: 
+```bash
+git clone git@gitlab.com:lml-corp/lml-editor-lit.git
 ```
-git@gitlab.com:lml-corp/lml-editor-lit.git
+
+2. Clonar la dependencia lml-algorithm
+```bash
+git clone git@gitlab.com:lml-corp/lml-algorithms.git
+```
+
+3. Construir una imagen para el desarrollo
+```bash
 cd lml-editor-lit
+docker build -t lml-editor:dev . -f Dockerfile-dev
 ```
-2. Ejecutar el servidor de desarrollo
+
+4. Arrancar un contenedor de desarrollo
+
+```bash
+docker run -v ${PWD}/src:/app/src \
+           -v ${PWD}/public:/app/public \
+           -v ${PWD}/xliff:/app/xliff \
+           -v ${PWD}/vite.config.js:/app/vite.config.js 
+           -v ${PWD}/../lml-algorithms:/app/node_modules/lml-algorithms 
+           -p 5173:5173 \
+           --rm -d lml-editor:dev
 ```
-npm run dev
-```
-3. Apuntar el navegador web a `http://localhost:5173`
+
+Se accede a través de `http://localhost:5173`
+
+Este procedimiento no arranca *lml-scratch*. Si se quiere trabajar con *lml-scratch* clonar el proyecto [`https://gitlab.com/lml-corp/lml-dev`](https://gitlab.com/lml-corp/lml-dev) y seguir las instrucciones del `README.md`. 
 
 ## Construcción de un desplegable
 
