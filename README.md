@@ -25,6 +25,7 @@ docker run -v ${PWD}/src:/app/src \
     -v ${PWD}/public:/app/public \
     -v ${PWD}/xliff:/app/xliff \
     -v ${PWD}/vite.config.js:/app/vite.config.js \
+    -v ${PWD}/.env:/app/.env \
     -v ${PWD}/../lml-algorithms:/app/node_modules/lml-algorithms \
     -p 5173:5173 \
     --rm -d lml-editor:dev
@@ -36,21 +37,29 @@ Este procedimiento no arranca *lml-scratch*. Si se quiere trabajar con *lml-scra
 
 ## Construcción de un desplegable
 
-Ejecutar la instrucción:
-```
-npm run build
+1. Clonar el proyecto: 
+```bash
+git clone git@gitlab.com:lml-corp/lml-editor-lit.git
 ```
 
-En la carpeta `dist` se generará el código HTML/CSS/JS estático listo para ser desplegado en un servidor web.
+2. Construir la imagen de producción:
+```bash
+cd lml-editor-lit
+docker build -t lml-editor:prod .
+```
 
->Nota: Este desplegable se ha construido pensando en que la aplicación se va a servir en la ruta `/editor/`. Si se quiere cambiar este comportamiento hay que modificar el script `build` del archivo `package.json`:
->```
->"build": "vite build --base /editor/"
->```
+3. Arrancar el contendor:
+```bash
+docker run -p 8080:80 --rm -d lml-editor:prod
+```
+
+>Nota: 
 
 ## Fichero `.env`
 
-La aplicación se configura a través de variables de entorno que se declara en el fichero `.env` 
+En el despliegue de desarrollo, la aplicación se configura a través de variables de entorno que se declara en el fichero `.env`. Se puede cambiar los valores de estas variables en tiempo de ejecución. 
+
+En el despliegue de producción, la aplicación se configura a través de las variables de entorno de tipo ARG que se declaran en el `Dockerfile`. Si se desean cambiar hay que usar `--build-arg` en la instrucción de creación de la imagen. Solo se pueden cambiar estas variables en tiempo de construcción
 
 
 |variable| Valor por defecto| Descripción|
