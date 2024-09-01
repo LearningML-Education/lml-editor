@@ -31,6 +31,6 @@ build:
   services:
     - $DOCKER_DIND_IMAGE
   script:
-    - docker build -t ${DOCKER_REGISTRY}lml-editor:$ENTORNO --build-arg ENTORNO=$ENTORNO --build-arg API_URL=$API_URL .
-    - docker push ${DOCKER_REGISTRY}lml-editor:$ENTORNO
-    - docker rmi ${DOCKER_REGISTRY}lml-editor:$ENTORNO || true
+    - docker build -t ${DOCKER_REGISTRY}lml-editor-lit:$ENTORNO --build-arg ENTORNO=$ENTORNO --build-arg API_URL=$API_URL .
+    - docker push ${DOCKER_REGISTRY}lml-editor-lit:$ENTORNO
+    - docker rmi ${DOCKER_REGISTRY}lml-editor-lit:$ENTORNO || true
