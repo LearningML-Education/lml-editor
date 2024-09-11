@@ -50,6 +50,7 @@ export class AboutMenu extends LitElement {
                   <div class="media-content">
                         <p>Traducciones realizadas con chatGPT (sujetas a revisión).</p>
                         <p>Imágenes de portada generadas con DALL-E.</p>
+                        <p>Imagen del genio gracias a <a target="_blank" href="https://robermargan.blogspot.com/p/curriculum-vitae.html">Roberto Marcano Ganzo</a></p>
                     </div>   
                   </div>
                 <div class="content">

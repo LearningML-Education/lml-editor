@@ -18,7 +18,7 @@ export class ModelSelector extends LitElement {
     <model-card 
       title="${msg('Text recognition')}"
       description="${msg('Teach the computer to recognize text')}"
-      image="dalle-text.png",
+      image="dalle-text-min.png",
       type="text">
     </model-card>
   </div>
@@ -26,7 +26,7 @@ export class ModelSelector extends LitElement {
     <model-card 
       title="${msg('Image recognition')}"
       description="${msg('Teach the computer to recognize images')}"
-      image="dalle-images.png"
+      image="dalle-images-min.png"
       type="image">
     </model-card>
   </div>
@@ -34,7 +34,7 @@ export class ModelSelector extends LitElement {
     <model-card 
       title="${msg('Number recognition')}"
       description="${msg('Teach the computer to recognize number sets')}"
-      image="dalle-numbers.png"
+      image="dalle-numbers-min.png"
       type="numerical">
     </model-card>
   </div>
