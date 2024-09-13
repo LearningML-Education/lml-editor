@@ -208,17 +208,26 @@ export class DatasetManager extends LitElement {
   }
 
   _uploadImages() {
-
-    uploadImages().then(filesB64 => {
-      console.log(filesB64);
-      for (let f of filesB64) {
-        this.addImageToDataset(f);
-      }
-      console.log(this._datasetConsumer.value);
-      this.requestUpdate();
-    });
-
+    document.getElementById('imageFileInput').click();
   }
+
+  onLoaded(event) {
+    // Obtener la lista de archivos seleccionados
+    const files = event.target.files;
+
+    // Convertir cada archivo a Base64
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.addImageToDataset(reader.result);
+      };
+
+      // Leer el archivo como Data URL (Base64)
+      reader.readAsDataURL(file);
+    });
+  }
+
 
   openCamera() {
     this.video = this.querySelector("#video");
@@ -306,6 +315,14 @@ export class DatasetManager extends LitElement {
 
   templateImageButtons() {
     return html`
+    <input 
+      id="imageFileInput" 
+      accept="image/png, image/jpeg, image/webp, image/svg+xml"
+      hidden="true" 
+      type="file"
+      @change=${this.onLoaded} 
+      multiple>
+
     <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
       ${!this.cameraOpened
