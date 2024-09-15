@@ -168,24 +168,21 @@ export class DatasetManager extends LitElement {
     this.querySelector("#inputTexts").value = entry;
   }
 
-  async loadTextFromFile(e) {
-    const pickerOpts = {
-      types: [
-        {
-          description: "Texts",
-          accept: {
-            "text/*": [".txt"],
-          },
-        },
-      ],
-      excludeAcceptAllOption: true,
-      multiple: false,
-    };
+  _uploadTexts() {
+    document.getElementById(`textFileInput_${this.labelName}`).click();
+  }
 
-    const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+  onLoadedText(event) {
+    // Obtener la lista de archivos seleccionados
+    const file = event.target.files[0];
 
-    const file = await fileHandle.getFile();
+    if (!file) {
+      console.error("No se seleccionó ninguna imagen.");
+      return;
+    }
+
     const reader = new FileReader();
+  
     let that = this;
     reader.onload = function (e) {
       const textContent = e.target.result;
@@ -193,8 +190,8 @@ export class DatasetManager extends LitElement {
     };
 
     reader.readAsText(file);
-
   }
+
 
   ////
   // Funciones para manejar los datasets de imágenes
@@ -290,6 +287,13 @@ export class DatasetManager extends LitElement {
 
   templateTextButtons() {
     return html`
+    <input 
+      id="textFileInput_${this.labelName}"
+      accept="text/*"
+      hidden="true" 
+      type="file"
+      @change=${this.onLoadedText} 
+      >
     <div class="panel-block is-justify-content-center">    
       <div class="field is-grouped">
         <p class="control">      
@@ -301,7 +305,7 @@ export class DatasetManager extends LitElement {
           </button>
         </p>
         <p class="control">
-          <button @click=${this.loadTextFromFile} class="button  is-primary is-fullwidth">
+          <button @click=${this._uploadTexts} class="button  is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-solid fa-upload"></i>
             </span>
@@ -370,6 +374,13 @@ export class DatasetManager extends LitElement {
 
   templateNumberButtons() {
     return html`
+    <input 
+      id="textFileInput_${this.labelName}"
+      accept="text/*"
+      hidden="true" 
+      type="file"
+      @change=${this.onLoadedText} 
+      >
     <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
         <p class="control">
@@ -381,7 +392,7 @@ export class DatasetManager extends LitElement {
           </button>
         </p>
         <p class="control">
-          <button @click="${this.loadTextFromFile}" class="button  is-primary is-fullwidth">
+          <button @click="${this._uploadTexts}" class="button  is-primary is-fullwidth">
             <span class="icon">
             <i class="fa-solid fa-upload"></i>
             </span>
