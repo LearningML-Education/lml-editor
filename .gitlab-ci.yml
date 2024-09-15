@@ -43,6 +43,6 @@ notify_build-lml:
   stage: notify_build-lml
   image: curlimages/curl:latest
   script:
-    - "curl -k -X POST --fail -F token=$TOKEN_BUILD_LML -F ref=$CI_COMMIT_REF_NAME https://git.intef.es/api/v4/projects/6/trigger/pipeline"
+    - "curl -k -X POST --fail -F token=$TOKEN_BUILD_LML -F ref=$CI_COMMIT_REF_NAME https://gitlab.com/api/v4/projects/50728171/trigger/pipeline"
   only:
     - main
