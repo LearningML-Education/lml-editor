@@ -21,7 +21,7 @@ before_script:
 
 check_gitlab_ci:
   stage: check
-  image: alpine/git:latest
+  image: juandalibaba/alpine-git:latest
   script:
     - git diff --name-only $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME $CI_MERGE_REQUEST_TARGET_BRANCH_NAME | grep -q "^.gitlab-ci.yml$" && echo "No se permite modificar o eliminar .gitlab-ci.yml" && exit 1 || echo "Todo correcto"
   rules:
