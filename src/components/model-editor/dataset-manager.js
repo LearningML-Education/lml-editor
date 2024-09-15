@@ -208,7 +208,7 @@ export class DatasetManager extends LitElement {
   }
 
   _uploadImages() {
-    document.getElementById('imageFileInput').click();
+    document.getElementById(`imageFileInput_${this.labelName}`).click();
   }
 
   onLoaded(event) {
@@ -316,7 +316,7 @@ export class DatasetManager extends LitElement {
   templateImageButtons() {
     return html`
     <input 
-      id="imageFileInput" 
+      id="imageFileInput_${this.labelName}"
       accept="image/png, image/jpeg, image/webp, image/svg+xml"
       hidden="true" 
       type="file"
