@@ -105,12 +105,37 @@ export class ModelEval extends LitElement {
   }
 
   _uploadImage() {
-    uploadImages().then(filesB64 => {
-      this.imageSrc = filesB64[0];
-      this.requestUpdate();
-      this.checkImage(filesB64[0]);
-    });
+    document.getElementById('evalImageFileInput').click();
   }
+
+  onLoaded(event) {
+    // Obtener el archivo seleccionado (solo el primero en caso de múltiples archivos)
+    const file = event.target.files[0];
+  
+    // Verificar si se seleccionó un archivo
+    if (!file) {
+      console.error("No se seleccionó ninguna imagen.");
+      return;
+    }
+  
+    // Crear una instancia de FileReader para leer el archivo
+    const reader = new FileReader();
+  
+    // Definir el evento de carga para el lector de archivos
+    reader.onload = () => {
+      // Obtener el resultado en formato Base64
+      const imageInBase64 = reader.result;
+      
+      // Imprimir o usar la imagen en Base64 según sea necesario
+      this.imageSrc = imageInBase64;
+      this.requestUpdate();
+      this.checkImage(imageInBase64);
+    };
+  
+    // Leer el archivo como Data URL (Base64)
+    reader.readAsDataURL(file);
+  }
+  
 
   openCamera() {
     this.video = this.querySelector("#video");
@@ -171,6 +196,12 @@ export class ModelEval extends LitElement {
 
   templateImageEval() {
     return html`
+    <input 
+      id="evalImageFileInput" 
+      accept="image/png, image/jpeg, image/webp, image/svg+xml"
+      hidden="true" 
+      type="file"
+      @change=${this.onLoaded} >
     <h6 class="subtitle is-6">${msg("Introduces new images and checks they are correctly classified")}</h6> 
     <hr/>
     <div class="field is-grouped">
