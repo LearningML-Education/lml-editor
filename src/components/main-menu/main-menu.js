@@ -43,7 +43,7 @@ export class MainMenu extends LitElement {
         const locale = url.searchParams.get('locale');
 
         let urlScratch = process.env.URL_SCRATCH +
-            "?url_mobilenet_models=" + process.env.URL_BASE + '&autonomous';
+            "?url_mobilenet_models=" + '&autonomous';
         if (locale != null) {
             urlScratch += '&locale=' + locale;
         }
@@ -67,7 +67,7 @@ export class MainMenu extends LitElement {
             <mode-toggle-menu class="component"></mode-toggle-menu> 
             
                 <a class="navbar-item" @click="${this.initScratch}">                
-                <img src="${process.env.URL_BASE}/images/scratch_icon.svg">
+                <img src="/images/scratch_icon.svg">
                 </a>
             
             `;
@@ -78,8 +78,8 @@ export class MainMenu extends LitElement {
         return html`
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="${process.env.URL_BASE}">
-                    <img src="${process.env.URL_BASE}/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
+                <a class="navbar-item" href="">
+                    <img src="/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
                 </a>
 
                 <a @click=${() => {this.navBarMenuActive = !this.navBarMenuActive;}} role="button" class=${classMap({ "navbar-burger": true, "is-active": this.navBarMenuActive})} aria-label="menu" aria-expanded="false">

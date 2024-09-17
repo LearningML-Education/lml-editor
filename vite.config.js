@@ -4,7 +4,6 @@ export default defineConfig(({ command, mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
     return {
         define: {
-            'process.env.URL_BASE': JSON.stringify(env.URL_BASE),    
             'process.env.INIT_MESSAGE_SHOW': env.INIT_MESSAGE_SHOW == "true",    
             'process.env.INIT_MESSAGE_TITLE': JSON.stringify(env.INIT_MESSAGE_TITLE),    
             'process.env.INIT_MESSAGE_DESCRIPTION': JSON.stringify(env.INIT_MESSAGE_DESCRIPTION),

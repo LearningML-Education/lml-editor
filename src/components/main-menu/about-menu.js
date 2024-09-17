@@ -36,7 +36,7 @@ export class AboutMenu extends LitElement {
         <div class="card">
             <div class="card-image">
                 <figure class="figure">
-                    <img src="${process.env.URL_BASE}/images/genio_maquina.jpg" alt="LearningML Genius">
+                    <img src="/images/genio_maquina.jpg" alt="LearningML Genius">
                 </figure>
             </div>
             <div class="card-content">
