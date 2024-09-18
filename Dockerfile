@@ -1,11 +1,11 @@
 FROM node:20.11.0 AS builder
 
-ARG INIT_MESSAGE_SHOW=true
+ARG INIT_MESSAGE_SHOW=false
 ARG INIT_MESSAGE_TITLE=Atención
 ARG INIT_MESSAGE_DESCRIPTION='LearningML necesita tu ayuda'
-ARG SHOW_FOOTER_SPONSORS=true
+ARG SHOW_FOOTER_SPONSORS=false
 ARG INIT_MESSAGE_TIMEOUT=3000
-ARG URL_SCRATCH=http://localhost/scratch
+ARG URL_SCRATCH=https://v2.learningml.org/scratch
 
 WORKDIR /app
 COPY . /app

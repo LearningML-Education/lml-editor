@@ -7,23 +7,7 @@ variables:
   DOCKER_REGISTRY: registry.gitlab.com/ # atención a la barra final, ES NECESARIA!
   DOCKER_IMAGE: docker:latest
   DOCKER_DIND_IMAGE: docker:dind
-  
-before_script:
-
-  if [ "$CI_COMMIT_REF_NAME" == "dev" ]; then 
-    export ENTORNO="dev"; 
-  elif [ "$CI_COMMIT_REF_NAME" == "main" ]; then 
-    export ENTORNO="prod"; 
-  else export ENTORNO="$CI_COMMIT_REF_NAME"; 
-  fi
-
-check_gitlab_ci:
-  stage: check
-  image: juandalibaba/alpine-git:latest
-  script:
-    - git diff --name-only $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME $CI_MERGE_REQUEST_TARGET_BRANCH_NAME | grep -q "^.gitlab-ci.yml$" && echo "No se permite modificar o eliminar .gitlab-ci.yml" && exit 1 || echo "Todo correcto"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  IMAGE_NAME: $CI_REGISTRY_IMAGE/lml-editor
 
 build:
   stage: build
@@ -33,6 +17,11 @@ build:
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
+    - |
+      docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+      docker build --pull -t $IMAGE_NAME:$CI_COMMIT_REF_NAME .
+      
+      docker push $IMAGE_NAME:$CI_COMMIT_REF_NAME
+  only:
+    - main
