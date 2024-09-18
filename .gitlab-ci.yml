@@ -2,14 +2,12 @@
 stages:
   - check
   - build
-  - notify_build-lml
 
 variables:  
   DOCKER_REGISTRY: registry.gitlab.com/ # atención a la barra final, ES NECESARIA!
   DOCKER_IMAGE: docker:latest
   DOCKER_DIND_IMAGE: docker:dind
-  TOKEN_BUILD_LML: glptt-03c749f3ade7822b9edf64080755be0bc5d0843e
-
+  
 before_script:
 
   if [ "$CI_COMMIT_REF_NAME" == "dev" ]; then 
@@ -38,11 +36,3 @@ build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build --pull -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
-
-notify_build-lml:
-  stage: notify_build-lml
-  image: curlimages/curl:latest
-  script:
-    - "curl -k -X POST --fail -F token=$TOKEN_BUILD_LML -F ref=$CI_COMMIT_REF_NAME https://gitlab.com/api/v4/projects/50728171/trigger/pipeline"
-  only:
-    - main

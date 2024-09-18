@@ -35,7 +35,7 @@ Se accede a través de `http://localhost:5173`
 
 Este procedimiento no arranca *lml-scratch*. Si se quiere trabajar con *lml-scratch* clonar el proyecto [`https://gitlab.com/lml-corp/lml-dev`](https://gitlab.com/lml-corp/lml-dev) y seguir las instrucciones del `README.md`. 
 
-## Construcción de un desplegable
+## Construcción de un desplegable de producción
 
 1. Clonar el proyecto: 
 ```bash
@@ -57,14 +57,13 @@ docker run -p 8080:80 --rm -d lml-editor:prod
 
 ## Fichero `.env`
 
-En el despliegue de desarrollo, la aplicación se configura a través de variables de entorno que se declara en el fichero `.env`. Se puede cambiar los valores de estas variables en tiempo de ejecución. 
+En el despliegue de desarrollo, es decir, usando el `docker-compose.yml` del proyecto `lml-dev` (que usa `Dockerfile-dev`), la aplicación se configura a través de variables de entorno que se declara en el fichero `.env`. Pot tanto, se pueden cambiar los valores de estas variables en tiempo de ejecución. 
 
-En el despliegue de producción, la aplicación se configura a través de las variables de entorno de tipo ARG que se declaran en el `Dockerfile`. Si se desean cambiar hay que usar `--build-arg` en la instrucción de creación de la imagen. Solo se pueden cambiar estas variables en tiempo de construcción
+En el despliegue de producción (`Dockerfile`), la aplicación se configura a través de las variables de entorno de tipo ARG que se declaran en el `Dockerfile`. Si se desean cambiar hay que usar `--build-arg` en la instrucción de creación de la imagen. Solo se pueden cambiar estas variables en tiempo de construcción
 
 
 |variable| Valor por defecto| Descripción|
 |--|--|--|
-|`URL_BASE`| /editor|Esta variable se usa tanto en el entorno de desarrollo como en el desplegable que se construye con `npm run build`.|
 |`INIT_MESSAGE_SHOW`|true| Para mostrar un mensaje de inicio|
 |`INIT_MESSAGE_TITLE`|Atención|Título del mensaje de inicio|
 |`INIT_MESSAGE_DESCRIPTION`|LearningML necesita tu ayuda|Descripción del mensahe de incio|
