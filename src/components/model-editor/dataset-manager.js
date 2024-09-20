@@ -30,6 +30,7 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
     this.audioRecorder = new AudioRecorder();
+    this.indexAudio = 0;
     updateWhenLocaleChanges(this);
   }
 
@@ -279,16 +280,19 @@ export class DatasetManager extends LitElement {
         reader.readAsDataURL(audioBlob);
         reader.onloadend = () => {
           const base64Audio = reader.result.split(',')[1]; // Parte de la data en Base64
-
-          // Mostrar el Base64 en la consola (o hacer algo con el resultado)
-          console.log('Audio en Base64:', base64Audio);
+          
+          if(this._datasetConsumer.value.get(this.labelName)){
+            this._datasetConsumer.value.get(this.labelName).add(base64Audio);
+          }
 
           const audioUrl = URL.createObjectURL(audioBlob);
 
           // Crear un botón para reproducir el audio                                                                   
           const playButton = document.createElement('button');
           playButton.className = 'button is-primary';
-          playButton.innerHTML = `<i class="fa-solid fa-play"></i> Sample-${index + 1}`;
+          playButton.innerHTML = `<i class="fa-solid fa-play"></i> Sample-${this.indexAudio + index + 1}`;
+
+          if(index == blobs.length - 1) this.indexAudio += index + 1;
 
           // Añadir evento de clic para reproducir el audio                                                            
           playButton.addEventListener('click', () => {
@@ -455,9 +459,6 @@ export class DatasetManager extends LitElement {
 
   templateAudioButtons() {
     return html`    
-
-    <div class="buttons" id="sonidos">
-
     </div>
     <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
@@ -632,7 +633,7 @@ export class DatasetManager extends LitElement {
   templateAudioData() {
     return html`
       <div class="container itemdata p-3">    
-      
+        <div class="buttons" id="sonidos">
       </div>
     `;
   }
