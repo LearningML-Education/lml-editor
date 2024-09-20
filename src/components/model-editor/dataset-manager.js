@@ -3,7 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { dataTypeContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { uploadImages } from './uploadImages.js';
+import { AudioRecorder } from './AudioRecorder.js';
 
 
 export class DatasetManager extends LitElement {
@@ -29,6 +29,7 @@ export class DatasetManager extends LitElement {
     this.editText = false;
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
+    this.audioRecorder = new AudioRecorder();
     updateWhenLocaleChanges(this);
   }
 
@@ -263,6 +264,17 @@ export class DatasetManager extends LitElement {
     }
   }
 
+  startRecording() {
+    this.audioRecorder.startRecording();
+  }
+
+  stopRecording() {
+    this.audioRecorder.stopRecording().then(result => {
+      console.log(result);
+    });
+    
+  }
+
   templateButtons(editorType) {
     switch (editorType) {
       case 'text':
@@ -415,7 +427,7 @@ export class DatasetManager extends LitElement {
     <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
         <p class="control">
-          <button @click="${() => {alert("Record")}}" class="button is-primary is-fullwidth">
+          <button @click="${this.startRecording}" class="button is-primary is-fullwidth">
             <span class="icon">
               <i class="fa-solid fa-microphone"></i>
             </span>
@@ -423,7 +435,7 @@ export class DatasetManager extends LitElement {
           </button>
         </p>
         <p class="control">
-          <button @click="${() => {alert("Stop")}}" class="button  is-primary is-fullwidth">
+          <button @click="${ this.stopRecording }" class="button  is-primary is-fullwidth">
             <span class="icon">
               <i class="fa-solid fa-circle-stop"></i>
             </span>
