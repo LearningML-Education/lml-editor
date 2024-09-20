@@ -426,7 +426,7 @@ export class DatasetManager extends LitElement {
   templateAudioButtons() {
     return html`    
 
-    <div id="sonidos">
+    <div class="buttons" id="sonidos">
 
     </div>
     <div class="panel-block is-justify-content-center">
