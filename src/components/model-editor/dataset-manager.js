@@ -182,7 +182,7 @@ export class DatasetManager extends LitElement {
     }
 
     const reader = new FileReader();
-  
+
     let that = this;
     reader.onload = function (e) {
       const textContent = e.target.result;
@@ -271,6 +271,8 @@ export class DatasetManager extends LitElement {
         return this.templateImageButtons();
       case 'numerical':
         return this.templateNumberButtons();
+      case 'audio':
+        return this.templateAudioButtons();
     }
   }
 
@@ -282,6 +284,8 @@ export class DatasetManager extends LitElement {
         return this.templateImageData();
       case 'numerical':
         return this.templateNumberData();
+      case 'audio':
+        return this.templateAudioData();
     }
   }
 
@@ -397,6 +401,33 @@ export class DatasetManager extends LitElement {
             <i class="fa-solid fa-upload"></i>
             </span>
             <span>${msg('Load')}</span>
+          </button>
+        </p>
+      </div>
+    </div>
+
+    </div>
+    `;
+  }
+
+  templateAudioButtons() {
+    return html`    
+    <div class="panel-block is-justify-content-center">
+      <div class="field is-grouped">
+        <p class="control">
+          <button @click="${() => {alert("Record")}}" class="button is-primary is-fullwidth">
+            <span class="icon">
+              <i class="fa-solid fa-microphone"></i>
+            </span>
+            <span>${msg('Record')}</span>
+          </button>
+        </p>
+        <p class="control">
+          <button @click="${() => {alert("Stop")}}" class="button  is-primary is-fullwidth">
+            <span class="icon">
+              <i class="fa-solid fa-circle-stop"></i>
+            </span>
+            <span>${msg('Stop')}</span>
           </button>
         </p>
       </div>
@@ -547,6 +578,14 @@ export class DatasetManager extends LitElement {
           </nav>          
         </div>
         <button @click=${this.closeAddTextWindow} class="modal-close is-large" aria-label="close"></button>
+      </div>
+    `;
+  }
+
+  templateAudioData() {
+    return html`
+      <div class="container itemdata p-3">    
+      
       </div>
     `;
   }
