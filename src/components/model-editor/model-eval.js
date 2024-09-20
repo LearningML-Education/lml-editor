@@ -26,14 +26,14 @@ export class ModelEval extends LitElement {
 
     this.bc = new BroadcastChannel('lml-internal');
     this.bc.addEventListener('message', message => {
-      if(message.data == 'requestUpdate'){
+      if (message.data == 'requestUpdate') {
         this.requestUpdate();
       }
     });
   }
 
   checkInput(e) {
-    if(!this._modelConsumer.value.model){
+    if (!this._modelConsumer.value.model) {
       alert(msg('You must generate a model before trying to classify'));
       return;
     }
@@ -50,7 +50,7 @@ export class ModelEval extends LitElement {
   }
 
   checkImage(image) {
-    if(!this._modelConsumer.value.model){
+    if (!this._modelConsumer.value.model) {
       alert(msg('You must generate a model before trying to classify'));
       return;
     }
@@ -67,11 +67,11 @@ export class ModelEval extends LitElement {
   }
 
   checkNumber() {
-    if(!this._modelConsumer.value.model){
+    if (!this._modelConsumer.value.model) {
       alert(msg('You must generate a model before trying to classify'));
       return;
     }
-    
+
     let that = this;
     function isValidNumberEntry(entry) {
       let items = entry.split(",").map(v => parseFloat(v));;
@@ -111,31 +111,31 @@ export class ModelEval extends LitElement {
   onLoaded(event) {
     // Obtener el archivo seleccionado (solo el primero en caso de múltiples archivos)
     const file = event.target.files[0];
-  
+
     // Verificar si se seleccionó un archivo
     if (!file) {
       console.error("No se seleccionó ninguna imagen.");
       return;
     }
-  
+
     // Crear una instancia de FileReader para leer el archivo
     const reader = new FileReader();
-  
+
     // Definir el evento de carga para el lector de archivos
     reader.onload = () => {
       // Obtener el resultado en formato Base64
       const imageInBase64 = reader.result;
-      
+
       // Imprimir o usar la imagen en Base64 según sea necesario
       this.imageSrc = imageInBase64;
       this.requestUpdate();
       this.checkImage(imageInBase64);
     };
-  
+
     // Leer el archivo como Data URL (Base64)
     reader.readAsDataURL(file);
   }
-  
+
 
   openCamera() {
     this.video = this.querySelector("#video");
@@ -270,6 +270,21 @@ export class ModelEval extends LitElement {
     </div>`;
   }
 
+
+  templateAudioEval() {
+    return html`
+    <h6 class="subtitle is-6">${msg("Introduces new audios and checks they are correctly classified ")}</h6>
+    <hr/>    
+    
+    <div class="field mt-2 is-grouped is-justify-content-center">
+      <p class="control">
+        <button @click=${this.checkNumber} class="button is-primary">
+          ${msg("Check")}
+        </button>
+      </p>
+    </div>`;
+  }
+
   templateFormEval(editorType) {
     switch (editorType) {
       case 'text':
@@ -278,10 +293,12 @@ export class ModelEval extends LitElement {
         return this.templateImageEval();
       case 'numerical':
         return this.templateNumberEval();
+      case 'audio':
+        return this.templateAudioEval();
     }
   }
-  
-  templateAdvanced(){
+
+  templateAdvanced() {
     return html`
 
 <div class="columns">
@@ -291,14 +308,14 @@ export class ModelEval extends LitElement {
     </div>
     <div class="column">
       ${this.results.map((r) => {
-        let result = parseFloat(100 * r[1]).toFixed(3).toString();
-        if (result.includes('.')) {
-          result = result.replace(/\.?0+$/, '');
-        }
-        return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
+      let result = parseFloat(100 * r[1]).toFixed(3).toString();
+      if (result.includes('.')) {
+        result = result.replace(/\.?0+$/, '');
       }
+      return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
+    }
 
-      )}  
+    )}  
     </div>
 </div>
 
@@ -306,21 +323,21 @@ export class ModelEval extends LitElement {
     `;
   }
 
-  templateBasic(){
+  templateBasic() {
     return html`
 <h4 class="title is-4" > ${msg('Try')}</h4 >
 ${this.templateFormEval(this._dataTypeConsumer.value.type)}
 
   ${this.results.map((r) => {
-    let result = parseFloat(100 * r[1]).toFixed(3).toString();
-    if (result.includes('.')) {
-      result = result.replace(/\.?0+$/, '');
+      let result = parseFloat(100 * r[1]).toFixed(3).toString();
+      if (result.includes('.')) {
+        result = result.replace(/\.?0+$/, '');
+      }
+      return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
     }
-    return html`${r[0]}(${result}%)<progress class="progress is-primary" value=${r[1] * 100} max="100"></progress>`
-  }
-  )} 
+    )} 
 `
-}
+  }
 
   render() {
     return html`

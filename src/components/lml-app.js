@@ -83,7 +83,7 @@ class LMLApp extends LitElement {
 
         setTimeout(() => {
             this.loading = false;
-        }, 1000)
+        }, 0)
 
         let mobilenetEncoder = getMobilenetEncoder("");
         this.encodingProvider.setValue({

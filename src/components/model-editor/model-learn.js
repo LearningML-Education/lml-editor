@@ -66,6 +66,8 @@ export class ModelLearn extends LitElement {
         return msg("Now it's time to learn to classify images");
       case 'numerical':
         return msg("Now it's time to learn to classify numbers");
+      case 'audio':
+        return msg("Now it's time to learn to classify audio");
     }
     return "";
   }
@@ -78,6 +80,8 @@ export class ModelLearn extends LitElement {
         return msg("Learn to recognize images");
       case 'numerical':
         return msg("Learn to recognize numbers");
+      case 'audio':
+        return msg("Learn to recognize audio");
     }
     return "";
   }
@@ -177,7 +181,7 @@ export class ModelLearn extends LitElement {
         console.log('logs', logs);
       }
 
-      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {        
+      this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {
         console.log(result);
         return result;
       }).then(r => {
@@ -208,7 +212,7 @@ export class ModelLearn extends LitElement {
         return this._modelConsumer.value.saveToLocalstorage(this._dataTypeConsumer.value, encoder);
       }).then(lmlModel => {
         console.log("This model has been built right now:");
-        console.log(lmlModel);        
+        console.log(lmlModel);
         this.modelHasBeenTrained = true;
         this.bcEditor.postMessage('updateModel');
 
@@ -318,23 +322,23 @@ export class ModelLearn extends LitElement {
         <header class="modal-card-head">
           <p class="modal-card-title">
             ${this.modelHasBeenTrained
-              ? html`
+        ? html`
                 ${msg("Great! The model has been trained!")}
               `
-              : html`${msg("Running ML algorithm to build the model.")}`
-            }
+        : html`${msg("Running ML algorithm to build the model.")}`
+      }
             
           </p>          
           ${this.modelHasBeenTrained
-            ? html`<button @click=${() => { this.showModalLearn = false;}} class="delete" aria-label="close"></button>`
-            : html``
-          }
+        ? html`<button @click=${() => { this.showModalLearn = false; }} class="delete" aria-label="close"></button>`
+        : html``
+      }
           
         </header>
         <section class="modal-card-body">
               
           ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
-          ? html`
+        ? html`
               <div class="columns">
                 <div class="column">
                   <span class="tag is-info">Batch</span> ${this.batch}
@@ -347,28 +351,28 @@ export class ModelLearn extends LitElement {
                 </div>
               </div> 
               `
-          : html``
-          }
+        : html``
+      }
 
           
           ${this._modelConsumer.value.getAlgorithmName() == 'LMLSequential'
-          ? html`
+        ? html`
               <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
                 ${this.learningPercentage}%
               </progress> 
               `
-          : html``
-          }    
+        : html``
+      }    
           
           ${this.templatePill()}
 
           ${this.modelHasBeenTrained
-          ? html`
+        ? html`
             <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
             <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
           `
-          : html``
-        }
+        : html``
+      }
         </section>        
       </div>
     </div>
