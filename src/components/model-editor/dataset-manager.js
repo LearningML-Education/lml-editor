@@ -274,21 +274,32 @@ export class DatasetManager extends LitElement {
       const sonidosDiv = document.getElementById('sonidos');
       blobs.forEach((chunk, index) => {
         const audioBlob = new Blob([chunk], { type: 'audio/wav' });
-        const audioUrl = URL.createObjectURL(audioBlob);
 
-        // Crear un botón para reproducir el audio                                                                   
-        const playButton = document.createElement('button');
-        playButton.className = 'button is-primary';
-        playButton.innerHTML = `<i class="fa-solid fa-play"></i> Sample-${index + 1}`;
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = () => {
+          const base64Audio = reader.result.split(',')[1]; // Parte de la data en Base64
 
-        // Añadir evento de clic para reproducir el audio                                                            
-        playButton.addEventListener('click', () => {
-          const audio = new Audio(audioUrl);
-          audio.play();
-        });
+          // Mostrar el Base64 en la consola (o hacer algo con el resultado)
+          console.log('Audio en Base64:', base64Audio);
 
-        sonidosDiv.appendChild(playButton);
-        sonidosDiv.appendChild(document.createElement('br'));
+          const audioUrl = URL.createObjectURL(audioBlob);
+
+          // Crear un botón para reproducir el audio                                                                   
+          const playButton = document.createElement('button');
+          playButton.className = 'button is-primary';
+          playButton.innerHTML = `<i class="fa-solid fa-play"></i> Sample-${index + 1}`;
+
+          // Añadir evento de clic para reproducir el audio                                                            
+          playButton.addEventListener('click', () => {
+            const audio = new Audio(audioUrl);
+            audio.play();
+          });
+
+          sonidosDiv.appendChild(playButton);
+          sonidosDiv.appendChild(document.createElement('br'));
+
+        };
       });
 
     });
