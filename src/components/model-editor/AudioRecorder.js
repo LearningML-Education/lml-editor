@@ -36,6 +36,17 @@ export class AudioRecorder {
         this.stream.getTracks().forEach(track => track.stop());
         return new Promise(resolve => {
             this.mediaRecorder.onstop = () => {
+                const sonidosDiv = document.getElementById('sonidos');
+                this.audioChunks.forEach((chunk, index) => {
+                    const audioBlob = new Blob([chunk], { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = audioUrl;
+                    downloadLink.download = `fragmento-${Date.now()}-${index}.wav`;
+                    downloadLink.textContent = `Descargar Fragmento ${index + 1}`;
+                    sonidosDiv.appendChild(downloadLink);
+                    sonidosDiv.appendChild(document.createElement('br'));
+                });
                 resolve(this.audioChunks);
             };
         });

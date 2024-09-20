@@ -269,10 +269,11 @@ export class DatasetManager extends LitElement {
   }
 
   stopRecording() {
-    this.audioRecorder.stopRecording().then(result => {
-      console.log(result);
+    this.audioRecorder.stopRecording().then(blobs => {
+      console.log(blobs);
+      
     });
-    
+
   }
 
   templateButtons(editorType) {
@@ -424,6 +425,10 @@ export class DatasetManager extends LitElement {
 
   templateAudioButtons() {
     return html`    
+
+    <div id="sonidos">
+
+    </div>
     <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
         <p class="control">
@@ -435,7 +440,7 @@ export class DatasetManager extends LitElement {
           </button>
         </p>
         <p class="control">
-          <button @click="${ this.stopRecording }" class="button  is-primary is-fullwidth">
+          <button @click="${this.stopRecording}" class="button  is-primary is-fullwidth">
             <span class="icon">
               <i class="fa-solid fa-circle-stop"></i>
             </span>
