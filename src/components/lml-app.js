@@ -21,6 +21,7 @@ import {
     bowEncoder,
     getMobilenetEncoder,
     numericalEncoder,
+    audioEncoder,
     LMLSequential,
     KNN
 } from 'lml-algorithms';
@@ -89,7 +90,8 @@ class LMLApp extends LitElement {
         this.encodingProvider.setValue({
             text: bowEncoder,
             image: mobilenetEncoder,
-            numerical: numericalEncoder
+            numerical: numericalEncoder,
+            audio: audioEncoder            
         });
 
     }
