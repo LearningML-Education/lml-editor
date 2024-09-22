@@ -268,15 +268,13 @@ export class DatasetManager extends LitElement {
   startRecording() {
     this.audioRecorder.startRecording();
     const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
-    recordButton.disabled = true;
     const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
+    recordButton.disabled = true;
     stopButton.disabled = false;
   }
 
   stopRecording() {
     this.audioRecorder.stopRecording().then(blobs => {
-      console.log(blobs);
-      const sonidosDiv = document.getElementById(`sounds_${this.labelName}`);
       blobs.forEach((chunk, index) => {
         const audioBlob = new Blob([chunk], { type: 'audio/wav' });
 
@@ -288,52 +286,14 @@ export class DatasetManager extends LitElement {
           if (this._datasetConsumer.value.get(this.labelName)) {
             this._datasetConsumer.value.get(this.labelName).add(base64Audio);
           }
-
-          const audioUrl = URL.createObjectURL(audioBlob);
-
-          const audioContainer = document.createElement('div');
-          audioContainer.className = 'audio-container';
-
-          const img = document.createElement('img');
-          img.src = 'public/images/sound.png';
-          img.className = 'sound-image';
-
-          const sampleText = document.createElement('div');
-          sampleText.textContent = `sample-${this._datasetConsumer.value.get(this.labelName).size + this.deletedSounds}`
-          sampleText.className = 'sample-text';
-
-          const playButton = document.createElement('button');
-          playButton.className = 'button is-primary play-button';
-          playButton.innerHTML = `<i class="fa-solid fa-play"></i>`;
-          playButton.addEventListener('click', () => {
-            const audio = new Audio(audioUrl);
-            audio.play();
-          });
-
-          const deleteButton = document.createElement('button');
-          deleteButton.className = 'button is-danger delete-button';
-          deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-          deleteButton.addEventListener('click', () => {
-            sonidosDiv.removeChild(audioContainer);
-            this._datasetConsumer.value.get(this.labelName).delete(base64Audio);
-            this.deletedSounds += 1;
-          });
-
-          audioContainer.appendChild(img);
-          audioContainer.appendChild(sampleText);
-          audioContainer.appendChild(playButton);
-          audioContainer.appendChild(deleteButton);
-
-          sonidosDiv.appendChild(audioContainer);
-          sonidosDiv.appendChild(document.createElement('br'));
-
-          const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
-          recordButton.disabled = false;
-          const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
-          stopButton.disabled = true;
+          this.requestUpdate();
         };
       });
     });
+    const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
+    const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
+    recordButton.disabled = false;
+    stopButton.disabled = true;
   }
 
   templateButtons(editorType) {
@@ -657,9 +617,42 @@ export class DatasetManager extends LitElement {
   }
 
   templateAudioData() {
+
     return html`
       <div class="container itemdata p-3">    
         <div class="buttons" id="sounds_${this.labelName}">
+         
+        ${this._datasetConsumer.value.get(this.labelName)
+        ? Array.from(this._datasetConsumer.value.get(this.labelName)).map((b64sound, index) => {
+
+          function play() {
+            this.audioRecorder.playBase64Audio(b64sound);
+          }
+
+          function stop() {
+            this._datasetConsumer.value.get(this.labelName).delete(b64sound);
+            this.requestUpdate();
+          }
+
+          return html`
+            <div class="audio-container">
+              <img src="public/images/sound.png" class="sound-image">
+              <div class="sample-text">sample-${index}</div>
+              <button @click=${play} class="button is-primary play-button">
+                <i class="fa-solid fa-play" aria-hidden="true"></i>
+              </button>
+              <button @click=${stop} class="button is-danger delete-button">
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+              `
+        }
+
+        )
+        : html``
+      }
+         
+        </div>
       </div>
     `;
   }
