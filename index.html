@@ -8,11 +8,10 @@
   <title>LearningML</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
   <style>
-
     .is-clickable {
       cursor: pointer;
     }
-    
+
     .component {
       display: flex;
       align-items: center;
@@ -25,7 +24,7 @@
 
     .truncate {
       display: inline-block;
-      vertical-align:middle;
+      vertical-align: middle;
       width: 350px;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -42,9 +41,45 @@
       cursor: pointer;
     }
 
-    
+
     .image-item {
       height: 75px;
+    }
+
+    .audio-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .sample-text {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    .play-button {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      font-size: 12px;
+      padding: 5px;
+      width: 30px;
+      height: 30px;
+    }
+
+    .delete-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      padding: 5px;
+      width: 30px;
+      height: 30px;
     }
   </style>
   <script src="https://kit.fontawesome.com/bdd65911f1.js" crossorigin="anonymous"></script>
