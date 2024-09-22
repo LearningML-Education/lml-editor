@@ -30,7 +30,7 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
     this.audioRecorder = new AudioRecorder();
-    this.indexAudio = 0;
+    this.deletedSounds = 0;
     updateWhenLocaleChanges(this);
   }
 
@@ -269,46 +269,92 @@ export class DatasetManager extends LitElement {
     this.audioRecorder.startRecording();
   }
 
-  stopRecording() {
-    this.audioRecorder.stopRecording().then(blobs => {
-      console.log(blobs);
-      const sonidosDiv = document.getElementById('sonidos');
-      blobs.forEach((chunk, index) => {
-        const audioBlob = new Blob([chunk], { type: 'audio/wav' });
-
-        const reader = new FileReader();
-        reader.readAsDataURL(audioBlob);
-        reader.onloadend = () => {
-          const base64Audio = reader.result.split(',')[1]; // Parte de la data en Base64
-          
-          if(this._datasetConsumer.value.get(this.labelName)){
-            this._datasetConsumer.value.get(this.labelName).add(base64Audio);
-          }
-
-          const audioUrl = URL.createObjectURL(audioBlob);
-
-          // Crear un botón para reproducir el audio                                                                   
-          const playButton = document.createElement('button');
-          playButton.className = 'button is-primary';
-          playButton.innerHTML = `<i class="fa-solid fa-play"></i> Sample-${this.indexAudio + index + 1}`;
-
-          if(index == blobs.length - 1) this.indexAudio += index + 1;
-
-          // Añadir evento de clic para reproducir el audio                                                            
-          playButton.addEventListener('click', () => {
-            const audio = new Audio(audioUrl);
-            audio.play();
-          });
-
-          sonidosDiv.appendChild(playButton);
-          sonidosDiv.appendChild(document.createElement('br'));
-
-        };
-      });
-
-    });
-
-  }
+  stopRecording() {                                                                                                            
+    this.audioRecorder.stopRecording().then(blobs => {                                                                       
+        console.log(blobs);                                                                                                  
+        const sonidosDiv = document.getElementById(`sounds_${this.labelName}`);                                                               
+        blobs.forEach((chunk, index) => {                                                                                    
+            const audioBlob = new Blob([chunk], { type: 'audio/wav' });                                                      
+                                                                                                                             
+            const reader = new FileReader();                                                                                 
+            reader.readAsDataURL(audioBlob);                                                                                 
+            reader.onloadend = () => {                                                                                       
+                const base64Audio = reader.result.split(',')[1]; // Parte de la data en Base64                               
+                                                                                                                             
+                if(this._datasetConsumer.value.get(this.labelName)){                                                         
+                    this._datasetConsumer.value.get(this.labelName).add(base64Audio);                                        
+                }                                                                                                            
+                                                                                                                             
+                const audioUrl = URL.createObjectURL(audioBlob);                                                             
+                                                                                                                             
+                // Crear un contenedor para la imagen y los botones                                                          
+                const audioContainer = document.createElement('div');                                                        
+                audioContainer.style.position = 'relative';                                                                  
+                audioContainer.style.display = 'inline-block';                                                               
+                                                                                                                             
+                // Crear la imagen                                                                                           
+                const img = document.createElement('img');                                                                   
+                img.src = 'public/images/sound.png';                                                                         
+                img.className = 'sound-image';                                                                               
+                                                                                                                             
+                // Crear el texto de muestra                                                                                 
+                const sampleText = document.createElement('div');           
+                sampleText.textContent = `sample-${ this._datasetConsumer.value.get(this.labelName).size + this.deletedSounds }`;                                                                  
+                sampleText.style.position = 'absolute';                                                                      
+                sampleText.style.top = '5px';                                                                                
+                sampleText.style.left = '5px';                                                                               
+                sampleText.style.color = 'white';                                                                            
+                sampleText.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';                                                     
+                sampleText.style.padding = '2px 5px';                                                                        
+                sampleText.style.borderRadius = '3px';                                                                       
+                sampleText.style.fontSize = '12px';                                                                          
+                                                                                                                             
+                // Crear el botón de reproducir                                                                              
+                const playButton = document.createElement('button');                                                         
+                playButton.className = 'button is-primary';                                                                  
+                playButton.innerHTML = `<i class="fa-solid fa-play"></i>`;                                                   
+                playButton.style.position = 'absolute';                                                                      
+                playButton.style.bottom = '10px';                                                                            
+                playButton.style.left = '10px';                                                                              
+                playButton.style.fontSize = '12px';                                                                          
+                playButton.style.padding = '5px';                                                                            
+                playButton.style.width = '30px';                                                                             
+                playButton.style.height = '30px';                                                                            
+                playButton.addEventListener('click', () => {                                                                 
+                    const audio = new Audio(audioUrl);                                                                       
+                    audio.play();                                                                                            
+                });                                                                                                          
+                                                                                                                             
+                // Crear el botón de borrar                                                                                  
+                const deleteButton = document.createElement('button');                                                       
+                deleteButton.className = 'button is-danger';                                                                 
+                deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;                                                
+                deleteButton.style.position = 'absolute';                                                                    
+                deleteButton.style.bottom = '10px';                                                                          
+                deleteButton.style.right = '10px';                                                                           
+                deleteButton.style.fontSize = '12px';                                                                        
+                deleteButton.style.padding = '5px';                                                                          
+                deleteButton.style.width = '30px';                                                                           
+                deleteButton.style.height = '30px';                                                                          
+                deleteButton.addEventListener('click', () => {                                                               
+                    sonidosDiv.removeChild(audioContainer);                                                                  
+                    this._datasetConsumer.value.get(this.labelName).delete(base64Audio); 
+                    this.deletedSounds +=1;                                    
+                });                                                                                                          
+                                                                                                                             
+                // Añadir la imagen, el texto y los botones al contenedor                                                    
+                audioContainer.appendChild(img);                                                                             
+                audioContainer.appendChild(sampleText);                                                                      
+                audioContainer.appendChild(playButton);                                                                      
+                audioContainer.appendChild(deleteButton);                                                                    
+                                                                                                                             
+                // Añadir el contenedor al div de sonidos                                                                    
+                sonidosDiv.appendChild(audioContainer);                                                                      
+                sonidosDiv.appendChild(document.createElement('br'));                                                        
+            };                                                                                                                           
+        });                                                                                                                  
+    });                                                                                                                      
+}   
 
   templateButtons(editorType) {
     switch (editorType) {
@@ -633,7 +679,7 @@ export class DatasetManager extends LitElement {
   templateAudioData() {
     return html`
       <div class="container itemdata p-3">    
-        <div class="buttons" id="sonidos">
+        <div class="buttons" id="sounds_${this.labelName}">
       </div>
     `;
   }
