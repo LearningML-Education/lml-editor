@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, dataTypeContext, encodingContext } from '../../contexts.js';
-import { uploadImages } from './uploadImages.js';
+import { AudioRecorder } from './AudioRecorder.js';
 
 export class ModelEval extends LitElement {
 
@@ -22,6 +22,7 @@ export class ModelEval extends LitElement {
     this.imageSrc = null;
     this.cameraOpened = false;
     this.results = [];
+    this.audioRecorder = new AudioRecorder();
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -180,6 +181,34 @@ export class ModelEval extends LitElement {
     }
   }
 
+  startRecording() {
+    const recordButton = document.querySelector('#recordButton');
+    recordButton.disabled = true;
+    this.audioRecorder.startRecording();
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.audioRecorder.stopRecording().then(audioBlob => {
+          recordButton.disabled = false;
+
+          const reader = new FileReader();
+          reader.readAsDataURL(audioBlob[0]);
+          reader.onloadend = () => {
+            const base64Audio = reader.result.split(',')[1];
+            let encode = this._encodingConsumer.value.audio;
+            encode([base64Audio]).then(features => {
+              return this._modelConsumer.value.classify(features);
+            }).then(results => {
+              console.log(results);
+              this.results = results;
+            }).catch(error => {
+              alert(error);
+            })
+          };
+        });
+      }, 2000)
+    })
+  }
+
   templateTextEval() {
     return html`
     <h6 class="subtitle is-6">${msg("Introduces new terms and checks they are correctly classified ")}</h6>
@@ -278,8 +307,8 @@ export class ModelEval extends LitElement {
     
     <div class="field mt-2 is-grouped is-justify-content-center">
       <p class="control">
-        <button @click=${this.checkNumber} class="button is-primary">
-          ${msg("Check")}
+        <button id="recordButton" @click=${this.startRecording} class="button is-primary">
+          ${msg("Record")}
         </button>
       </p>
     </div>`;
