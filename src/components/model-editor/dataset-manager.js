@@ -283,6 +283,8 @@ export class DatasetManager extends LitElement {
         reader.onloadend = () => {
           const base64Audio = reader.result.split(',')[1];
 
+          if(base64Audio == "") return;
+          
           if (this._datasetConsumer.value.get(this.labelName)) {
             this._datasetConsumer.value.get(this.labelName).add(base64Audio);
           }

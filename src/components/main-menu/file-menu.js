@@ -89,7 +89,9 @@ export class FileMenu extends LitElement {
         for (let d of data) {
           if (!this._datasetConsumer.value.has(key)){
             this._datasetConsumer.value.set(key, new Set());
-          }                   
+          }  
+          if(d == "") continue;
+
           if (this._dataTypeConsumer.value.type == 'numerical') {
               d = this.truncateNumbers(d);
               this._dataTypeConsumer.value.dimension = d.split(",").length;
