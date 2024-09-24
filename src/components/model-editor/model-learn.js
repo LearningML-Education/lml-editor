@@ -150,6 +150,7 @@ export class ModelLearn extends LitElement {
     }
     this._datasetConsumer.value.forEach((element, key) => {
       promises.push(encode(Array.from(element)).then(features => {
+        console.log(features.arraySync());
         this._featuresConsumer.value.set(key, features);
       }));
     });

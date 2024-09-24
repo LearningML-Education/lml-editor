@@ -191,7 +191,7 @@ export class ModelEval extends LitElement {
           recordButton.disabled = false;
 
           const reader = new FileReader();
-          reader.readAsDataURL(audioBlob[0]);
+          reader.readAsDataURL(audioBlob[2]);
           reader.onloadend = () => {
             const base64Audio = reader.result.split(',')[1];
             let encode = this._encodingConsumer.value.audio;
@@ -205,7 +205,7 @@ export class ModelEval extends LitElement {
             })
           };
         });
-      }, 2000)
+      }, 6000)
     })
   }
 
