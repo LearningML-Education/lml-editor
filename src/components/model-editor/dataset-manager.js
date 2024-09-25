@@ -3,7 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { dataTypeContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { AudioRecorder } from './AudioRecorder.js';
+import { collectExample, audioEncoder } from 'lml-algorithms';
 
 
 export class DatasetManager extends LitElement {
@@ -29,7 +29,6 @@ export class DatasetManager extends LitElement {
     this.editText = false;
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
-    this.audioRecorder = new AudioRecorder();
     this.deletedSounds = 0;
     updateWhenLocaleChanges(this);
   }
@@ -265,12 +264,17 @@ export class DatasetManager extends LitElement {
     }
   }
 
-  startRecording() {
-    this.audioRecorder.startRecording();
+  collectAudioSample() {
     const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
     const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
     recordButton.disabled = true;
     stopButton.disabled = false;
+    collectExample(this.labelName).then(result => {
+      console.log(result);
+      recordButton.disabled = false;
+      stopButton.disabled = true;
+    });
+    //this.audioRecorder.startRecording();
   }
 
   stopRecording() {
@@ -283,7 +287,7 @@ export class DatasetManager extends LitElement {
         reader.onloadend = () => {
           const base64Audio = reader.result.split(',')[1];
 
-          if(base64Audio == "") return;
+          if (base64Audio == "") return;
 
           if (this._datasetConsumer.value.get(this.labelName)) {
             this._datasetConsumer.value.get(this.labelName).add(base64Audio);
@@ -452,7 +456,7 @@ export class DatasetManager extends LitElement {
     <div class="panel-block is-justify-content-center">
       <div class="field is-grouped">
         <p class="control">
-          <button id="recordButton_${this.labelName}" @click="${this.startRecording}" class="button is-primary is-fullwidth">
+          <button id="recordButton_${this.labelName}" @click="${this.collectAudioSample}" class="button is-primary is-fullwidth">
             <span class="icon">
               <i class="fa-solid fa-microphone"></i>
             </span>
