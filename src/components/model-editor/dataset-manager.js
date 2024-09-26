@@ -30,6 +30,7 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
     this.deletedSounds = 0;
+    this.collectExampleInterval;
     updateWhenLocaleChanges(this);
   }
 
@@ -269,39 +270,23 @@ export class DatasetManager extends LitElement {
     const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
     recordButton.disabled = true;
     stopButton.disabled = false;
-    collectExample(this.labelName).then(result => {
-      if (this._datasetConsumer.value.get(this.labelName)) {
-        this._datasetConsumer.value.get(this.labelName).add(result.data);
-      }
-      console.log(this._datasetConsumer.value);
-      this.requestUpdate();
-      console.log(result);
-      recordButton.disabled = false;
-      stopButton.disabled = true;
-    });
+    this.collectExampleInterval = setInterval(
+      () => {
+        collectExample(this.labelName).then(result => {
+          if (this._datasetConsumer.value.get(this.labelName)) {
+            this._datasetConsumer.value.get(this.labelName).add(result.data);
+          }
+          console.log(this._datasetConsumer.value);
+          this.requestUpdate();
+          console.log(result);          
+        });
+      }, 1000);
+
     //this.audioRecorder.startRecording();
   }
 
   stopRecording() {
-    this.audioRecorder.stopRecording().then(blobs => {
-      blobs.forEach((chunk, index) => {
-        const audioBlob = new Blob([chunk], { type: 'audio/wav' });
-
-        const reader = new FileReader();
-        reader.readAsDataURL(audioBlob);
-        reader.onloadend = () => {
-          const base64Audio = reader.result.split(',')[1];
-
-          if (base64Audio == "") return;
-
-          if (this._datasetConsumer.value.get(this.labelName)) {
-            this._datasetConsumer.value.get(this.labelName).add(base64Audio);
-          }
-          console.log(this._datasetConsumer.value);
-          this.requestUpdate();
-        };
-      });
-    });
+    clearInterval(this.collectExampleInterval); 
     const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
     const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
     recordButton.disabled = false;
