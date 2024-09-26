@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, dataTypeContext, encodingContext } from '../../contexts.js';
-import { AudioRecorder } from './AudioRecorder.js';
+import { collectExample } from 'lml-algorithms';
 
 export class ModelEval extends LitElement {
 
@@ -22,7 +22,6 @@ export class ModelEval extends LitElement {
     this.imageSrc = null;
     this.cameraOpened = false;
     this.results = [];
-    this.audioRecorder = new AudioRecorder();
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -184,29 +183,21 @@ export class ModelEval extends LitElement {
   startRecording() {
     const recordButton = document.querySelector('#recordButton');
     recordButton.disabled = true;
-    this.audioRecorder.startRecording();
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.audioRecorder.stopRecording().then(audioBlob => {
-          recordButton.disabled = false;
 
-          const reader = new FileReader();
-          reader.readAsDataURL(audioBlob[2]);
-          reader.onloadend = () => {
-            const base64Audio = reader.result.split(',')[1];
-            let encode = this._encodingConsumer.value.audio;
-            encode([base64Audio]).then(features => {
-              return this._modelConsumer.value.classify(features);
-            }).then(results => {
-              console.log(results);
-              this.results = results;
-            }).catch(error => {
-              alert(error);
-            })
-          };
-        });
-      }, 6000)
-    })
+    collectExample("test").then(result => {
+      let encode = this._encodingConsumer.value.audio;
+      encode([result.data]).then(features => {
+        return this._modelConsumer.value.classify(features);
+      }).then(results => {
+        console.log(results);
+        recordButton.disabled = false;
+        this.results = results;
+      }).catch(error => {
+        alert(error);
+      })      
+      
+    });
+
   }
 
   templateTextEval() {

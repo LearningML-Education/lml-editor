@@ -3,7 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { dataTypeContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { collectExample, audioEncoder } from 'lml-algorithms';
+import { collectExample } from 'lml-algorithms';
 
 
 export class DatasetManager extends LitElement {
