@@ -97,6 +97,10 @@ export class FileMenu extends LitElement {
               this._dataTypeConsumer.value.dimension = d.split(",").length;
           }
           
+          if(this._dataTypeConsumer.value.type == 'audio'){
+            d = new Float32Array(Object.values(d));
+          }
+          
           this._datasetConsumer.value.get(key).add(d);
         }
       });

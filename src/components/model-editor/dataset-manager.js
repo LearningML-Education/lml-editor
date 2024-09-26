@@ -270,6 +270,11 @@ export class DatasetManager extends LitElement {
     recordButton.disabled = true;
     stopButton.disabled = false;
     collectExample(this.labelName).then(result => {
+      if (this._datasetConsumer.value.get(this.labelName)) {
+        this._datasetConsumer.value.get(this.labelName).add(result.data);
+      }
+      console.log(this._datasetConsumer.value);
+      this.requestUpdate();
       console.log(result);
       recordButton.disabled = false;
       stopButton.disabled = true;
