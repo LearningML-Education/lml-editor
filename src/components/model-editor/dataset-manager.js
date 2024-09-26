@@ -30,7 +30,7 @@ export class DatasetManager extends LitElement {
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
     this.deletedSounds = 0;
-    this.collectExampleInterval;
+    this.stopCollecting = false;
     updateWhenLocaleChanges(this);
   }
 
@@ -265,28 +265,40 @@ export class DatasetManager extends LitElement {
     }
   }
 
+  async collectExampleInterval() {
+    if (this.stopCollecting) {
+      console.log('Proceso de recolección detenido');
+      return;  // Salir de la función si stopCollecting es true
+    }
+    try {
+      const result = await collectExample(this.labelName);
+
+      // Agregar los datos resultantes al dataset
+      if (this._datasetConsumer.value.get(this.labelName)) {
+        this._datasetConsumer.value.get(this.labelName).add(result.data);
+      }
+      // Actualizar el componente
+      this.requestUpdate();
+      console.log(this._datasetConsumer.value);
+      // Una vez que la promesa se resuelva, vuelve a llamar a la función
+      this.collectExampleInterval();
+    } catch (error) {
+      console.error('Error al ejecutar collectExample:', error);
+    }
+  }
+
   collectAudioSample() {
     const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
     const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
     recordButton.disabled = true;
     stopButton.disabled = false;
-    this.collectExampleInterval = setInterval(
-      () => {
-        collectExample(this.labelName).then(result => {
-          if (this._datasetConsumer.value.get(this.labelName)) {
-            this._datasetConsumer.value.get(this.labelName).add(result.data);
-          }
-          console.log(this._datasetConsumer.value);
-          this.requestUpdate();
-          console.log(result);          
-        });
-      }, 1000);
 
-    //this.audioRecorder.startRecording();
+    this.stopCollecting = false;
+    this.collectExampleInterval();
   }
 
   stopRecording() {
-    clearInterval(this.collectExampleInterval); 
+    this.stopCollecting = true;
     const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
     const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
     recordButton.disabled = false;
