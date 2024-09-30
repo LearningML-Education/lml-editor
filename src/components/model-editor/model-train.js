@@ -65,7 +65,7 @@ export class ModelTrain extends LitElement {
       case 'numerical':
         return msg('first I need some example vectors');
       case 'audio':
-        return msg('first I need some audio samples');
+        return msg('first I need some sound samples');
     }
     return "";
   }

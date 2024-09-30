@@ -293,7 +293,7 @@ export class ModelEval extends LitElement {
 
   templateAudioEval() {
     return html`
-    <h6 class="subtitle is-6">${msg("Introduces new audios and checks they are correctly classified ")}</h6>
+    <h6 class="subtitle is-6">${msg("Introduce new sound and checks they are correctly classified ")}</h6>
     <hr/>    
     
     <div class="field mt-2 is-grouped is-justify-content-center">

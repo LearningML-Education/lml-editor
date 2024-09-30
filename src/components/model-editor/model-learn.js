@@ -67,7 +67,7 @@ export class ModelLearn extends LitElement {
       case 'numerical':
         return msg("Now it's time to learn to classify numbers");
       case 'audio':
-        return msg("Now it's time to learn to classify audio");
+        return msg("Now it's time to learn to classify sounds");
     }
     return "";
   }
@@ -81,7 +81,7 @@ export class ModelLearn extends LitElement {
       case 'numerical':
         return msg("Learn to recognize numbers");
       case 'audio':
-        return msg("Learn to recognize audio");
+        return msg("Learn to recognize sounds");
     }
     return "";
   }
