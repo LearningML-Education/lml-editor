@@ -291,13 +291,46 @@
         <target>ML-algoritme wordt uitgevoerd om het model te bouwen.</target>
       </trans-unit>
       <trans-unit id="h29842057cedc0d1b">
-        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
-        <target>Het model had <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconden nodig om te bouwen.</target>
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconds to build.</source>
+        <target>Het model had <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconden nodig om te bouwen.</target>
       </trans-unit>
       <trans-unit id="s1225fec6649f41fa">
         <source>Now you can test it and use it in a Scratch program.</source>
         <target>Nu kun je het testen en gebruiken in een Scratch-programma.</target>
       </trans-unit>
+      <trans-unit id="sfecd4e80b9d1155b">
+        <source>Sound recognition</source>
+        <target>Geluidherkenning</target>
+      </trans-unit>
+      <trans-unit id="s9ecedef91b8ea781">
+        <source>Teach the computer to recognize sounds</source>
+        <target>Leer de computer geluiden te herkennen</target>
+      </trans-unit>
+      <trans-unit id="s8a4ff2bd9c13498c">
+        <source>Record</source>
+        <target>Opnemen</target>
+      </trans-unit>
+      <trans-unit id="sd9ad53251f2330a5">
+        <source>Stop</source>
+        <target>Stoppen</target>
+      </trans-unit>
+      <trans-unit id="sed6692721bd9f0ee">
+        <source>first I need some sound samples</source>
+        <target>Eerst heb ik enkele geluidsmonsters nodig</target>
+      </trans-unit>
+      <trans-unit id="s51714d9459998099">
+        <source>Now it's time to learn to classify sounds</source>
+        <target>Nu is het tijd om te leren geluiden te classificeren</target>
+      </trans-unit>
+      <trans-unit id="s92091608a61ce3b2">
+        <source>Learn to recognize sounds</source>
+        <target>Leer geluiden te herkennen</target>
+      </trans-unit>
+      <trans-unit id="se6434769e4c3a42d">
+        <source>Introduce new sound and checks they are correctly classified</source>
+        <target>Introduceer nieuwe geluiden en controleer of ze correct zijn geclassificeerd</target>
+      </trans-unit>
+      
       
     </body>
   </file>

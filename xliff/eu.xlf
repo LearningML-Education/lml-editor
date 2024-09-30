@@ -291,13 +291,46 @@
         <target>ML algoritmoa exekutatzen eredua sortzeko.</target>
       </trans-unit>
       <trans-unit id="h29842057cedc0d1b">
-        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
-        <target>Eredua sortzeko <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> segundo behar izan ditu.</target>
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconds to build.</source>
+        <target>Eredua sortzeko <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> segundo behar izan ditu.</target>
       </trans-unit>
       <trans-unit id="s1225fec6649f41fa">
         <source>Now you can test it and use it in a Scratch program.</source>
         <target>Orain probatu eta Scratch programan erabil dezakezu.</target>
       </trans-unit>
+      <trans-unit id="sfecd4e80b9d1155b">
+        <source>Sound recognition</source>
+        <target>Soinuaren ezagutza</target>
+      </trans-unit>
+      <trans-unit id="s9ecedef91b8ea781">
+        <source>Teach the computer to recognize sounds</source>
+        <target>Irakatsi ordenagailuari soinuak ezagutzen</target>
+      </trans-unit>
+      <trans-unit id="s8a4ff2bd9c13498c">
+        <source>Record</source>
+        <target>Grabatu</target>
+      </trans-unit>
+      <trans-unit id="sd9ad53251f2330a5">
+        <source>Stop</source>
+        <target>Gelditu</target>
+      </trans-unit>
+      <trans-unit id="sed6692721bd9f0ee">
+        <source>first I need some sound samples</source>
+        <target>Lehenik soinu lagin batzuk behar ditut</target>
+      </trans-unit>
+      <trans-unit id="s51714d9459998099">
+        <source>Now it's time to learn to classify sounds</source>
+        <target>Orain soinuak sailkatzen ikasteko garaia da</target>
+      </trans-unit>
+      <trans-unit id="s92091608a61ce3b2">
+        <source>Learn to recognize sounds</source>
+        <target>Ikasi soinuak ezagutzen</target>
+      </trans-unit>
+      <trans-unit id="se6434769e4c3a42d">
+        <source>Introduce new sound and checks they are correctly classified</source>
+        <target>Sartu soinu berriak eta egiaztatu behar bezala sailkatzen diren</target>
+      </trans-unit>
+      
      
     </body>
   </file>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="de" source-language="en" original="lit-localize-inputs"
-    datatype="plaintext">
+  <file target-language="de" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="s933f2ff188367947">
         <source>You have to build a model first</source>
@@ -292,13 +291,46 @@
         <target>Der ML-Algorithmus wird ausgeführt, um das Modell zu erstellen.</target>
       </trans-unit>
       <trans-unit id="h29842057cedc0d1b">
-        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
-        <target>Das Modell hat <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> Sekunden benötigt, um erstellt zu werden.</target>
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconds to build.</source>
+        <target>Das Modell hat <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> Sekunden benötigt, um erstellt zu werden.</target>
       </trans-unit>
       <trans-unit id="s1225fec6649f41fa">
         <source>Now you can test it and use it in a Scratch program.</source>
         <target>Jetzt kannst du es testen und in einem Scratch-Programm verwenden.</target>
       </trans-unit>
+      <trans-unit id="sfecd4e80b9d1155b">
+        <source>Sound recognition</source>
+        <target>Spracherkennung</target>
+      </trans-unit>
+      <trans-unit id="s9ecedef91b8ea781">
+        <source>Teach the computer to recognize sounds</source>
+        <target>Bringen Sie dem Computer bei, Geräusche zu erkennen</target>
+      </trans-unit>
+      <trans-unit id="s8a4ff2bd9c13498c">
+        <source>Record</source>
+        <target>Aufnehmen</target>
+      </trans-unit>
+      <trans-unit id="sd9ad53251f2330a5">
+        <source>Stop</source>
+        <target>Anhalten</target>
+      </trans-unit>
+      <trans-unit id="sed6692721bd9f0ee">
+        <source>first I need some sound samples</source>
+        <target>Zuerst brauche ich einige Tonproben</target>
+      </trans-unit>
+      <trans-unit id="s51714d9459998099">
+        <source>Now it's time to learn to classify sounds</source>
+        <target>Jetzt ist es Zeit, Geräusche zu klassifizieren</target>
+      </trans-unit>
+      <trans-unit id="s92091608a61ce3b2">
+        <source>Learn to recognize sounds</source>
+        <target>Lerne, Geräusche zu erkennen</target>
+      </trans-unit>
+      <trans-unit id="se6434769e4c3a42d">
+        <source>Introduce new sound and checks they are correctly classified</source>
+        <target>Fügen Sie neue Geräusche hinzu und überprüfen Sie, ob sie korrekt klassifiziert werden</target>
+      </trans-unit>
+      
 
     </body>
   </file>
