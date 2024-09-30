@@ -40,7 +40,7 @@ export class ModelSelector extends LitElement {
   </div>
   <div class="column">
     <model-card 
-      title="${msg('Audio recognition')}"
+      title="${msg('Sound recognition')}"
       description="${msg('Teach the computer to recognize sounds')}"
       image="dalle-audio-min.png"
       type="audio">
