@@ -17,7 +17,6 @@ import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
 import {
-    useEncoder,
     bowEncoder,
     getMobilenetEncoder,
     numericalEncoder,

@@ -60,7 +60,7 @@ render() {
       type="numerical">
     </model-card>
   </div>
-  ${(browser == "Google Chrome")
+  ${true/*(browser == "Google Chrome")*/
     ? html`
     <div class="column">
     <model-card 
