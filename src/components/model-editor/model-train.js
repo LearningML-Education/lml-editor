@@ -71,6 +71,8 @@ export class ModelTrain extends LitElement {
 
   render() {
 
+    let datasetReversed = Array.from(this._datasetConsumer.value).slice().reverse();
+
     return html`
 
     <h4 ?hidden="${this.advancedMode}" class="title is-4">${msg('Training')}</h4>
@@ -92,7 +94,7 @@ export class ModelTrain extends LitElement {
     </div>
 
     <div class="grid is-col-min-12">
-      ${repeat(Array.from(this._datasetConsumer.value).toReversed(),
+      ${repeat(datasetReversed,
       entry => entry[0],
       (entry, index) => html`<div class="cell"><dataset-manager labelName=${entry[0]}></dataset-manager></div>`
     )}
