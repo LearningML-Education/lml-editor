@@ -194,12 +194,12 @@ class LMLApp extends LitElement {
                     ? this.editorTemplate()
                     : html``
                 }  
-        
-            ${this.footerCopyrigthTemplate()}
+                    
             ${process.env.SHOW_FOOTER_SPONSORS
                     ? this.footerSponsorsTemplate()
                     : html``
                 }
+            ${this.footerCopyrigthTemplate()}
             `;
         }
     }
