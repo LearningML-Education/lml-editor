@@ -26,6 +26,7 @@ export class MainMenu extends LitElement {
         super();
         this.modelName = "";
         this.navBarMenuActive = false;
+        this.scratchWindow;
         updateWhenLocaleChanges(this);
     }
 
@@ -47,8 +48,13 @@ export class MainMenu extends LitElement {
         if (locale != null) {
             urlScratch += '&locale=' + locale;
         }
-
-        window.open(urlScratch);
+        
+        console.log("KUKUKU");
+        if (!this.scratchWindow || this.scratchWindow.closed) {            
+            this.scratchWindow = window.open(urlScratch, 'scratch');           
+        } else {
+            this.scratchWindow.focus();
+        }        
     }
 
     templateMenu() {
@@ -82,14 +88,14 @@ export class MainMenu extends LitElement {
                     <img src="/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
                 </a>
 
-                <a @click=${() => {this.navBarMenuActive = !this.navBarMenuActive;}} role="button" class=${classMap({ "navbar-burger": true, "is-active": this.navBarMenuActive})} aria-label="menu" aria-expanded="false">
+                <a @click=${() => { this.navBarMenuActive = !this.navBarMenuActive; }} role="button" class=${classMap({ "navbar-burger": true, "is-active": this.navBarMenuActive })} aria-label="menu" aria-expanded="false">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                 </a>
             </div>
-            <div  class=${classMap({ "navbar-menu": true, "is-active": this.navBarMenuActive})}>
+            <div  class=${classMap({ "navbar-menu": true, "is-active": this.navBarMenuActive })}>
                 <div class="navbar-start">                            
                     ${this.templateMenu()}               
                 </div>
