@@ -298,7 +298,14 @@
         <source>Now you can test it and use it in a Scratch program.</source>
         <target>Agora você pode testá-lo e usá-lo em um programa Scratch.</target>
       </trans-unit>
-     
+      <trans-unit id="sb79fa7776c53543b">
+        <source>Our Premium Sponsors</source>
+        <target>Os nossos patrocinadores Premium</target>
+      </trans-unit>
+      <trans-unit id="s23afde73cbe360a2">
+        <source>Click here if you like your logo to appear here</source>
+        <target>Clique aqui se quiser que o seu logotipo apareça aqui</target>
+      </trans-unit>         
     </body>
   </file>
 </xliff>
