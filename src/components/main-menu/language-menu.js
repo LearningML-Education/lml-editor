@@ -13,7 +13,8 @@ const localeNames = {
   'de': 'Deutsch',
   'el': 'Ελληνικά',
   'pt': 'Português',
-  'nl': 'Nederlands'
+  'nl': 'Nederlands',
+  'fr': 'Français'
 };
 
 export class LanguageMenu extends LitElement {

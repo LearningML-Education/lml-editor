@@ -10,7 +10,8 @@
     "de",
     "el",
     "pt",
-    "nl"
+    "nl",
+    "fr"
   ],
   "inputFiles": [
     "src/**/*.js"

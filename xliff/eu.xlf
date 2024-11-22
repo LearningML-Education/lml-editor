@@ -291,14 +291,21 @@
         <target>ML algoritmoa exekutatzen eredua sortzeko.</target>
       </trans-unit>
       <trans-unit id="h29842057cedc0d1b">
-        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
-        <target>Eredua sortzeko <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> segundo behar izan ditu.</target>
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconds to build.</source>
+        <target>Eredua sortzeko <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> segundo behar izan ditu.</target>
       </trans-unit>
       <trans-unit id="s1225fec6649f41fa">
         <source>Now you can test it and use it in a Scratch program.</source>
         <target>Orain probatu eta Scratch programan erabil dezakezu.</target>
       </trans-unit>
-     
+      <trans-unit id="sb79fa7776c53543b">
+        <source>Our Premium Sponsors</source>
+        <target>Gure Premium Babesleak</target>
+      </trans-unit>
+      <trans-unit id="s23afde73cbe360a2">
+        <source>Click here if you like your logo to appear here</source>
+        <target>Egin klik hemen zure logotipoa hemen agertzea nahi baduzu</target>
+      </trans-unit>         
     </body>
   </file>
 </xliff>

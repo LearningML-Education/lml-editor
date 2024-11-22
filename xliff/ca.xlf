@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="ca" source-language="en" original="lit-localize-inputs"
-    datatype="plaintext">
+  <file target-language="ca" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="sd1f81284eeb7b503">
         <source>File</source>
@@ -292,16 +291,21 @@
         <target>Executant l'algorisme de ML per construir el model.</target>
       </trans-unit>
       <trans-unit id="h29842057cedc0d1b">
-        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> seconds to build.</source>
-        <target>El model ha tardat <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;" /> segons a construir-se.</target>
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconds to build.</source>
+        <target>El model ha tardat <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> segons a construir-se.</target>
       </trans-unit>
       <trans-unit id="s1225fec6649f41fa">
         <source>Now you can test it and use it in a Scratch program.</source>
         <target>Ara pots provar-lo i utilitzar-lo en un programa de Scratch.</target>
       </trans-unit>
-
-
-
+      <trans-unit id="sb79fa7776c53543b">
+        <source>Our Premium Sponsors</source>
+        <target>Els nostres patrocinadors Premium</target>
+      </trans-unit>
+      <trans-unit id="s23afde73cbe360a2">
+        <source>Click here if you like your logo to appear here</source>
+        <target>Fes clic aquí si vols que el teu logotip aparegui aquí</target>
+      </trans-unit>  
     </body>
   </file>
 </xliff>

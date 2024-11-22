@@ -1,206 +1,238 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file target-language="pt" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+  <file target-language="fr" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="s933f2ff188367947">
         <source>You have to build a model first</source>
-        <target>Você tem que construir um modelo primeiro</target>
+        <target>Vous devez d'abord créer un modèle</target>
       </trans-unit>
       <trans-unit id="sd1f81284eeb7b503">
         <source>File</source>
-        <target>Arquivo</target>
+        <target>Fichier</target>
       </trans-unit>
       <trans-unit id="s3741f519c32ac391">
         <source>New</source>
-        <target>Novo</target>
+        <target>Nouveau</target>
       </trans-unit>
       <trans-unit id="sa4a8a29de42efe18">
         <source>Upload dataset from your computer</source>
-        <target>Carregar conjunto de dados do seu computador</target>
+        <target>Téléchargez un ensemble de données depuis votre ordinateur</target>
       </trans-unit>
       <trans-unit id="saa2fc8f012369fa9">
         <source>Save dataset to your computer</source>
-        <target>Salvar conjunto de dados no seu computador</target>
+        <target>Enregistrez l'ensemble de données sur votre ordinateur</target>
       </trans-unit>
       <trans-unit id="s30e35f136e8c35a2">
         <source>Save model to your computer</source>
-        <target>Salvar modelo no seu computador</target>
+        <target>Enregistrez le modèle sur votre ordinateur</target>
       </trans-unit>
       <trans-unit id="s01a06d93f923852d">
         <source>Model name</source>
-        <target>Nome do modelo</target>
+        <target>Nom du modèle</target>
       </trans-unit>
       <trans-unit id="s7aa45560f567b050">
         <source>Learn LML</source>
-        <target>Aprenda LML</target>
+        <target>Apprendre LML</target>
       </trans-unit>
       <trans-unit id="s5eedf01beec54734">
         <source>Tutorials</source>
-        <target>Tutoriais</target>
+        <target>Tutoriels</target>
       </trans-unit>
       <trans-unit id="s3174fde5275589a0">
         <source>LearningML Manual</source>
-        <target>Manual LearningML</target>
+        <target>Manuel LearningML</target>
+      </trans-unit>
+      <trans-unit id="s21b06c38fc4164db">
+        <source>Advanced</source>
+        <target>Avancé</target>
       </trans-unit>
       <trans-unit id="s0487f33d9ddaabde">
         <source>About</source>
-        <target>Sobre</target>
+        <target>À propos</target>
       </trans-unit>
       <trans-unit id="sffcc465055a84a01">
         <source>Text recognition</source>
-        <target>Reconhecimento de texto</target>
+        <target>Reconnaissance de texte</target>
       </trans-unit>
       <trans-unit id="s50f886add783ff02">
         <source>Teach the computer to recognize text</source>
-        <target>Ensine o computador a reconhecer texto</target>
+        <target>Apprenez à l'ordinateur à reconnaître le texte</target>
       </trans-unit>
       <trans-unit id="s9edd996e35665cd5">
         <source>Image recognition</source>
-        <target>Reconhecimento de imagem</target>
+        <target>Reconnaissance d'image</target>
       </trans-unit>
       <trans-unit id="s4290eb5362fee3cf">
         <source>Teach the computer to recognize images</source>
-        <target>Ensine o computador a reconhecer imagens</target>
+        <target>Apprenez à l'ordinateur à reconnaître des images</target>
       </trans-unit>
       <trans-unit id="s1ec86aed43519f5f">
         <source>Number recognition</source>
-        <target>Reconhecimento de números</target>
+        <target>Reconnaissance de nombres</target>
       </trans-unit>
       <trans-unit id="s53525dd5bbd77b5d">
         <source>Teach the computer to recognize number sets</source>
-        <target>Ensine o computador a reconhecer conjuntos de números</target>
+        <target>Apprenez à l'ordinateur à reconnaître des ensembles de nombres</target>
       </trans-unit>
       <trans-unit id="s268ecd1cef45a9a8">
         <source>Are you sure?</source>
-        <target>Você tem certeza?</target>
+        <target>Êtes-vous sûr ?</target>
       </trans-unit>
       <trans-unit id="s9be39b2034bf6444">
         <source>Invalid entry</source>
-        <target>Entrada inválida</target>
+        <target>Entrée invalide</target>
       </trans-unit>
       <trans-unit id="sec8318be7ab17bce">
         <source>Surely you want to delete this item?</source>
-        <target>Você realmente deseja deletar este item?</target>
+        <target>Êtes-vous sûr de vouloir supprimer cet élément ?</target>
       </trans-unit>
       <trans-unit id="sc980050b0fd2affc">
         <source>Can't init camera. Are you using it in another application?</source>
-        <target>Não é possível iniciar a câmera. Você está usando-a em outro aplicativo?</target>
+        <target>Impossible d'initialiser la caméra. L'utilisez-vous dans une autre application ?</target>
+      </trans-unit>
+      <trans-unit id="sf9aee319a006c9b4">
+        <source>Add</source>
+        <target>Ajouter</target>
+      </trans-unit>
+      <trans-unit id="s4f20edb48a6287c9">
+        <source>Load</source>
+        <target>Charger</target>
       </trans-unit>
       <trans-unit id="s96668830629e0dfc">
         <source>Upload</source>
-        <target>Carregar</target>
+        <target>Téléverser</target>
       </trans-unit>
       <trans-unit id="s54d1b2a64667e32e">
         <source>Camera</source>
-        <target>Câmera</target>
+        <target>Caméra</target>
       </trans-unit>
       <trans-unit id="s716a6324e3fe9eb5">
         <source>Shot</source>
-        <target>Captura</target>
+        <target>Prendre une photo</target>
       </trans-unit>
       <trans-unit id="s5e8250fb85d64c23">
         <source>Close</source>
-        <target>Fechar</target>
+        <target>Fermer</target>
       </trans-unit>
       <trans-unit id="s6ab1e861a730571c">
         <source>Add one or more text examples</source>
-        <target>Adicionar um ou mais exemplos de texto</target>
+        <target>Ajoutez un ou plusieurs exemples de texte</target>
       </trans-unit>
       <trans-unit id="s5c6297900f715bf7">
         <source>Separate each text by a line break</source>
-        <target>Separe cada texto por uma quebra de linha</target>
+        <target>Séparez chaque texte par un saut de ligne</target>
       </trans-unit>
       <trans-unit id="s8c2ea16485d05e43">
         <source>Edit text examples</source>
-        <target>Editar exemplos de texto</target>
+        <target>Modifier des exemples de texte</target>
       </trans-unit>
       <trans-unit id="sef5b5389656119b2">
         <source>Add text examples</source>
-        <target>Adicionar exemplos de texto</target>
+        <target>Ajouter des exemples de texte</target>
       </trans-unit>
       <trans-unit id="s3be5fa04eb068cc8">
         <source>first I need some example texts</source>
-        <target>Primeiro eu preciso de alguns textos de exemplo</target>
+        <target>J'ai d'abord besoin d'exemples de texte</target>
       </trans-unit>
       <trans-unit id="s27b7afac1779fd0a">
         <source>First I need some sample images</source>
-        <target>Primeiro eu preciso de algumas imagens de exemplo</target>
+        <target>J'ai d'abord besoin d'images d'exemple</target>
       </trans-unit>
       <trans-unit id="sf99b9ce15b8600b8">
         <source>first I need some example vectors</source>
-        <target>Primeiro eu preciso de alguns vetores de exemplo</target>
+        <target>J'ai d'abord besoin d'exemples de vecteurs</target>
       </trans-unit>
       <trans-unit id="se65e4e6f3696e997">
         <source>Training</source>
-        <target>Treinamento</target>
+        <target>Entraînement</target>
       </trans-unit>
       <trans-unit id="s452d5a1de00e43cc">
         <source>New class name</source>
-        <target>Novo nome de classe</target>
+        <target>Nouveau nom de classe</target>
       </trans-unit>
       <trans-unit id="scab7db6101037bce">
         <source>Add new class</source>
-        <target>Adicionar nova classe</target>
+        <target>Ajouter une nouvelle classe</target>
       </trans-unit>
       <trans-unit id="s5a02d7481a8a828a">
         <source>Now it's time to learn to classify text</source>
-        <target>Agora é hora de aprender a classificar texto</target>
+        <target>Il est temps d'apprendre à classer le texte</target>
       </trans-unit>
       <trans-unit id="sf20e0069f14e0ea7">
         <source>Now it's time to learn to classify images</source>
-        <target>Agora é hora de aprender a classificar imagens</target>
+        <target>Il est temps d'apprendre à classer les images</target>
       </trans-unit>
       <trans-unit id="s84eab707baaffbc5">
         <source>Now it's time to learn to classify numbers</source>
-        <target>Agora é hora de aprender a classificar números</target>
+        <target>Il est temps d'apprendre à classer les nombres</target>
       </trans-unit>
       <trans-unit id="s669ee2b6bfeaa952">
         <source>Learn to recognize texts</source>
-        <target>Aprender a reconhecer textos</target>
+        <target>Apprendre à reconnaître les textes</target>
       </trans-unit>
       <trans-unit id="s00af465b478e19c8">
         <source>Learn to recognize images</source>
-        <target>Aprender a reconhecer imagens</target>
+        <target>Apprendre à reconnaître les images</target>
       </trans-unit>
       <trans-unit id="s3ae993f7db1ae780">
         <source>Learn to recognize numbers</source>
-        <target>Aprender a reconhecer números</target>
+        <target>Apprendre à reconnaître les nombres</target>
       </trans-unit>
       <trans-unit id="s588f21cd1a8337d9">
         <source>There are not enough classes to learn. Two classes are needed to learn</source>
-        <target>Não há classes suficientes para aprender. São necessárias duas classes para aprender</target>
+        <target>Il n'y a pas assez de classes pour apprendre. Deux classes sont nécessaires pour apprendre</target>
       </trans-unit>
       <trans-unit id="s0d8e6f00eccca681">
         <source>There are not enough data to learn. Add more example,please</source>
-        <target>Não há dados suficientes para aprender. Adicione mais exemplos, por favor</target>
+        <target>Il n'y a pas assez de données pour apprendre. Ajoutez plus d'exemples, s'il vous plaît</target>
       </trans-unit>
       <trans-unit id="se5765125577b1d4f">
         <source>Epochs:</source>
-        <target>Épocas:</target>
+        <target>Époques :</target>
       </trans-unit>
       <trans-unit id="sa77b3aa47147e6de">
         <source>Batch size:</source>
-        <target>Tamanho do lote:</target>
+        <target>Taille de lot :</target>
       </trans-unit>
       <trans-unit id="se67b12599b3a987b">
         <source>Learning rate:</source>
-        <target>Taxa de aprendizado:</target>
+        <target>Taux d'apprentissage :</target>
       </trans-unit>
       <trans-unit id="s82d4142cb905a527">
         <source>Number of neighbours:</source>
-        <target>Número de vizinhos:</target>
+        <target>Nombre de voisins :</target>
+      </trans-unit>
+      <trans-unit id="sfbfac884c01f1002">
+        <source>Did you know that...?</source>
+        <target>Saviez-vous que... ?</target>
+      </trans-unit>
+      <trans-unit id="scc4d8ca49d0bb4bf">
+        <source>Great! The model has been trained!</source>
+        <target>Génial ! Le modèle a été entraîné !</target>
+      </trans-unit>
+      <trans-unit id="sba58a534ec22cd97">
+        <source>Running ML algorithm to build the model.</source>
+        <target>Exécution de l'algorithme ML pour construire le modèle.</target>
+      </trans-unit>
+      <trans-unit id="h29842057cedc0d1b">
+        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconds to build.</source>
+        <target>Le modèle a pris <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> secondes pour être construit.</target>
+      </trans-unit>
+      <trans-unit id="s1225fec6649f41fa">
+        <source>Now you can test it and use it in a Scratch program.</source>
+        <target>Vous pouvez maintenant le tester et l'utiliser dans un programme Scratch.</target>
       </trans-unit>
       <trans-unit id="s696c4e8dab058caa">
         <source>Algorithm</source>
-        <target>Algoritmo</target>
+        <target>Algorithme</target>
       </trans-unit>
       <trans-unit id="s1b823424b5e88dda">
         <source>Choose Machine Learning Algorithm:</source>
-        <target>Escolha o Algoritmo de Aprendizado de Máquina:</target>
+        <target>Choisissez l'algorithme d'apprentissage automatique :</target>
       </trans-unit>
       <trans-unit id="s5dd453fb10cb3b50">
         <source>Neural network</source>
-        <target>Rede neural</target>
+        <target>Réseau neuronal</target>
       </trans-unit>
       <trans-unit id="s50b37719d16d0d06">
         <source>KNN</source>
@@ -208,104 +240,73 @@
       </trans-unit>
       <trans-unit id="sd61653ebe961b17a">
         <source>Validation</source>
-        <target>Validação</target>
+        <target>Validation</target>
       </trans-unit>
       <trans-unit id="s8f7b311d5a915ed5">
         <source>Percentage of samples for validation:</source>
-        <target>Porcentagem de amostras para validação:</target>
+        <target>Pourcentage d'échantillons pour la validation :</target>
       </trans-unit>
       <trans-unit id="s19b10d1a8593ca55">
         <source>Learn</source>
-        <target>Aprender</target>
+        <target>Apprendre</target>
       </trans-unit>
       <trans-unit id="sc394009d3f5832bd">
         <source>You must generate a model before trying to classify</source>
-        <target>Você deve gerar um modelo antes de tentar classificar</target>
+        <target>Vous devez générer un modèle avant d'essayer de classer</target>
       </trans-unit>
       <trans-unit id="s56adfeda689eab04">
         <source>This entry is not valid</source>
-        <target>Esta entrada não é válida</target>
+        <target>Cette entrée n'est pas valide</target>
       </trans-unit>
       <trans-unit id="s2b9140bc2d0fd104">
         <source>Introduces new terms and checks they are correctly classified </source>
-        <target>Introduz novos termos e verifica se estão corretamente classificados</target>
+        <target>Introduisez de nouveaux termes et vérifiez qu'ils sont correctement classés</target>
       </trans-unit>
       <trans-unit id="s42cbd8dca939a9c7">
         <source>Check</source>
-        <target>Verificar</target>
+        <target>Vérifier</target>
       </trans-unit>
       <trans-unit id="s8c166bfc4bac0e4d">
         <source>Introduces new images and checks they are correctly classified</source>
-        <target>Introduz novas imagens e verifica se estão corretamente classificadas</target>
+        <target>Introduisez de nouvelles images et vérifiez qu'elles sont correctement classées</target>
       </trans-unit>
       <trans-unit id="s59b292d704228316">
         <source>Upload images</source>
-        <target>Carregar imagens</target>
+        <target>Téléverser des images</target>
       </trans-unit>
       <trans-unit id="sd0c6f858a4096211">
         <source>Take from camera</source>
-        <target>Pegar da câmera</target>
+        <target>Prendre depuis la caméra</target>
       </trans-unit>
       <trans-unit id="s8dafe375ca619528">
         <source>Take picture</source>
-        <target>Tirar foto</target>
+        <target>Prendre une photo</target>
       </trans-unit>
       <trans-unit id="s2ff0d4f2a60645f2">
         <source>Close camera</source>
-        <target>Fechar câmera</target>
+        <target>Fermer la caméra</target>
       </trans-unit>
       <trans-unit id="s02377725a94d0f9d">
         <source>Introduces new numbers and checks they are correctly classified </source>
-        <target>Introduz novos números e verifica se estão corretamente classificados</target>
+        <target>Introduisez de nouveaux nombres et vérifiez qu'ils sont correctement classés</target>
       </trans-unit>
       <trans-unit id="s6d13e119e22d304e">
         <source>Try</source>
-        <target>Tentar</target>
+        <target>Essayer</target>
       </trans-unit>
       <trans-unit id="s73bb022c2937ec69">
         <source>Loading ...</source>
-        <target>Carregando...</target>
-      </trans-unit>
-      <trans-unit id="sf9aee319a006c9b4">
-        <source>Add</source>
-        <target>Adicionar</target>
-      </trans-unit>
-      <trans-unit id="s4f20edb48a6287c9">
-        <source>Load</source>
-        <target>Carregar</target>
-      </trans-unit>
-      <trans-unit id="s21b06c38fc4164db">
-        <source>Advanced</source>
-        <target>Avançado</target>
-      </trans-unit>
-      <trans-unit id="sfbfac884c01f1002">
-        <source>Did you know that...?</source>
-        <target>Sabia que...?</target>
-      </trans-unit>
-      <trans-unit id="scc4d8ca49d0bb4bf">
-        <source>Great! The model has been trained!</source>
-        <target>Ótimo! O modelo foi treinado!</target>
-      </trans-unit>
-      <trans-unit id="sba58a534ec22cd97">
-        <source>Running ML algorithm to build the model.</source>
-        <target>Executando o algoritmo de ML para construir o modelo.</target>
-      </trans-unit>
-      <trans-unit id="h29842057cedc0d1b">
-        <source>The model took <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> seconds to build.</source>
-        <target>O modelo levou <x id="0" equiv-text="&lt;b&gt;${this.learningTime}&lt;/b&gt;"/> segundos para ser construído.</target>
-      </trans-unit>
-      <trans-unit id="s1225fec6649f41fa">
-        <source>Now you can test it and use it in a Scratch program.</source>
-        <target>Agora você pode testá-lo e usá-lo em um programa Scratch.</target>
+        <target>Chargement ...</target>
       </trans-unit>
       <trans-unit id="sb79fa7776c53543b">
         <source>Our Premium Sponsors</source>
-        <target>Os nossos patrocinadores Premium</target>
+        <target>Nos sponsors Premium</target>
       </trans-unit>
       <trans-unit id="s23afde73cbe360a2">
         <source>Click here if you like your logo to appear here</source>
-        <target>Clique aqui se quiser que o seu logotipo apareça aqui</target>
-      </trans-unit>         
+        <target>Cliquez ici si vous souhaitez que votre logo apparaisse ici</target>
+      </trans-unit>
+      
     </body>
   </file>
 </xliff>
