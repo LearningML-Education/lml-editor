@@ -266,6 +266,7 @@ export class DatasetManager extends LitElement {
   }
 
   async collectExampleInterval() {
+    console.log("collectExampleInterval");
     if (this.stopCollecting) {
       console.log('Proceso de recolección detenido');
       return;  // Salir de la función si stopCollecting es true
@@ -275,7 +276,10 @@ export class DatasetManager extends LitElement {
 
       // Agregar los datos resultantes al dataset
       if (this._datasetConsumer.value.get(this.labelName)) {
-        this._datasetConsumer.value.get(this.labelName).add(result.data);
+        this._datasetConsumer.value.get(this.labelName).add({
+          'rawAudio': result.rawAudio,
+          'spectrogram': result.spectrogram
+        });
       }
       // Actualizar el componente
       this.requestUpdate();
@@ -635,6 +639,7 @@ export class DatasetManager extends LitElement {
         ? Array.from(this._datasetConsumer.value.get(this.labelName)).map((b64sound, index) => {
 
           function play() {
+            console.log("PLAY");
             this.audioRecorder.playBase64Audio(b64sound);
           }
 
