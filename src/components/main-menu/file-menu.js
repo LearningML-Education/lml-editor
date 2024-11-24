@@ -98,7 +98,20 @@ export class FileMenu extends LitElement {
           }
           
           if(this._dataTypeConsumer.value.type == 'audio'){
-            d = new Float32Array(Object.values(d));
+            console.log("load audio");
+            let floatRawAudioData = new Float32Array(Object.values(d.rawAudio.data));
+            let floatSpectrogramData = new Float32Array(Object.values(d.spectrogram.data));
+            d = {
+              rawAudio: {
+                data: floatRawAudioData,
+                sampleRateHz: d.rawAudio.sampleRateHz
+              },
+              spectrogram: {
+                data: floatSpectrogramData,
+                frameSize: d.spectrogram.frameSize
+              }
+            }
+            //d = new Float32Array(Object.values(d));
           }
           
           this._datasetConsumer.value.get(key).add(d);

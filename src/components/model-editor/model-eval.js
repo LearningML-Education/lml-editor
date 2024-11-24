@@ -186,7 +186,7 @@ export class ModelEval extends LitElement {
 
     collectExample("test").then(result => {
       let encode = this._encodingConsumer.value.audio;
-      encode([result.data]).then(features => {
+      encode([result]).then(features => {
         return this._modelConsumer.value.classify(features);
       }).then(results => {
         console.log(results);
