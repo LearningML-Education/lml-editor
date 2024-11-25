@@ -16,7 +16,7 @@
     "blueimp-md5": "^2.19.0",
     "file-saver-es": "^2.0.5",
     "lit": "^3.0.2",
-    "lml-algorithms": "^1.0.32-speech-commands",
+    "lml-algorithms": "^1.0.33-speech-commands",
     "plotly.js-dist-min": "^2.30.1",
     "dotenv": "^16.4.5"
   },
