@@ -3,7 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { dataTypeContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { collectExample } from 'lml-algorithms';
+import { collectExample, playRawAudio } from 'lml-algorithms';
 
 
 export class DatasetManager extends LitElement {
@@ -636,11 +636,11 @@ export class DatasetManager extends LitElement {
         <div class="buttons" id="sounds_${this.labelName}">
          
         ${this._datasetConsumer.value.get(this.labelName)
-        ? Array.from(this._datasetConsumer.value.get(this.labelName)).map((b64sound, index) => {
+        ? Array.from(this._datasetConsumer.value.get(this.labelName)).map((soundData, index) => {
 
           function play() {
             console.log("PLAY");
-            this.audioRecorder.playBase64Audio(b64sound);
+            playRawAudio(soundData.rawAudio);
           }
 
           function stop() {
