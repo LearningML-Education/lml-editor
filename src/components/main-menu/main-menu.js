@@ -43,8 +43,8 @@ export class MainMenu extends LitElement {
         const url = new URL(window.location.href);
         const locale = url.searchParams.get('locale');
 
-        let urlScratch = process.env.URL_SCRATCH +
-            "?url_mobilenet_models=";
+        let urlScratch = process.env.URL_SCRATCH;
+        
         if (locale != null) {
             urlScratch += '&locale=' + locale;
         }
