@@ -3,7 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { dataTypeContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { uploadImages } from './uploadImages.js';
+import { collectExample, playRawAudio } from 'lml-algorithms';
 
 
 export class DatasetManager extends LitElement {
@@ -29,6 +29,8 @@ export class DatasetManager extends LitElement {
     this.editText = false;
     this.addTextsWindowOpened = false;
     this.cameraOpened = false;
+    this.deletedSounds = 0;
+    this.stopCollecting = false;
     updateWhenLocaleChanges(this);
   }
 
@@ -182,7 +184,7 @@ export class DatasetManager extends LitElement {
     }
 
     const reader = new FileReader();
-  
+
     let that = this;
     reader.onload = function (e) {
       const textContent = e.target.result;
@@ -263,6 +265,50 @@ export class DatasetManager extends LitElement {
     }
   }
 
+  async collectExampleInterval() {
+    console.log("collectExampleInterval");
+    if (this.stopCollecting) {
+      console.log('Proceso de recolección detenido');
+      return;  // Salir de la función si stopCollecting es true
+    }
+    try {
+      const result = await collectExample(this.labelName);
+
+      // Agregar los datos resultantes al dataset
+      if (this._datasetConsumer.value.get(this.labelName)) {
+        this._datasetConsumer.value.get(this.labelName).add({
+          'rawAudio': result.rawAudio,
+          'spectrogram': result.spectrogram
+        });
+      }
+      // Actualizar el componente
+      this.requestUpdate();
+      console.log(this._datasetConsumer.value);
+      // Una vez que la promesa se resuelva, vuelve a llamar a la función
+      this.collectExampleInterval();
+    } catch (error) {
+      console.error('Error al ejecutar collectExample:', error);
+    }
+  }
+
+  collectAudioSample() {
+    const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
+    const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
+    recordButton.disabled = true;
+    stopButton.disabled = false;
+
+    this.stopCollecting = false;
+    this.collectExampleInterval();
+  }
+
+  stopRecording() {
+    this.stopCollecting = true;
+    const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
+    const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
+    recordButton.disabled = false;
+    stopButton.disabled = true;
+  }
+
   templateButtons(editorType) {
     switch (editorType) {
       case 'text':
@@ -271,6 +317,8 @@ export class DatasetManager extends LitElement {
         return this.templateImageButtons();
       case 'numerical':
         return this.templateNumberButtons();
+      case 'audio':
+        return this.templateAudioButtons();
     }
   }
 
@@ -282,6 +330,8 @@ export class DatasetManager extends LitElement {
         return this.templateImageData();
       case 'numerical':
         return this.templateNumberData();
+      case 'audio':
+        return this.templateAudioData();
     }
   }
 
@@ -397,6 +447,34 @@ export class DatasetManager extends LitElement {
             <i class="fa-solid fa-upload"></i>
             </span>
             <span>${msg('Load')}</span>
+          </button>
+        </p>
+      </div>
+    </div>
+
+    </div>
+    `;
+  }
+
+  templateAudioButtons() {
+    return html`    
+    </div>
+    <div class="panel-block is-justify-content-center">
+      <div class="field is-grouped">
+        <p class="control">
+          <button id="recordButton_${this.labelName}" @click="${this.collectAudioSample}" class="button is-primary is-fullwidth">
+            <span class="icon">
+              <i class="fa-solid fa-microphone"></i>
+            </span>
+            <span>${msg('Record')}</span>
+          </button>
+        </p>
+        <p class="control">
+          <button id="stopButton_${this.labelName}" @click="${this.stopRecording}" disabled class="button  is-primary is-fullwidth">
+            <span class="icon">
+              <i class="fa-solid fa-circle-stop"></i>
+            </span>
+            <span>${msg('Stop')}</span>
           </button>
         </p>
       </div>
@@ -547,6 +625,48 @@ export class DatasetManager extends LitElement {
           </nav>          
         </div>
         <button @click=${this.closeAddTextWindow} class="modal-close is-large" aria-label="close"></button>
+      </div>
+    `;
+  }
+
+  templateAudioData() {
+
+    return html`
+      <div class="container itemdata p-3">    
+        <div class="buttons" id="sounds_${this.labelName}">
+         
+        ${this._datasetConsumer.value.get(this.labelName)
+        ? Array.from(this._datasetConsumer.value.get(this.labelName)).map((soundData, index) => {
+
+          function play() {
+            console.log("PLAY");
+            playRawAudio(soundData.rawAudio);
+          }
+
+          function stop() {
+            this._datasetConsumer.value.get(this.labelName).delete(b64sound);
+            this.requestUpdate();
+          }
+
+          return html`
+            <div class="audio-container">
+              <img src="public/images/sound-70.png" class="sound-image">
+              <div class="sample-text">sample-${index}</div>
+              <button @click=${play} class="button is-primary play-button">
+                <i class="fa-solid fa-play" aria-hidden="true"></i>
+              </button>
+              <button @click=${stop} class="button is-danger delete-button">
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+              `
+        }
+
+        )
+        : html``
+      }
+         
+        </div>
       </div>
     `;
   }

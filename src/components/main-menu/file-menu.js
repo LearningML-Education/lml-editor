@@ -89,10 +89,29 @@ export class FileMenu extends LitElement {
         for (let d of data) {
           if (!this._datasetConsumer.value.has(key)){
             this._datasetConsumer.value.set(key, new Set());
-          }                   
+          }  
+          if(d == "") continue;
+
           if (this._dataTypeConsumer.value.type == 'numerical') {
               d = this.truncateNumbers(d);
               this._dataTypeConsumer.value.dimension = d.split(",").length;
+          }
+          
+          if(this._dataTypeConsumer.value.type == 'audio'){
+            console.log("load audio");
+            let floatRawAudioData = new Float32Array(Object.values(d.rawAudio.data));
+            let floatSpectrogramData = new Float32Array(Object.values(d.spectrogram.data));
+            d = {
+              rawAudio: {
+                data: floatRawAudioData,
+                sampleRateHz: d.rawAudio.sampleRateHz
+              },
+              spectrogram: {
+                data: floatSpectrogramData,
+                frameSize: d.spectrogram.frameSize
+              }
+            }
+            //d = new Float32Array(Object.values(d));
           }
           
           this._datasetConsumer.value.get(key).add(d);

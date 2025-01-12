@@ -10,9 +10,31 @@ export class ModelSelector extends LitElement {
     updateWhenLocaleChanges(this);
   }
 
-  render() {
+  checkBrowser() {
+    const userAgent = navigator.userAgent;
+    let browser;
+    if (userAgent.indexOf("Chrome") > -1) {
+      browser = "Google Chrome";
+    } else if (userAgent.indexOf("Firefox") > -1) {
+      browser = "Mozilla Firefox";
+    } else if (userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") === -1) {
+      browser = "Apple Safari";
+    } else if (userAgent.indexOf("Edg") > -1) {
+      browser = "Microsoft Edge";
+    } else if (userAgent.indexOf("Trident") > -1) {
+      browser = "Microsoft Internet Explorer";
+    } else {
+      browser = "Navegador desconocido";
+    }
+    console.log(browser);
+    return browser;
+  }
 
-    return html`
+render() {
+
+  let  browser = this.checkBrowser();
+
+  return html`
 <div class="columns">
   <div class="column">
     <model-card 
@@ -38,13 +60,27 @@ export class ModelSelector extends LitElement {
       type="numerical">
     </model-card>
   </div>
+  ${true/*(browser == "Google Chrome")*/
+    ? html`
+    <div class="column">
+    <model-card 
+      title="${msg('Sound recognition')}"
+      description="${msg('Teach the computer to recognize sounds')}"
+      image="dalle-audio-min.png"
+      type="audio">
+    </model-card>
+  </div>
+    `
+    : html``
+  }
+  
 </div>
     `
-  }
+}
 
-  createRenderRoot() {
-    return this;
-  }
+createRenderRoot() {
+  return this;
+}
 }
 
 window.customElements.define('model-selector', ModelSelector);

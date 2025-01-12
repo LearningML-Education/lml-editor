@@ -306,6 +306,42 @@
         <source>Click here if you like your logo to appear here</source>
         <target>Fes clic aquí si vols que el teu logotip aparegui aquí</target>
       </trans-unit>  
+      <trans-unit id="sfecd4e80b9d1155b">
+        <source>Sound recognition</source>
+        <target>Reconeixement de sons</target>
+      </trans-unit>
+      <trans-unit id="s9ecedef91b8ea781">
+        <source>Teach the computer to recognize sounds</source>
+        <target>Ensenya l'ordinador a reconèixer sons</target>
+      </trans-unit>
+      <trans-unit id="s8a4ff2bd9c13498c">
+        <source>Record</source>
+        <target>Grava</target>
+      </trans-unit>
+      <trans-unit id="sd9ad53251f2330a5">
+        <source>Stop</source>
+        <target>Atura</target>
+      </trans-unit>
+      <trans-unit id="sed6692721bd9f0ee">
+        <source>first I need some sound samples</source>
+        <target>Primer necessito algunes mostres de so</target>
+      </trans-unit>
+      <trans-unit id="s51714d9459998099">
+        <source>Now it's time to learn to classify sounds</source>
+        <target>Ara és el moment d'aprendre a classificar sons</target>
+      </trans-unit>
+      <trans-unit id="s92091608a61ce3b2">
+        <source>Learn to recognize sounds</source>
+        <target>Aprèn a reconèixer sons</target>
+      </trans-unit>
+      <trans-unit id="se6434769e4c3a42d">
+        <source>Introduce new sound and checks they are correctly classified</source>
+        <target>Introdueix nous sons i comprova que es classifiquen correctament</target>
+      </trans-unit>
+      
+
+
+
     </body>
   </file>
 </xliff>

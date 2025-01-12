@@ -17,10 +17,10 @@ import './init-message/init-message';
 import './model-editor/model-editor';
 import './loading-message/loading-message';
 import {
-    useEncoder,
     bowEncoder,
     getMobilenetEncoder,
     numericalEncoder,
+    audioEncoder,
     LMLSequential,
     KNN
 } from 'lml-algorithms';
@@ -83,13 +83,14 @@ class LMLApp extends LitElement {
 
         setTimeout(() => {
             this.loading = false;
-        }, 1000)
+        }, 0)
 
         let mobilenetEncoder = getMobilenetEncoder("");
         this.encodingProvider.setValue({
             text: bowEncoder,
             image: mobilenetEncoder,
-            numerical: numericalEncoder
+            numerical: numericalEncoder,
+            audio: audioEncoder            
         });
 
     }
