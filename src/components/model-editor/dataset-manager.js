@@ -265,6 +265,9 @@ export class DatasetManager extends LitElement {
     }
   }
 
+  ////
+  // Funciones para manejar los datasets de audio
+  //
   async collectExampleInterval() {
     console.log("collectExampleInterval");
     if (this.stopCollecting) {
@@ -643,8 +646,8 @@ export class DatasetManager extends LitElement {
             playRawAudio(soundData.rawAudio);
           }
 
-          function stop() {
-            this._datasetConsumer.value.get(this.labelName).delete(b64sound);
+          function remove() {
+            this._datasetConsumer.value.get(this.labelName).delete(soundData);
             this.requestUpdate();
           }
 
@@ -655,7 +658,7 @@ export class DatasetManager extends LitElement {
               <button @click=${play} class="button is-primary play-button">
                 <i class="fa-solid fa-play" aria-hidden="true"></i>
               </button>
-              <button @click=${stop} class="button is-danger delete-button">
+              <button @click=${remove} class="button is-danger delete-button">
                 <i class="fa-solid fa-trash" aria-hidden="true"></i>
               </button>
             </div>
