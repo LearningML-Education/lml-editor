@@ -49,7 +49,6 @@ export class MainMenu extends LitElement {
             urlScratch += '?locale=' + locale;
         }
         
-        console.log("KUKUKU");
         if (!this.scratchWindow || this.scratchWindow.closed) {            
             this.scratchWindow = window.open(urlScratch, 'scratch');           
         } else {
