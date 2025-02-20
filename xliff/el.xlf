@@ -307,6 +307,38 @@
         <source>Click here if you like your logo to appear here</source>
         <target>Κάντε κλικ εδώ αν θέλετε το λογότυπό σας να εμφανίζεται εδώ</target>
       </trans-unit>
+      <trans-unit id="sfecd4e80b9d1155b">
+        <source>Sound recognition</source>
+        <target>Αναγνώριση ήχου</target>
+      </trans-unit>
+      <trans-unit id="s9ecedef91b8ea781">
+        <source>Teach the computer to recognize sounds</source>
+        <target>Διδάξτε στον υπολογιστή να αναγνωρίζει ήχους</target>
+      </trans-unit>
+      <trans-unit id="s8a4ff2bd9c13498c">
+        <source>Record</source>
+        <target>Εγγραφή</target>
+      </trans-unit>
+      <trans-unit id="sd9ad53251f2330a5">
+        <source>Stop</source>
+        <target>Διακοπή</target>
+      </trans-unit>
+      <trans-unit id="sed6692721bd9f0ee">
+        <source>first I need some sound samples</source>
+        <target>Πρώτα χρειάζομαι μερικά δείγματα ήχου</target>
+      </trans-unit>
+      <trans-unit id="s51714d9459998099">
+        <source>Now it's time to learn to classify sounds</source>
+        <target>Τώρα είναι ώρα να μάθετε να ταξινομείτε τους ήχους</target>
+      </trans-unit>
+      <trans-unit id="s92091608a61ce3b2">
+        <source>Learn to recognize sounds</source>
+        <target>Μάθετε να αναγνωρίζετε ήχους</target>
+      </trans-unit>
+      <trans-unit id="se6434769e4c3a42d">
+        <source>Introduce new sound and checks they are correctly classified</source>
+        <target>Εισαγάγετε νέους ήχους και ελέγξτε εάν ταξινομούνται σωστά</target>
+      </trans-unit>
       
                 
     </body>
