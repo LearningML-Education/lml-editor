@@ -653,7 +653,7 @@ export class DatasetManager extends LitElement {
 
           return html`
             <div class="audio-container">
-              <img src="public/images/sound-70.png" class="sound-image">
+              <img src="/images/sound-70.png" class="sound-image">
               <div class="sample-text">sample-${index}</div>
               <button @click=${play} class="button is-primary play-button">
                 <i class="fa-solid fa-play" aria-hidden="true"></i>
