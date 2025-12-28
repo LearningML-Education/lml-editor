@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { dataTypeContext } from '../../contexts.js';
+import { assetUrl } from '../../utils/assetPaths.js';
 
 
 export class ModelCard extends LitElement {
@@ -48,7 +49,7 @@ export class ModelCard extends LitElement {
   <div class="card">
     <div class="card-image">
       <figure @click=${this.loadEditor} class="image is-4by3 is-clickable">
-        <img src="/images/${this.image}" alt="Placeholder image">
+        <img src="${assetUrl(`images/${this.image}`)}" alt="Placeholder image">
       </figure>
     </div>
     <div class="card-content">

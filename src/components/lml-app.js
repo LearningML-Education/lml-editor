@@ -25,6 +25,8 @@ import {
     KNN
 } from 'lml-algorithms';
 
+window.__lmlV2BundleLoaded = true;
+
 
 class LMLApp extends LitElement {
 
@@ -85,7 +87,8 @@ class LMLApp extends LitElement {
             this.loading = false;
         }, 0)
 
-        let mobilenetEncoder = getMobilenetEncoder("");
+        const baseUrl = import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
+        let mobilenetEncoder = getMobilenetEncoder(baseUrl);
         this.encodingProvider.setValue({
             text: bowEncoder,
             image: mobilenetEncoder,
@@ -211,3 +214,4 @@ class LMLApp extends LitElement {
 
 }
 customElements.define('lml-app', LMLApp);
+window.__lmlV2Defined = true;

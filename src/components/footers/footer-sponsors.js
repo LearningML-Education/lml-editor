@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
-import {msg,  updateWhenLocaleChanges } from '@lit/localize';
+import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import { assetUrl } from '../../utils/assetPaths.js';
 
 export class FooterSponsors extends LitElement {
 
@@ -24,7 +25,7 @@ export class FooterSponsors extends LitElement {
           <div class="column is-3 has-text-centered">
             <a href="https://www.aprendemaniadocente.com" target="_blank">
               <figure class="image">
-                <img src="/images/logo-aprendemania.svg" alt="Logo Aprendemanía docente">
+                <img src="${assetUrl('images/logo-aprendemania.svg')}" alt="Logo Aprendemanía docente">
               </figure>
               <p class="has-text-warning">Patrocinador Oro</p>
             </a>

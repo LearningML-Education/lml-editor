@@ -4,6 +4,7 @@ import { ContextConsumer } from '@lit/context';
 import { dataTypeContext, datasetContext } from '../../contexts.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { collectExample, playRawAudio } from 'lml-algorithms';
+import { assetUrl } from '../../utils/assetPaths.js';
 
 
 export class DatasetManager extends LitElement {
@@ -653,7 +654,7 @@ export class DatasetManager extends LitElement {
 
           return html`
             <div class="audio-container">
-              <img src="/images/sound-70.png" class="sound-image">
+              <img src="${assetUrl('images/sound-70.png')}" class="sound-image">
               <div class="sample-text">sample-${index}</div>
               <button @click=${play} class="button is-primary play-button">
                 <i class="fa-solid fa-play" aria-hidden="true"></i>
