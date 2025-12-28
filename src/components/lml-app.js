@@ -41,7 +41,7 @@ class LMLApp extends LitElement {
         console.log(process.env);
         setLocaleFromUrl();
 
-        localStorage.clear();
+        localStorage.removeItem('lmlModel');
 
         this.loading = true;
         this.page = 'home';
