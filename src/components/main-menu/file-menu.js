@@ -44,7 +44,8 @@ export class FileMenu extends LitElement {
   }
 
   saveModel(e){    
-    if(this._modelConsumer.value.model == null){
+    const model = this._modelConsumer.value;
+    if(!model?.model && !model?.isTrained){
       alert(msg("You have to build a model first"));
       return;
     }

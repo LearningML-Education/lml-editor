@@ -2,7 +2,7 @@ import { ContextConsumer } from '@lit/context';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { confusionMatrix, buildVocabulary } from 'lml-algorithms';
+import { confusionMatrix, buildVocabulary } from '../../services/lml-algorithms-bridge.js';
 import Plotly from 'plotly.js-dist-min';
 import {
   dataTypeContext,

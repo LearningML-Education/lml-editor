@@ -23,7 +23,7 @@ import {
     audioEncoder,
     LMLSequential,
     KNN
-} from 'lml-algorithms';
+} from '../services/lml-algorithms-bridge.js';
 
 window.__lmlV2BundleLoaded = true;
 
