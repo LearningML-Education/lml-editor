@@ -1,4 +1,5 @@
 import { LitElement, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { ContextProvider } from '@lit/context';
 import {
     dataTypeContext,
@@ -32,7 +33,8 @@ class LMLApp extends LitElement {
 
     static properties = {
         loading: { type: Boolean },
-        page: { type: String }
+        page: { type: String },
+        apiErrorMessage: { type: String }
     };
 
     constructor() {
@@ -45,6 +47,7 @@ class LMLApp extends LitElement {
 
         this.loading = true;
         this.page = 'home';
+        this.apiErrorMessage = '';
         this.advancedMode = false;
         //this.page = 'model-editor';
         this.dataTypeProvider = new ContextProvider(this, { context: dataTypeContext });
@@ -101,6 +104,17 @@ class LMLApp extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
+        this.handleApiError = (event) => {
+            const message = event?.detail?.message;
+            if (typeof message === 'string' && message.trim()) {
+                this.apiErrorMessage = message.trim();
+            } else {
+                this.apiErrorMessage = 'No podemos usar los algoritmos en este momento.';
+            }
+            this.requestUpdate();
+        };
+        window.addEventListener('lml-api-error', this.handleApiError);
+
         this.addEventListener("load-model-editor", e => {
             this.page = 'model-editor';
         });
@@ -120,6 +134,32 @@ class LMLApp extends LitElement {
         });
     }
 
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        if (this.handleApiError) {
+            window.removeEventListener('lml-api-error', this.handleApiError);
+        }
+    }
+
+    apiErrorModalTemplate() {
+        return html`
+        <div class=${classMap({ "modal": true, "is-active": Boolean(this.apiErrorMessage) })}>
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">No se pueden usar los algoritmos</p>
+                    <button @click=${() => { this.apiErrorMessage = ''; }} class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p>${this.apiErrorMessage}</p>
+                </section>
+                <footer class="modal-card-foot">
+                    <button @click=${() => { this.apiErrorMessage = ''; }} class="button is-primary">Cerrar</button>
+                </footer>
+            </div>
+        </div>
+        `;
+    }
     loadingTemplate() {
         return html`
         <div class="container is-fluid mb-2">
@@ -198,6 +238,10 @@ class LMLApp extends LitElement {
                     ? this.editorTemplate()
                     : html``
                 }  
+            ${this.apiErrorMessage
+                    ? this.apiErrorModalTemplate()
+                    : html``
+                }
                     
             ${process.env.SHOW_FOOTER_SPONSORS
                     ? this.footerSponsorsTemplate()

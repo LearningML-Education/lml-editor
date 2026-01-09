@@ -21,22 +21,70 @@ const getStudentHeaders = () => {
   };
 };
 
+const notifyApiError = (message) => {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(
+    new CustomEvent('lml-api-error', {
+      detail: { message }
+    })
+  );
+};
+
+const parseErrorPayload = (text) => {
+  if (!text) return { message: '' };
+  try {
+    const parsed = JSON.parse(text);
+    if (parsed && typeof parsed.error === 'string') {
+      return { message: parsed.error };
+    }
+  } catch {}
+  return { message: text };
+};
+
+const getUserMessageForStatus = (status, rawMessage) => {
+  if (status === 429) {
+    return 'Ahora mismo todos los accesos de estudiantes estan ocupados. Espera un momento y vuelve a intentarlo.';
+  }
+  if (status === 503) {
+    return 'El servicio de algoritmos no esta disponible en este momento. Intentalo mas tarde.';
+  }
+  if (status === 401 || status === 403) {
+    return 'Tu acceso a los algoritmos no esta activo. Inicia sesion o revisa tu suscripcion.';
+  }
+  if (status >= 500) {
+    return 'Tenemos un problema temporal con los algoritmos. Intentalo de nuevo mas tarde.';
+  }
+  if (rawMessage) {
+    return 'No podemos usar los algoritmos ahora mismo. Intentalo de nuevo mas tarde.';
+  }
+  return 'No podemos usar los algoritmos porque no hay conexion. Revisa tu red e intentalo de nuevo.';
+};
+
 const requestJson = async (path, payload) => {
   const token = getToken();
   const studentHeaders = getStudentHeaders();
-  const response = await fetch(`${apiBase}${path}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(!token ? studentHeaders : {})
-    },
-    body: JSON.stringify(payload ?? {})
-  });
+  let response;
+  try {
+    response = await fetch(`${apiBase}${path}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(!token ? studentHeaders : {})
+      },
+      body: JSON.stringify(payload ?? {})
+    });
+  } catch (error) {
+    notifyApiError('No podemos conectar con los algoritmos. Revisa tu conexion e intentalo de nuevo.');
+    throw error;
+  }
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(text || `Request failed: ${response.status}`);
+    const { message } = parseErrorPayload(text);
+    const userMessage = getUserMessageForStatus(response.status, message);
+    notifyApiError(userMessage);
+    throw new Error(message || `Request failed: ${response.status}`);
   }
   return response.json();
 };
