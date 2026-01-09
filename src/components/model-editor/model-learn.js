@@ -245,6 +245,8 @@ export class ModelLearn extends LitElement {
         // Convertir la duración a un formato más legible (por ejemplo, en segundos)
         this.learningTime = (duration / 1000).toFixed(2);
         console.log(`Training completed in ${this.learningTime} seconds.`);
+        this.showModalLearn = false;
+        this.requestUpdate();
       }).catch(error => {
         console.error('Training failed', error);
         this.showModalLearn = false;
@@ -397,22 +399,14 @@ export class ModelLearn extends LitElement {
           
           ${this._modelConsumer.value.getAlgorithmName() == 'LMLSequential'
         ? html`
-              <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
-                ${this.learningPercentage}%
-              </progress> 
+              <div class="has-text-centered">
+                <img src="images/modern-times.gif" alt="Procesando modelo" />
+              </div>
               `
         : html``
       }    
           
           ${this.templatePill()}
-
-          ${this.modelHasBeenTrained
-        ? html`
-            <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
-            <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
-          `
-        : html``
-      }
         </section>        
       </div>
     </div>
@@ -452,6 +446,13 @@ export class ModelLearn extends LitElement {
               <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
             </button> 
           </div >  
+          ${this.modelHasBeenTrained
+        ? html`
+              <p class="mt-3">${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
+              <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+            `
+        : html``
+      }
         </div>
         <div id="learningHistory"></div>
       </div>
@@ -490,6 +491,13 @@ export class ModelLearn extends LitElement {
         <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
       </button> 
     </div >
+    ${this.modelHasBeenTrained
+        ? html`
+          <p class="mt-3">${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
+          <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+        `
+        : html``
+    }
 
     `;
   }
