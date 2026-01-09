@@ -10,13 +10,26 @@ const getToken = () => {
   return window.localStorage?.getItem('qr_token') || null;
 };
 
+const getStudentHeaders = () => {
+  if (typeof window === 'undefined') return {};
+  const studentToken = window.localStorage?.getItem('student_token');
+  const sessionId = window.localStorage?.getItem('student_session_id');
+  if (!studentToken || !sessionId) return {};
+  return {
+    'X-Student-Token': studentToken,
+    'X-Student-Session': sessionId
+  };
+};
+
 const requestJson = async (path, payload) => {
   const token = getToken();
+  const studentHeaders = getStudentHeaders();
   const response = await fetch(`${apiBase}${path}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {})
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(!token ? studentHeaders : {})
     },
     body: JSON.stringify(payload ?? {})
   });
