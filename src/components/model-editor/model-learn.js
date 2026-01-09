@@ -58,6 +58,25 @@ export class ModelLearn extends LitElement {
     });
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.handleApiError = () => {
+      if (this.showModalLearn) {
+        this.showModalLearn = false;
+        this.modelHasBeenTrained = false;
+        this.requestUpdate();
+      }
+    };
+    window.addEventListener('lml-api-error', this.handleApiError);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.handleApiError) {
+      window.removeEventListener('lml-api-error', this.handleApiError);
+    }
+  }
+
   learningText(editorType) {
     switch (editorType) {
       case 'text':
@@ -226,7 +245,27 @@ export class ModelLearn extends LitElement {
         // Convertir la duración a un formato más legible (por ejemplo, en segundos)
         this.learningTime = (duration / 1000).toFixed(2);
         console.log(`Training completed in ${this.learningTime} seconds.`);
+      }).catch(error => {
+        console.error('Training failed', error);
+        this.showModalLearn = false;
+        this.modelHasBeenTrained = false;
+        this.learningPercentage = 0;
+        this.batch = 0;
+        this.acc = 0;
+        this.loss = 0;
+        this.learningTime = 0;
+        this.requestUpdate();
       });
+    }).catch(error => {
+      console.error('Feature extraction failed', error);
+      this.showModalLearn = false;
+      this.modelHasBeenTrained = false;
+      this.learningPercentage = 0;
+      this.batch = 0;
+      this.acc = 0;
+      this.loss = 0;
+      this.learningTime = 0;
+      this.requestUpdate();
     });
 
   }
