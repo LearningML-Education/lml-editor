@@ -2,6 +2,7 @@ import { ContextConsumer } from '@lit/context';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import * as tf from '@tensorflow/tfjs';
 import { confusionMatrix, buildVocabulary } from '../../services/lml-algorithms-bridge.js';
 import Plotly from 'plotly.js-dist-min';
 import {
@@ -135,7 +136,7 @@ export class ModelLearn extends LitElement {
     return this._datasetConsumer.value.size <= 1;
   }
 
-  learn() {
+  async learn() {
     if (this.notEnoughClassesToLearn()) {
       alert(msg('There are not enough classes to learn. Two classes are needed to learn'));
       return;
@@ -155,7 +156,6 @@ export class ModelLearn extends LitElement {
       this.percentageForValidation = 0;
     }
 
-    let promises = [];
     this.generateNewPill();
     let type = this._dataTypeConsumer.value.type;
     let encode = this._encoderComsumer.value[type]
@@ -165,20 +165,43 @@ export class ModelLearn extends LitElement {
     let vocabulary;
     if (type == 'text') {
       let texts = Array.from(this._datasetConsumer.value.values()).map(set => Array.from(set)).flat();
-      vocabulary = buildVocabulary(texts);
+      vocabulary = await buildVocabulary(texts);
     }
-    this._datasetConsumer.value.forEach((element, key) => {
-      promises.push(encode(Array.from(element)).then(features => {
-        console.log(features.arraySync());
-        this._featuresConsumer.value.set(key, features);
-      }));
-    });
+    const extractFeatures = () => {
+      const promises = [];
+      this._featuresConsumer.value.clear();
+      this._datasetConsumer.value.forEach((element, key) => {
+        promises.push(encode(Array.from(element)).then(features => {
+          console.log(features.arraySync());
+          this._featuresConsumer.value.set(key, features);
+        }));
+      });
+      return Promise.all(promises);
+    };
+
+    const isWebglError = (error) => {
+      const message = (error?.message || '').toLowerCase();
+      return message.includes('failed to link vertex and fragment shaders') || message.includes('context_lost_webgl');
+    };
+
+    const extractWithFallback = async () => {
+      try {
+        return await extractFeatures();
+      } catch (error) {
+        if (!isWebglError(error) || tf.getBackend?.() !== 'webgl') {
+          throw error;
+        }
+        await tf.setBackend('cpu');
+        await tf.ready();
+        return extractFeatures();
+      }
+    };
 
     console.log(this._featuresConsumer.value);
 
     const startTime = new Date().getTime();
 
-    Promise.all(promises).then(() => {
+    extractWithFallback().then(() => {
       function totalElementsInDataset(map) {
         let total = 0;
         for (let set of map.values()) {
