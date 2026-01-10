@@ -25,6 +25,7 @@ import {
     LMLSequential,
     KNN
 } from '../services/lml-algorithms-bridge.js';
+import * as tf from '@tensorflow/tfjs';
 
 window.__lmlV2BundleLoaded = true;
 
@@ -41,6 +42,7 @@ class LMLApp extends LitElement {
         super();
 
         console.log(process.env);
+        this.forceCpuBackendForChrome();
         setLocaleFromUrl();
 
         localStorage.removeItem('lmlModel');
@@ -132,6 +134,18 @@ class LMLApp extends LitElement {
             }
             this.requestUpdate();
         });
+    }
+
+    forceCpuBackendForChrome() {
+        if (typeof navigator === 'undefined') {
+            return;
+        }
+        const ua = navigator.userAgent || '';
+        const isChrome = /Chrome\//.test(ua) && !/Edg\//.test(ua) && !/OPR\//.test(ua);
+        if (!isChrome) {
+            return;
+        }
+        tf.setBackend('cpu').then(() => tf.ready());
     }
 
     disconnectedCallback() {
