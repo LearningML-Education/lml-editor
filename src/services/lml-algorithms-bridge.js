@@ -4,6 +4,35 @@ import * as client from 'lml-algorithms';
 const mode = process.env.LML_ALGO_MODE || 'client';
 const apiBase = process.env.LML_ALGO_BASE_URL || '';
 let cachedVocabulary = null;
+let webglFallbackAttempted = false;
+
+const shouldFallbackFromWebgl = (error) => {
+  const message = (error?.message || '').toLowerCase();
+  return (
+    message.includes('failed to link vertex and fragment shaders') ||
+    message.includes('context_lost_webgl') ||
+    message.includes('webgl')
+  );
+};
+
+const withWebglFallback = async (operation) => {
+  try {
+    return await operation();
+  } catch (error) {
+    if (!webglFallbackAttempted && shouldFallbackFromWebgl(error)) {
+      webglFallbackAttempted = true;
+      try {
+        await tf.setBackend('cpu');
+        await tf.ready();
+        console.warn('WebGL backend failed. Falling back to CPU backend.');
+      } catch (backendError) {
+        throw error;
+      }
+      return operation();
+    }
+    throw error;
+  }
+};
 
 const getToken = () => {
   if (typeof window === 'undefined') return null;
@@ -108,7 +137,7 @@ export const setVocabulary = (vocabulary) => {
 
 export const bowEncoder = async (texts) => {
   if (mode !== 'server') {
-    return client.bowEncoder(texts);
+    return withWebglFallback(() => client.bowEncoder(texts));
   }
   const result = await requestJson('/api/lml/v2/encode/bow', {
     texts,
@@ -119,7 +148,7 @@ export const bowEncoder = async (texts) => {
 
 export const numericalEncoder = async (items) => {
   if (mode !== 'server') {
-    return client.numericalEncoder(items);
+    return withWebglFallback(() => client.numericalEncoder(items));
   }
   const result = await requestJson('/api/lml/v2/encode/numerical', { items });
   return tf.tensor(result.features);
@@ -127,7 +156,8 @@ export const numericalEncoder = async (items) => {
 
 export const getMobilenetEncoder = (baseUrl) => {
   if (mode !== 'server') {
-    return client.getMobilenetEncoder(baseUrl);
+    const encoder = client.getMobilenetEncoder(baseUrl);
+    return async (images) => withWebglFallback(() => encoder(images));
   }
   return async (images) => {
     const result = await requestJson('/api/lml/v2/encode/image', { images });
@@ -137,7 +167,7 @@ export const getMobilenetEncoder = (baseUrl) => {
 
 export const audioEncoder = async (samples) => {
   if (mode !== 'server') {
-    return client.audioEncoder(samples);
+    return withWebglFallback(() => client.audioEncoder(samples));
   }
   const result = await requestJson('/api/lml/v2/encode/audio', { samples });
   return tf.tensor(result.features);
