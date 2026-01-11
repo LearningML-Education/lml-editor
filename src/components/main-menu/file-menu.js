@@ -3,6 +3,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { datasetContext, dataTypeContext, modelContext } from '../../contexts.js';
 import { saveAs } from 'file-saver-es';
+import { buildVocabulary } from '../../services/lml-algorithms-bridge.js';
 
 
 export class FileMenu extends LitElement {
@@ -43,13 +44,28 @@ export class FileMenu extends LitElement {
     saveAs(blob, this._dataTypeConsumer.value.name);
   }
 
-  saveModel(e){    
+  async saveModel(e){    
     const model = this._modelConsumer.value;
     if(!model?.model && !model?.isTrained){
       alert(msg("You have to build a model first"));
       return;
     }
-    this._modelConsumer.value.saveToDisk(this._dataTypeConsumer.value).then(r => {      
+    let datatype = { ...this._dataTypeConsumer.value };
+    if (datatype.type === 'text') {
+      let vocabulary = null;
+      try {
+        const stored = JSON.parse(localStorage.getItem('lmlModel') || '{}');
+        vocabulary = stored?.encoder?.vocabulary || null;
+      } catch {}
+      if (!Array.isArray(vocabulary)) {
+        const texts = Array.from(this._datasetConsumer.value.values()).map(set => Array.from(set)).flat();
+        vocabulary = await buildVocabulary(texts);
+      }
+      if (Array.isArray(vocabulary)) {
+        datatype = { ...datatype, vocabulary };
+      }
+    }
+    this._modelConsumer.value.saveToDisk(datatype).then(r => {      
       console.log('Model saved to disk');
       console.log(r);
     })
