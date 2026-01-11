@@ -83,6 +83,22 @@ Pasos:
 
 El proxy esta configurado en `vite.config.js` con `server.proxy` y reescritura de ruta.
 
+### Uso de algoritmos locales vs API
+
+Por defecto, el editor usa algoritmos locales (`LML_ALGO_MODE=client`).
+
+Para ejecutar los algoritmos en el servidor:
+
+```bash
+LML_ALGO_MODE=server LML_ALGO_BASE_URL=http://localhost:3000 npm run dev
+```
+
+Para forzar el modo local:
+
+```bash
+LML_ALGO_MODE=client npm run dev
+```
+
 ## Construcción de un desplegable de producción
 
 1. Clonar el proyecto: 
@@ -118,7 +134,8 @@ En el despliegue de producción (`Dockerfile`), la aplicación se configura a tr
 |`INIT_MESSAGE_TIMEOUT`|3000|Tiempo en milisegundos durante el que se mostrará el mensaje de incio|
 |`SHOW_FOOTER_SPONSORS`|true|Mostrar o no la parte del footer dedicada a patrocinadores|
 |`URL_SCRATCH`|/scratch/|URL de la instancia de Scratch|
-
+|`LML_ALGO_MODE`|client|Modo de ejecucion de algoritmos: `client` (local en navegador) o `server` (API `/api/lml/v2`)|
+|`LML_ALGO_BASE_URL`|""|Base URL para la API de algoritmos cuando `LML_ALGO_MODE=server`|
 
 
 ## Traducciones
