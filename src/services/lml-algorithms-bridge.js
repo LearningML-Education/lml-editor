@@ -166,11 +166,7 @@ export const getMobilenetEncoder = (baseUrl) => {
 };
 
 export const audioEncoder = async (samples) => {
-  if (mode !== 'server') {
-    return withWebglFallback(() => client.audioEncoder(samples));
-  }
-  const result = await requestJson('/api/lml/v2/encode/audio', { samples });
-  return tf.tensor(result.features);
+  return withWebglFallback(() => client.audioEncoder(samples));
 };
 
 export const collectExample = (...args) => client.collectExample(...args);
