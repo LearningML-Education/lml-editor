@@ -5,6 +5,27 @@ import { datasetContext, dataTypeContext, modelContext } from '../../contexts.js
 import { saveAs } from 'file-saver-es';
 import { buildVocabulary } from '../../services/lml-algorithms-bridge.js';
 
+const exampleDatasetModules = import.meta.glob('/examples/datasets/*.json', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
+const formatDatasetLabel = (fileName) =>
+  fileName
+    .replace(/\.json$/i, '')
+    .replace(/[_-]+/g, ' ')
+    .trim();
+const exampleDatasets = Object.entries(exampleDatasetModules)
+  .map(([path, contents]) => {
+    const fileName = path.split('/').pop() || path;
+    return {
+      name: fileName.replace(/\.json$/i, ''),
+      label: formatDatasetLabel(fileName),
+      contents
+    };
+  })
+  .sort((a, b) => a.label.localeCompare(b.label, 'es'));
+
 
 export class FileMenu extends LitElement {
 
@@ -172,9 +193,70 @@ export class FileMenu extends LitElement {
     document.getElementById('fileInput').click();
   }
 
+  loadExampleDataset(example) {
+    if (!example) return;
+    const inputDataName = example.name;
+    this._dataTypeConsumer.value.name = inputDataName;
+
+    this.dispatchEvent(new CustomEvent('change-input-name', {
+      bubbles: true,
+      detail: inputDataName
+    }));
+
+    this.loadDataset(example.contents);
+  }
+
   render() {
 
     return html`
+    <style>
+      .navbar-dropdown .navbar-item.has-dropdown.is-submenu {
+        position: relative;
+      }
+
+      .navbar-dropdown .navbar-item.has-dropdown.is-submenu > .navbar-link {
+        padding-right: 2.25em;
+      }
+
+      .navbar-dropdown .navbar-item.has-dropdown.is-submenu > .navbar-link::after {
+        border: 2px solid currentColor;
+        border-top: 0;
+        border-left: 0;
+        content: "";
+        display: block;
+        height: 0.45em;
+        width: 0.45em;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: 0.75em;
+        top: 50%;
+        margin-top: -0.2em;
+      }
+
+      .navbar-dropdown .navbar-item.has-dropdown.is-submenu > .navbar-link {
+        color: #00d1b2;
+      }
+
+      .navbar-dropdown .navbar-item.has-dropdown.is-submenu > .navbar-dropdown {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: -0.5rem;
+        min-width: 240px;
+      }
+
+      .navbar-dropdown .navbar-item.has-dropdown.is-submenu.is-hoverable:hover > .navbar-dropdown {
+        display: block;
+      }
+
+      @media screen and (max-width: 1023px) {
+        .navbar-dropdown .navbar-item.has-dropdown.is-submenu > .navbar-dropdown {
+          position: static;
+          min-width: auto;
+          box-shadow: none;
+        }
+      }
+    </style>
     <input id="fileInput" hidden="true" type="file" @change=${this.onLoaded}>
 
     <div class="navbar-item has-dropdown is-hoverable">
@@ -194,6 +276,18 @@ export class FileMenu extends LitElement {
         ? html`<a @click=${this.saveModel}  class="navbar-item">${msg("Save model to your computer")}</a>`
         : html``
           }
+
+          <div class="navbar-item has-dropdown is-hoverable is-submenu">
+            <a class="navbar-link">${msg("Sample datasets", { id: "sample-datasets" })}</a>
+            <div class="navbar-dropdown">
+              ${exampleDatasets.map(
+                (example) =>
+                  html`<a class="navbar-item" @click=${() => this.loadExampleDataset(example)}>
+                    ${example.label}
+                  </a>`
+              )}
+            </div>
+          </div>
         </div>
     </div>
         `

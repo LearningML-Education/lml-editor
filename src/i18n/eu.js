@@ -70,6 +70,7 @@
 'sa4a8a29de42efe18': `Kargatu datu-multzoa zure ordenagailutik`,
 'sa77b3aa47147e6de': `Batch tamaina:`,
 'saa2fc8f012369fa9': `Gorde datu-multzoa zure ordenagailura`,
+'sample-datasets': `Adibidezko datu multzoak`,
 'sb79fa7776c53543b': `Gure Premium Babesleak`,
 'sba58a534ec22cd97': `ML algoritmoa exekutatzen eredua sortzeko.`,
 'sc394009d3f5832bd': `Eredu bat sortu behar duzu sailkatu baino lehen`,

@@ -70,6 +70,7 @@
 'sa4a8a29de42efe18': `Subir conjunto de datos desde tu ordenador`,
 'sa77b3aa47147e6de': `Tamaño del lote:`,
 'saa2fc8f012369fa9': `Guardar conjunto de datos en tu ordenador`,
+'sample-datasets': `Conjunto de datos de ejemplo`,
 'sb79fa7776c53543b': `Nuestros patrocinadores Premium`,
 'sba58a534ec22cd97': `Ejecutando el algoritmo de ML para construir el modelo.`,
 'sc394009d3f5832bd': `Debes generar un modelo antes de intentar clasificar`,

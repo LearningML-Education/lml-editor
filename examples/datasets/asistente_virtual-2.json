@@ -1,0 +1,70 @@
+{
+    "data": {
+        "apagar luz": [
+            "apaga la luz",
+            "apaga la lámpara",
+            "quita la luz",
+            "quita la lámpara",
+            "desconecta la luz",
+            "desconecta la lámpara",
+            "hay demasiada luz",
+            "menos luz",
+            "quiero estar en la oscuridad",
+            "está demasiado claro",
+            "mucha claridad",
+            "me gusta la oscuridad",
+            "prefiero la oscuridad",
+            "veo muy bien",
+            "hay suficiente luz"
+        ],
+        "apagar ventilador": [
+            "estoy arrecío",
+            "qué frío",
+            "apaga el ventilador",
+            "quita el ventilador",
+            "desconecta el ventilador",
+            "hace mucho viento",
+            "hace mucho frío",
+            "demasiado frío",
+            "me congelo",
+            "me voy a resfriar",
+            "hay mucha corriente",
+            "tengo la carne de gallina",
+            "me estoy quedando pajarito",
+            "apagate ventilador",
+            "apágate ventilador",
+            "no hace calor"
+        ],
+        "encender luz": [
+            "enciende la luz",
+            "enciende la lámpara",
+            "conecta la luz",
+            "conecta la lámpara",
+            "dale a la luz",
+            "dale a la lámpara",
+            "esto está muy oscuro",
+            "qué oscuridad",
+            "se está poniendo el sol",
+            "no veo nada",
+            "necesito luz",
+            "no hay suficiente luz"
+        ],
+        "encender ventilador": [
+            "qué sofocón",
+            "enciende el ventilador",
+            "conecta el ventilador",
+            "hace mucho calor",
+            "demasiado calor",
+            "pon en marcha el ventilador",
+            "qué calor",
+            "me afixio",
+            "me derrito",
+            "dale caña al ventilador",
+            "que bochorno",
+            "me abraso",
+            "que calor tan sofocante",
+            "no hace frio"
+        ]
+    },
+    "type": "text"
+}

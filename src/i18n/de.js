@@ -70,6 +70,7 @@
 'sa4a8a29de42efe18': `Datensatz von Ihrem Computer hochladen`,
 'sa77b3aa47147e6de': `Batch-Größe:`,
 'saa2fc8f012369fa9': `Datensatz auf Ihrem Computer speichern`,
+'sample-datasets': `Beispieldatensätze`,
 'sb79fa7776c53543b': `Unsere Premium-Sponsoren`,
 'sba58a534ec22cd97': `Der ML-Algorithmus wird ausgeführt, um das Modell zu erstellen.`,
 'sc394009d3f5832bd': `Sie müssen ein Modell erstellen, bevor Sie versuchen, zu klassifizieren`,
