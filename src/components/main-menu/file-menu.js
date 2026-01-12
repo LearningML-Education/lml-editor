@@ -234,7 +234,7 @@ export class FileMenu extends LitElement {
       }
 
       .navbar-dropdown .navbar-item.has-dropdown.is-submenu > .navbar-link {
-        color: #00d1b2;
+        color: hsla(171, 100%, 29%, 1);
       }
 
       .navbar-dropdown .navbar-item.has-dropdown.is-submenu > .navbar-dropdown {
