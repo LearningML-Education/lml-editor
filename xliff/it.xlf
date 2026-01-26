@@ -22,6 +22,10 @@
         <source>Save dataset to your computer</source>
         <target>Salva il dataset sul tuo computer</target>
       </trans-unit>
+      <trans-unit id="sample-datasets">
+        <source>Sample datasets</source>
+        <target>Set di dati di esempio</target>
+      </trans-unit>
       <trans-unit id="s30e35f136e8c35a2">
         <source>Save model to your computer</source>
         <target>Salva il modello sul tuo computer</target>
@@ -335,7 +339,7 @@
         <target>Impara a riconoscere i suoni</target>
       </trans-unit>
       <trans-unit id="se6434769e4c3a42d">
-        <source>Introduce new sound and checks they are correctly classified</source>
+        <source>Introduce new sound and checks they are correctly classified </source>
         <target>Introduce nuovi suoni e verifica che siano classificati correttamente</target>
       </trans-unit>
       

@@ -62,6 +62,10 @@
         <source>Save dataset to your computer</source>
         <target>Desa el conjunt de dades al teu ordinador</target>
       </trans-unit>
+      <trans-unit id="sample-datasets">
+        <source>Sample datasets</source>
+        <target>Conjunt de dades d'exemple</target>
+      </trans-unit>
       <trans-unit id="s30e35f136e8c35a2">
         <source>Save model to your computer</source>
         <target>Desa el model al teu ordinador</target>
@@ -335,7 +339,7 @@
         <target>Aprèn a reconèixer sons</target>
       </trans-unit>
       <trans-unit id="se6434769e4c3a42d">
-        <source>Introduce new sound and checks they are correctly classified</source>
+        <source>Introduce new sound and checks they are correctly classified </source>
         <target>Introdueix nous sons i comprova que es classifiquen correctament</target>
       </trans-unit>
       

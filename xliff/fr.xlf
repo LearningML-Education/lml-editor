@@ -22,6 +22,10 @@
         <source>Save dataset to your computer</source>
         <target>Enregistrez l'ensemble de données sur votre ordinateur</target>
       </trans-unit>
+      <trans-unit id="sample-datasets">
+        <source>Sample datasets</source>
+        <target>Jeux de données d'exemple</target>
+      </trans-unit>
       <trans-unit id="s30e35f136e8c35a2">
         <source>Save model to your computer</source>
         <target>Enregistrez le modèle sur votre ordinateur</target>
@@ -306,6 +310,38 @@
         <source>Click here if you like your logo to appear here</source>
         <target>Cliquez ici si vous souhaitez que votre logo apparaisse ici</target>
       </trans-unit>
+<trans-unit id="sfecd4e80b9d1155b">
+  <source>Sound recognition</source>
+  <target>Reconnaissance des sons</target>
+</trans-unit>
+<trans-unit id="s9ecedef91b8ea781">
+  <source>Teach the computer to recognize sounds</source>
+  <target>Apprenez à l'ordinateur à reconnaître les sons</target>
+</trans-unit>
+<trans-unit id="s8a4ff2bd9c13498c">
+  <source>Record</source>
+  <target>Enregistrer</target>
+</trans-unit>
+<trans-unit id="sd9ad53251f2330a5">
+  <source>Stop</source>
+  <target>Arrêter</target>
+</trans-unit>
+<trans-unit id="sed6692721bd9f0ee">
+  <source>first I need some sound samples</source>
+  <target>J'ai d'abord besoin de quelques échantillons sonores</target>
+</trans-unit>
+<trans-unit id="s51714d9459998099">
+  <source>Now it's time to learn to classify sounds</source>
+  <target>Il est temps d'apprendre à classer les sons</target>
+</trans-unit>
+<trans-unit id="s92091608a61ce3b2">
+  <source>Learn to recognize sounds</source>
+  <target>Apprendre à reconnaître les sons</target>
+</trans-unit>
+<trans-unit id="se6434769e4c3a42d">
+  <source>Introduce new sound and checks they are correctly classified </source>
+  <target>Introduisez de nouveaux sons et vérifiez qu'ils sont correctement classés</target>
+</trans-unit>
       
     </body>
   </file>

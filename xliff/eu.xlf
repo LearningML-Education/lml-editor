@@ -22,6 +22,10 @@
         <source>Save dataset to your computer</source>
         <target>Gorde datu-multzoa zure ordenagailura</target>
       </trans-unit>
+      <trans-unit id="sample-datasets">
+        <source>Sample datasets</source>
+        <target>Adibidezko datu multzoak</target>
+      </trans-unit>
       <trans-unit id="s30e35f136e8c35a2">
         <source>Save model to your computer</source>
         <target>Gorde eredua zure ordenagailura</target>
@@ -335,7 +339,7 @@
         <target>Ikasi soinuak ezagutzen</target>
       </trans-unit>
       <trans-unit id="se6434769e4c3a42d">
-        <source>Introduce new sound and checks they are correctly classified</source>
+        <source>Introduce new sound and checks they are correctly classified </source>
         <target>Sartu soinu berriak eta egiaztatu behar bezala sailkatzen diren</target>
       </trans-unit>
       

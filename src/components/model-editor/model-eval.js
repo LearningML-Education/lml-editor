@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, dataTypeContext, encodingContext } from '../../contexts.js';
-import { collectExample } from 'lml-algorithms';
+import { collectExample } from '../../services/lml-algorithms-bridge.js';
 
 export class ModelEval extends LitElement {
 
@@ -33,7 +33,8 @@ export class ModelEval extends LitElement {
   }
 
   checkInput(e) {
-    if (!this._modelConsumer.value.model) {
+    const model = this._modelConsumer.value;
+    if (!model?.model && !model?.isTrained) {
       alert(msg('You must generate a model before trying to classify'));
       return;
     }
@@ -50,7 +51,10 @@ export class ModelEval extends LitElement {
   }
 
   checkImage(image) {
-    if (!this._modelConsumer.value.model) {
+    console.log("KKKKKKKKKKKK");
+    const model = this._modelConsumer.value;
+    console.log(model);
+    if (!model?.model && !model?.isTrained) {
       alert(msg('You must generate a model before trying to classify'));
       return;
     }
@@ -67,7 +71,8 @@ export class ModelEval extends LitElement {
   }
 
   checkNumber() {
-    if (!this._modelConsumer.value.model) {
+    const model = this._modelConsumer.value;
+    if (!model?.model && !model?.isTrained) {
       alert(msg('You must generate a model before trying to classify'));
       return;
     }

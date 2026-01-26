@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, dataTypeContext } from '../../contexts';
+import { assetUrl } from '../../utils/assetPaths.js';
 import './language-menu';
 import './file-menu';
 import './input-menu';
@@ -72,7 +73,7 @@ export class MainMenu extends LitElement {
             <mode-toggle-menu class="component"></mode-toggle-menu> 
             
                 <a class="navbar-item" @click="${this.initScratch}">                
-                <img src="/images/scratch_icon.svg">
+                <img src="${assetUrl('images/scratch_icon.svg')}">
                 </a>
             
             `;
@@ -84,7 +85,7 @@ export class MainMenu extends LitElement {
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="">
-                    <img src="/images/cabeza_genio.png" alt="LearningML, Artificial Intelligence made easy">
+                    <img src="${assetUrl('images/cabeza_genio.png')}" alt="LearningML, Artificial Intelligence made easy">
                 </a>
 
                 <a @click=${() => { this.navBarMenuActive = !this.navBarMenuActive; }} role="button" class=${classMap({ "navbar-burger": true, "is-active": this.navBarMenuActive })} aria-label="menu" aria-expanded="false">

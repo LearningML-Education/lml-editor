@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import { assetUrl } from '../../utils/assetPaths.js';
 
 export class AboutMenu extends LitElement {
 
@@ -36,7 +37,7 @@ export class AboutMenu extends LitElement {
         <div class="card">
             <div class="card-image">
                 <figure class="figure">
-                    <img src="/images/genio_maquina.jpg" alt="LearningML Genius">
+                    <img src="${assetUrl('images/genio_maquina.jpg')}" alt="LearningML Genius">
                 </figure>
             </div>
             <div class="card-content">

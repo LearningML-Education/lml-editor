@@ -2,7 +2,8 @@ import { ContextConsumer } from '@lit/context';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { confusionMatrix, buildVocabulary } from 'lml-algorithms';
+import * as tf from '@tensorflow/tfjs';
+import { confusionMatrix, buildVocabulary } from '../../services/lml-algorithms-bridge.js';
 import Plotly from 'plotly.js-dist-min';
 import {
   dataTypeContext,
@@ -56,6 +57,25 @@ export class ModelLearn extends LitElement {
         this.requestUpdate();
       }
     });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.handleApiError = () => {
+      if (this.showModalLearn) {
+        this.showModalLearn = false;
+        this.modelHasBeenTrained = false;
+        this.requestUpdate();
+      }
+    };
+    window.addEventListener('lml-api-error', this.handleApiError);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.handleApiError) {
+      window.removeEventListener('lml-api-error', this.handleApiError);
+    }
   }
 
   learningText(editorType) {
@@ -116,7 +136,7 @@ export class ModelLearn extends LitElement {
     return this._datasetConsumer.value.size <= 1;
   }
 
-  learn() {
+  async learn() {
     if (this.notEnoughClassesToLearn()) {
       alert(msg('There are not enough classes to learn. Two classes are needed to learn'));
       return;
@@ -136,7 +156,6 @@ export class ModelLearn extends LitElement {
       this.percentageForValidation = 0;
     }
 
-    let promises = [];
     this.generateNewPill();
     let type = this._dataTypeConsumer.value.type;
     let encode = this._encoderComsumer.value[type]
@@ -146,20 +165,43 @@ export class ModelLearn extends LitElement {
     let vocabulary;
     if (type == 'text') {
       let texts = Array.from(this._datasetConsumer.value.values()).map(set => Array.from(set)).flat();
-      vocabulary = buildVocabulary(texts);
+      vocabulary = await buildVocabulary(texts);
     }
-    this._datasetConsumer.value.forEach((element, key) => {
-      promises.push(encode(Array.from(element)).then(features => {
-        console.log(features.arraySync());
-        this._featuresConsumer.value.set(key, features);
-      }));
-    });
+    const extractFeatures = () => {
+      const promises = [];
+      this._featuresConsumer.value.clear();
+      this._datasetConsumer.value.forEach((element, key) => {
+        promises.push(encode(Array.from(element)).then(features => {
+          console.log(features.arraySync());
+          this._featuresConsumer.value.set(key, features);
+        }));
+      });
+      return Promise.all(promises);
+    };
+
+    const isWebglError = (error) => {
+      const message = (error?.message || '').toLowerCase();
+      return message.includes('failed to link vertex and fragment shaders') || message.includes('context_lost_webgl');
+    };
+
+    const extractWithFallback = async () => {
+      try {
+        return await extractFeatures();
+      } catch (error) {
+        if (!isWebglError(error) || tf.getBackend?.() !== 'webgl') {
+          throw error;
+        }
+        await tf.setBackend('cpu');
+        await tf.ready();
+        return extractFeatures();
+      }
+    };
 
     console.log(this._featuresConsumer.value);
 
     const startTime = new Date().getTime();
 
-    Promise.all(promises).then(() => {
+    extractWithFallback().then(() => {
       function totalElementsInDataset(map) {
         let total = 0;
         for (let set of map.values()) {
@@ -226,7 +268,29 @@ export class ModelLearn extends LitElement {
         // Convertir la duración a un formato más legible (por ejemplo, en segundos)
         this.learningTime = (duration / 1000).toFixed(2);
         console.log(`Training completed in ${this.learningTime} seconds.`);
+        this.showModalLearn = false;
+        this.requestUpdate();
+      }).catch(error => {
+        console.error('Training failed', error);
+        this.showModalLearn = false;
+        this.modelHasBeenTrained = false;
+        this.learningPercentage = 0;
+        this.batch = 0;
+        this.acc = 0;
+        this.loss = 0;
+        this.learningTime = 0;
+        this.requestUpdate();
       });
+    }).catch(error => {
+      console.error('Feature extraction failed', error);
+      this.showModalLearn = false;
+      this.modelHasBeenTrained = false;
+      this.learningPercentage = 0;
+      this.batch = 0;
+      this.acc = 0;
+      this.loss = 0;
+      this.learningTime = 0;
+      this.requestUpdate();
     });
 
   }
@@ -358,22 +422,14 @@ export class ModelLearn extends LitElement {
           
           ${this._modelConsumer.value.getAlgorithmName() == 'LMLSequential'
         ? html`
-              <progress class="progress is-primary" value="${this.learningPercentage}" max="100">
-                ${this.learningPercentage}%
-              </progress> 
+              <div class="has-text-centered">
+                <img src="images/modern-times.gif" alt="Procesando modelo" />
+              </div>
               `
         : html``
       }    
           
           ${this.templatePill()}
-
-          ${this.modelHasBeenTrained
-        ? html`
-            <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
-            <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
-          `
-        : html``
-      }
         </section>        
       </div>
     </div>
@@ -413,6 +469,13 @@ export class ModelLearn extends LitElement {
               <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
             </button> 
           </div >  
+          ${this.modelHasBeenTrained
+        ? html`
+              <p class="mt-3">${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
+              <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+            `
+        : html``
+      }
         </div>
         <div id="learningHistory"></div>
       </div>
@@ -451,6 +514,13 @@ export class ModelLearn extends LitElement {
         <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
       </button> 
     </div >
+    ${this.modelHasBeenTrained
+        ? html`
+          <p class="mt-3">${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
+          <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+        `
+        : html``
+    }
 
     `;
   }

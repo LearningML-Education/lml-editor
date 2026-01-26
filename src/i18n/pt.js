@@ -70,6 +70,7 @@
 'sa4a8a29de42efe18': `Carregar conjunto de dados do seu computador`,
 'sa77b3aa47147e6de': `Tamanho do lote:`,
 'saa2fc8f012369fa9': `Salvar conjunto de dados no seu computador`,
+'sample-datasets': `Conjuntos de dados de exemplo`,
 'sb79fa7776c53543b': `Os nossos patrocinadores Premium`,
 'sba58a534ec22cd97': `Executando o algoritmo de ML para construir o modelo.`,
 'sc394009d3f5832bd': `Você deve gerar um modelo antes de tentar classificar`,

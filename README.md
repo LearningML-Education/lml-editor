@@ -1,4 +1,4 @@
-## Entorno de desarrollo
+## Entorno de desarrollo con docker
 
 Requisitos: docker 27.1.1
 
@@ -35,6 +35,70 @@ Se accede a través de `http://localhost:5173`
 
 Este procedimiento no arranca *lml-scratch*. Si se quiere trabajar con *lml-scratch* clonar el proyecto [`https://gitlab.com/lml-corp/lml-dev`](https://gitlab.com/lml-corp/lml-dev) y seguir las instrucciones del `README.md`. 
 
+## Entorno de desarrollo sin docker
+
+1. Clonar el proyecto: 
+```bash
+git clone git@gitlab.com:lml-corp/lml-editor-lit.git
+```
+
+2. Clonar la dependencia lml-algorithm (opcional si se va a tocar código de lml-algorithm)
+```bash
+git clone git@gitlab.com:lml-corp/lml-algorithms.git
+```
+
+2.1 Instalar dependencias lml-algorithms
+
+```bash
+cd lml-algorithms.git
+npm install
+npm link
+cd ..
+```
+
+2. Instalar dependencias lml-editor-lit
+
+```bash
+cd lml-editor-lit.git
+npm install
+npm link lml-algorithms (opcional)
+```
+
+3. Levantar servidor de desarrollo
+
+```
+vite
+```
+
+Con esto se tiene la aplicación corriendo en http://localhost:5173
+
+### Dev: Scratch bajo el mismo dominio (localStorage compartido)
+
+En desarrollo, Scratch suele correr en otro puerto (por ejemplo 8601). Para compartir `localStorage` con el editor (Vite en 5173), el dev server hace proxy de Scratch bajo `/scratch/`, de modo que ambos quedan en el mismo origen.
+
+Pasos:
+1. Arranca Scratch en `http://localhost:8601`.
+2. Arranca el editor en `http://localhost:5173`.
+3. Accede a Scratch a traves de `http://localhost:5173/scratch/`.
+
+El proxy esta configurado en `vite.config.js` con `server.proxy` y reescritura de ruta.
+
+### Uso de algoritmos locales vs API
+
+Por defecto, el editor usa algoritmos locales (`LML_ALGO_MODE=client`).
+
+Para ejecutar los algoritmos en el servidor:
+
+```bash
+LML_ALGO_MODE=server LML_ALGO_BASE_URL=http://localhost:3000 npm run dev
+```
+
+Para forzar el modo local:
+
+```bash
+LML_ALGO_MODE=client npm run dev
+```
+
 ## Construcción de un desplegable de producción
 
 1. Clonar el proyecto: 
@@ -69,7 +133,10 @@ En el despliegue de producción (`Dockerfile`), la aplicación se configura a tr
 |`INIT_MESSAGE_DESCRIPTION`|LearningML necesita tu ayuda|Descripción del mensahe de incio|
 |`INIT_MESSAGE_TIMEOUT`|3000|Tiempo en milisegundos durante el que se mostrará el mensaje de incio|
 |`SHOW_FOOTER_SPONSORS`|true|Mostrar o no la parte del footer dedicada a patrocinadores|
-|`URL_SCRATCH`|http://localhost:8888/scratch|URL de la instancia de Scratch|
+|`URL_SCRATCH`|/scratch/|URL de la instancia de Scratch|
+|`LML_ALGO_MODE`|client|Modo de ejecucion de algoritmos: `client` (local en navegador) o `server` (API `/api/lml/v2`)|
+|`LML_ALGO_BASE_URL`|""|Base URL para la API de algoritmos cuando `LML_ALGO_MODE=server`|
+
 
 ## Traducciones
 

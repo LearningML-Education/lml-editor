@@ -70,6 +70,7 @@
 'sa4a8a29de42efe18': `Dataset uploaden vanaf uw computer`,
 'sa77b3aa47147e6de': `Batch grootte:`,
 'saa2fc8f012369fa9': `Dataset opslaan op uw computer`,
+'sample-datasets': `Voorbeeld-datasets`,
 'sb79fa7776c53543b': `Onze Premium Sponsors`,
 'sba58a534ec22cd97': `ML-algoritme wordt uitgevoerd om het model te bouwen.`,
 'sc394009d3f5832bd': `U moet een model genereren voordat u probeert te classificeren`,

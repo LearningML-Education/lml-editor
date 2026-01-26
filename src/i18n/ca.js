@@ -70,6 +70,7 @@
 'sa4a8a29de42efe18': `Carrega el conjunt de dades des del teu ordinador`,
 'sa77b3aa47147e6de': `Mida del lot:`,
 'saa2fc8f012369fa9': `Desa el conjunt de dades al teu ordinador`,
+'sample-datasets': `Conjunt de dades d'exemple`,
 'sb79fa7776c53543b': `Els nostres patrocinadors Premium`,
 'sba58a534ec22cd97': `Executant l'algorisme de ML per construir el model.`,
 'sc394009d3f5832bd': `Has de generar un model abans de provar de classificar`,

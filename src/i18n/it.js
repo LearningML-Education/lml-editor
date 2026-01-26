@@ -70,6 +70,7 @@
 'sa4a8a29de42efe18': `Carica il dataset dal tuo computer`,
 'sa77b3aa47147e6de': `Dimensione del batch:`,
 'saa2fc8f012369fa9': `Salva il dataset sul tuo computer`,
+'sample-datasets': `Set di dati di esempio`,
 'sb79fa7776c53543b': `I nostri sponsor Premium`,
 'sba58a534ec22cd97': `Esecuzione dell'algoritmo di ML per costruire il modello.`,
 'sc394009d3f5832bd': `Devi generare un modello prima di tentare di classificare`,

@@ -22,6 +22,10 @@
         <source>Save dataset to your computer</source>
         <target>Αποθήκευση συνόλου δεδομένων στον υπολογιστή σας</target>
       </trans-unit>
+      <trans-unit id="sample-datasets">
+        <source>Sample datasets</source>
+        <target>Δείγματα συνόλων δεδομένων</target>
+      </trans-unit>
       <trans-unit id="s30e35f136e8c35a2">
         <source>Save model to your computer</source>
         <target>Αποθήκευση μοντέλου στον υπολογιστή σας</target>
@@ -336,7 +340,7 @@
         <target>Μάθετε να αναγνωρίζετε ήχους</target>
       </trans-unit>
       <trans-unit id="se6434769e4c3a42d">
-        <source>Introduce new sound and checks they are correctly classified</source>
+        <source>Introduce new sound and checks they are correctly classified </source>
         <target>Εισαγάγετε νέους ήχους και ελέγξτε εάν ταξινομούνται σωστά</target>
       </trans-unit>
       
