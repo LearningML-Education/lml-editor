@@ -1,0 +1,71 @@
+name: Deploy from private tag
+
+on:
+  repository_dispatch:
+    types:
+      - lml-editor-deploy
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TAG_NAME: ${{ github.event.client_payload.tag }}
+    steps:
+      - name: Validate payload
+        run: |
+          if [ -z "$TAG_NAME" ]; then
+            echo "Missing tag in repository_dispatch payload."
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Checkout public repo
+        uses: actions/checkout@v4
+
+      - name: Clone lml-editor-lit at tag
+        env:
+          PRIVATE_TOKEN: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+        run: |
+          if [ -z "$PRIVATE_TOKEN" ]; then
+            echo "Missing PRIVATE_REPO_READ_TOKEN"
+            exit 1
+          fi
+          git clone --depth 1 --branch "$TAG_NAME" \
+            "https://x-access-token:${PRIVATE_TOKEN}@github.com/LearningML-Education/lml-editor-lit.git" \
+            lml-editor-lit
+
+      - name: Build editor
+        working-directory: lml-editor-lit
+        env:
+          INIT_MESSAGE_SHOW: "false"
+          SHOW_FOOTER_SPONSORS: "false"
+          INIT_MESSAGE_TIMEOUT: "0"
+          URL_SCRATCH: "https://learningml-education.github.io/scratch/?"
+        run: |
+          npm install -g vite
+          npm install
+          vite build
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: lml-editor-lit/dist
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
