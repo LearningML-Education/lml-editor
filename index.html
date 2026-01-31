@@ -1,109 +1,116 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <base href="%BASE_URL%" />
+        <link rel="icon" type="image/png" href="images/cabeza_genio.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>LearningML</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"
+        />
+        <style>
+            .is-clickable {
+                cursor: pointer;
+            }
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/images/cabeza_genio.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LearningML</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-  <style>
-    .is-clickable {
-      cursor: pointer;
-    }
+            .component {
+                display: flex;
+                align-items: center;
+                position: relative;
+            }
 
-    .component {
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
+            .navbar-item {
+                height: 100%;
+            }
 
-    .navbar-item {
-      height: 100%;
-    }
+            .truncate {
+                display: inline-block;
+                vertical-align: middle;
+                width: 350px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                flex: 1;
+            }
 
-    .truncate {
-      display: inline-block;
-      vertical-align: middle;
-      width: 350px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      flex: 1;
-    }
+            .itemdata {
+                max-height: 300px;
+                overflow: auto;
+            }
 
-    .itemdata {
-      max-height: 300px;
-      overflow: auto;
-    }
+            .is-clickable {
+                cursor: pointer;
+            }
 
-    .is-clickable {
-      cursor: pointer;
-    }
+            .image-item {
+                height: 75px;
+            }
+            .audio-container {
+                position: relative;
+                display: inline-block;
+            }
 
+            .sample-text {
+                position: absolute;
+                top: 5px;
+                left: 5px;
+                color: white;
+                background-color: rgba(0, 0, 0, 0.5);
+                padding: 2px 5px;
+                border-radius: 3px;
+                font-size: 12px;
+            }
 
-    .image-item {
-      height: 75px;
-    }
-    .audio-container {
-      position: relative;
-      display: inline-block;
-    }
+            .play-button {
+                position: absolute;
+                bottom: 10px;
+                left: 5px;
+                font-size: 10px;
+                padding: 5px;
+                width: 25px;
+                height: 25px;
+            }
 
-    .sample-text {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 2px 5px;
-      border-radius: 3px;
-      font-size: 12px;
-    }
+            .delete-button {
+                position: absolute;
+                bottom: 10px;
+                right: 5px;
+                font-size: 10px;
+                padding: 5px;
+                width: 25px;
+                height: 25px;
+            }
+        </style>
+        <script
+            src="https://kit.fontawesome.com/bdd65911f1.js"
+            crossorigin="anonymous"
+        ></script>
+        <script type="module" src="src/components/lml-app.js"></script>
+    </head>
 
-    .play-button {
-      position: absolute;
-      bottom: 10px;
-      left: 5px;
-      font-size: 10px;
-      padding: 5px;
-      width: 25px;
-      height: 25px;
-    }
+    <body>
+        <lml-app></lml-app>
+    </body>
 
-    .delete-button {
-      position: absolute;
-      bottom: 10px;
-      right: 5px;
-      font-size: 10px;
-      padding: 5px;
-      width: 25px;
-      height: 25px;
-    }
-  </style>
-  <script src="https://kit.fontawesome.com/bdd65911f1.js" crossorigin="anonymous"></script>
-  <script type="module" src="/src/components/lml-app.js"></script>
-</head>
-
-<body>
-  <lml-app></lml-app>
-</body>
-
-<!-- Matomo -->
-<script>
-  var _paq = window._paq = window._paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function () {
-    var u = "https://analytics.juandarodriguez.es/";
-    _paq.push(['setTrackerUrl', u + 'matomo.php']);
-    _paq.push(['setSiteId', '4']);
-    var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-    g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
-  })();
-</script>
-<!-- End Matomo Code -->
-
-
+    <!-- Matomo -->
+    <script>
+        var _paq = (window._paq = window._paq || []);
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(["trackPageView"]);
+        _paq.push(["enableLinkTracking"]);
+        (function () {
+            var u = "https://analytics.juandarodriguez.es/";
+            _paq.push(["setTrackerUrl", u + "matomo.php"]);
+            _paq.push(["setSiteId", "4"]);
+            var d = document,
+                g = d.createElement("script"),
+                s = d.getElementsByTagName("script")[0];
+            g.async = true;
+            g.src = u + "matomo.js";
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- End Matomo Code -->
 </html>

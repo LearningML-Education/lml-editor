@@ -134,8 +134,17 @@ En el despliegue de producción (`Dockerfile`), la aplicación se configura a tr
 |`INIT_MESSAGE_TIMEOUT`|3000|Tiempo en milisegundos durante el que se mostrará el mensaje de incio|
 |`SHOW_FOOTER_SPONSORS`|true|Mostrar o no la parte del footer dedicada a patrocinadores|
 |`URL_SCRATCH`|/scratch/|URL de la instancia de Scratch|
+|`BASE_URL`|/|Base path de despliegue cuando la app se sirve bajo un subpath (por ejemplo, `/lml-editor/`). Vite sustituye `%BASE_URL%` en `index.html` usando `base`.|
 |`LML_ALGO_MODE`|client|Modo de ejecucion de algoritmos: `client` (local en navegador) o `server` (API `/api/lml/v2`)|
 |`LML_ALGO_BASE_URL`|""|Base URL para la API de algoritmos cuando `LML_ALGO_MODE=server`|
+
+Ejemplo de build con `BASE_URL` para desplegar en subpath:
+
+```bash
+BASE_URL=/lml-editor/ \
+URL_SCRATCH=https://learningml-education.github.io/scratch/? \
+npm run build
+```
 
 
 ## Traducciones
