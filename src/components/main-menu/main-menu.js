@@ -4,6 +4,7 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { ContextConsumer } from '@lit/context';
 import { modelContext, dataTypeContext } from '../../contexts';
 import { assetUrl } from '../../utils/assetPaths.js';
+import packageJson from '../../../package.json';
 import './language-menu';
 import './file-menu';
 import './input-menu';
@@ -20,7 +21,8 @@ export class MainMenu extends LitElement {
         advancedMode: { type: Object, attribute: 'advanced-mode' },
         menu: { type: String },
         modelName: { type: String },
-        navBarMenuActive: { type: Boolean }
+        navBarMenuActive: { type: Boolean },
+        appVersion: { type: String }
     }
 
     constructor() {
@@ -28,6 +30,7 @@ export class MainMenu extends LitElement {
         this.modelName = "";
         this.navBarMenuActive = false;
         this.scratchWindow;
+        this.appVersion = packageJson.version;
         updateWhenLocaleChanges(this);
     }
 
@@ -82,11 +85,37 @@ export class MainMenu extends LitElement {
 
     render() {
         return html`
+        <style>
+            .app-version {
+                font-size: 0.85rem;
+                opacity: 0.75;
+                letter-spacing: 0.02em;
+                font-style: italic;
+            }
+
+            .app-version--mobile {
+                display: none;
+            }
+
+            @media screen and (max-width: 1023px) {
+                .app-version--mobile {
+                    display: inline-flex;
+                    align-items: center;
+                    margin-left: 0.5rem;
+                }
+                .app-version--desktop {
+                    display: none;
+                }
+            }
+        </style>
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="">
                     <img src="${assetUrl('images/cabeza_genio.png')}" alt="LearningML, Artificial Intelligence made easy">
                 </a>
+                <div class="navbar-item app-version app-version--mobile">
+                    ${this.appVersion}
+                </div>
 
                 <a @click=${() => { this.navBarMenuActive = !this.navBarMenuActive; }} role="button" class=${classMap({ "navbar-burger": true, "is-active": this.navBarMenuActive })} aria-label="menu" aria-expanded="false">
                     <span aria-hidden="true"></span>
@@ -100,6 +129,9 @@ export class MainMenu extends LitElement {
                     ${this.templateMenu()}               
                 </div>
                 <div class="navbar-end">                    
+                    <div class="navbar-item app-version app-version--desktop">
+                        ${this.appVersion}
+                    </div>
                     <about-menu class="component"></about-menu>
                 </div>
             </div>
