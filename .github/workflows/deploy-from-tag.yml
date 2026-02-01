@@ -53,7 +53,7 @@ jobs:
           INIT_MESSAGE_SHOW: "false"
           SHOW_FOOTER_SPONSORS: "false"
           INIT_MESSAGE_TIMEOUT: "0"
-          URL_SCRATCH: "https://learningml-education.github.io/scratch/?"
+          URL_SCRATCH: "https://learningml-education.github.io/lml-scratch/?"
           BASE_URL: "/lml-editor/"
         run: |
           npm install -g vite
