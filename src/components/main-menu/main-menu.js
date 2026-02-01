@@ -106,6 +106,14 @@ export class MainMenu extends LitElement {
                 .app-version--desktop {
                     display: none;
                 }
+
+                .navbar-item.has-dropdown .navbar-dropdown {
+                    display: none;
+                }
+
+                .navbar-item.has-dropdown.is-active .navbar-dropdown {
+                    display: block;
+                }
             }
         </style>
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
