@@ -4,6 +4,12 @@ on:
   repository_dispatch:
     types:
       - lml-editor-deploy
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag a desplegar"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -18,7 +24,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      TAG_NAME: ${{ github.event.client_payload.tag }}
+      TAG_NAME: ${{ inputs.tag || github.event.client_payload.tag }}
     steps:
       - name: Validate payload
         run: |
