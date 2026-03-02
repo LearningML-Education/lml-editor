@@ -415,7 +415,7 @@ export class ModelLearn extends LitElement {
   templateAlgorithmExplanation() {
     const markdownText = this.getHelpMarkdownSource();
     const renderedHtml = marked.parse(markdownText);
-    return html`${unsafeHTML(renderedHtml)}`;
+    return html`<div class="content">${unsafeHTML(renderedHtml)}</div>`;
   }
 
   generateNewPill() {
