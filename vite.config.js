@@ -20,6 +20,7 @@ export default defineConfig(({ command, mode }) => {
             'process.env.URL_SCRATCH': JSON.stringify(env.URL_SCRATCH || '/scratch/'),
             'process.env.LML_ALGO_MODE': JSON.stringify(env.LML_ALGO_MODE || 'client'),
             'process.env.LML_ALGO_BASE_URL': JSON.stringify(env.LML_ALGO_BASE_URL || ''),
+            'process.env.FORCE_CPU_BACKEND_CHROME': env.FORCE_CPU_BACKEND_CHROME == "true",
                     
             // If you want to exposes all env variables, which is not recommended
             // 'process.env': env

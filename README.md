@@ -137,6 +137,7 @@ En el despliegue de producción (`Dockerfile`), la aplicación se configura a tr
 |`BASE_URL`|/|Base path de despliegue cuando la app se sirve bajo un subpath (por ejemplo, `/lml-editor/`). Vite sustituye `%BASE_URL%` en `index.html` usando `base`.|
 |`LML_ALGO_MODE`|client|Modo de ejecucion de algoritmos: `client` (local en navegador) o `server` (API `/api/lml/v2`)|
 |`LML_ALGO_BASE_URL`|""|Base URL para la API de algoritmos cuando `LML_ALGO_MODE=server`|
+|`FORCE_CPU_BACKEND_CHROME`|false|Si vale `true`, desactiva WebGL en Chrome forzando backend CPU en TensorFlow.js|
 
 Ejemplo de build con `BASE_URL` para desplegar en subpath:
 

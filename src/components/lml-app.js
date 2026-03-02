@@ -137,6 +137,9 @@ class LMLApp extends LitElement {
     }
 
     forceCpuBackendForChrome() {
+        if (!process.env.FORCE_CPU_BACKEND_CHROME) {
+            return;
+        }
         if (typeof navigator === 'undefined') {
             return;
         }
