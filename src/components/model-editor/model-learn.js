@@ -415,7 +415,23 @@ export class ModelLearn extends LitElement {
   templateAlgorithmExplanation() {
     const markdownText = this.getHelpMarkdownSource();
     const renderedHtml = marked.parse(markdownText);
-    return html`<div class="content">${unsafeHTML(renderedHtml)}</div>`;
+    return html`
+      <div class="content">${unsafeHTML(renderedHtml)}</div>
+      <p class="mt-4">
+        <a href="#" @click=${this.openPlayground}>playground</a>
+      </p>
+    `;
+  }
+
+  openPlayground(event) {
+    event.preventDefault();
+    this.dispatchEvent(new CustomEvent('open-playground', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        algorithm: this.algorithm
+      }
+    }));
   }
 
   generateNewPill() {

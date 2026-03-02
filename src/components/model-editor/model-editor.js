@@ -6,6 +6,7 @@ import { dataTypeContext } from '../../contexts.js';
 import './model-train.js';
 import './model-learn.js';
 import './model-eval.js';
+import './model-playground.js';
 
 export class ModelEditor extends LitElement {
 
@@ -16,6 +17,8 @@ export class ModelEditor extends LitElement {
     showTrain: { type: Boolean},
     showLearn: { type: Boolean},
     showEval: { type: Boolean},
+    showPlayground: { type: Boolean},
+    playgroundAlgorithm: { type: String },
   }
 
   constructor() {
@@ -23,6 +26,8 @@ export class ModelEditor extends LitElement {
     this.showTrain = true;
     this.showLearn = false;
     this.showEval = false;
+    this.showPlayground = false;
+    this.playgroundAlgorithm = 'ann';
     updateWhenLocaleChanges(this);
   }
 
@@ -55,6 +60,19 @@ export class ModelEditor extends LitElement {
     this.showTrain = e.target.id ==  "trainTab";
     this.showLearn = e.target.id ==  "learnTab";
     this.showEval = e.target.id ==  "evalTab";
+    this.showPlayground = e.target.id == "playgroundTab";
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('open-playground', (event) => {
+      this.playgroundAlgorithm = event?.detail?.algorithm || 'ann';
+      this.showTrain = false;
+      this.showLearn = false;
+      this.showEval = false;
+      this.showPlayground = true;
+      this.requestUpdate();
+    });
   }
 
 
@@ -103,6 +121,11 @@ export class ModelEditor extends LitElement {
               ${msg("Try")}
             </a>
           </li>
+          <li class=${classMap({ "is-active": this.showPlayground})}>
+            <a id="playgroundTab" @click=${this.showTag}>
+              ${msg("Playground")}
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -116,6 +139,10 @@ export class ModelEditor extends LitElement {
 
       <div ?hidden=${!this.showEval}>
         <model-eval advanced-mode='{"enabled": ${this.advancedMode.enabled}}'></model-eval>
+      </div>
+
+      <div ?hidden=${!this.showPlayground}>
+        <model-playground .initialAlgorithm=${this.playgroundAlgorithm}></model-playground>
       </div>
     `;
   }
