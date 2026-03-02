@@ -2,7 +2,9 @@ import { ContextConsumer } from '@lit/context';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import * as tf from '@tensorflow/tfjs';
+import { marked } from 'marked';
 import { confusionMatrix, buildVocabulary } from '../../services/lml-algorithms-bridge.js';
 import Plotly from 'plotly.js-dist-min';
 import {
@@ -14,6 +16,25 @@ import {
 } from '../../contexts.js';
 
 import * as pills from './pills/pills.json';
+
+const algorithmHelpMdModules = import.meta.glob('./algorithm-help/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
+
+const DEFAULT_HELP_LOCALE = 'en';
+const SUPPORTED_HELP_LOCALES = ['ca', 'de', 'el', 'en', 'es', 'eu', 'gl', 'it', 'nl', 'pt'];
+const HELP_ALGORITHM_KEYS = {
+  ann: 'neural-network',
+  knn: 'knn',
+  nb: 'naive-bayes'
+};
+
+marked.setOptions({
+  gfm: true,
+  breaks: false
+});
 
 export class ModelLearn extends LitElement {
 
@@ -377,6 +398,26 @@ export class ModelLearn extends LitElement {
 </div>`;
   }
 
+  getCurrentHelpLocale() {
+    const url = new URL(window.location.href);
+    const locale = (url.searchParams.get('locale') || DEFAULT_HELP_LOCALE).toLowerCase();
+    return SUPPORTED_HELP_LOCALES.includes(locale) ? locale : DEFAULT_HELP_LOCALE;
+  }
+
+  getHelpMarkdownSource() {
+    const algorithmKey = HELP_ALGORITHM_KEYS[this.algorithm] || HELP_ALGORITHM_KEYS.ann;
+    const locale = this.getCurrentHelpLocale();
+    const localizedPath = `./algorithm-help/${algorithmKey}.${locale}.md`;
+    const defaultPath = `./algorithm-help/${algorithmKey}.${DEFAULT_HELP_LOCALE}.md`;
+    return algorithmHelpMdModules[localizedPath] || algorithmHelpMdModules[defaultPath] || '';
+  }
+
+  templateAlgorithmExplanation() {
+    const markdownText = this.getHelpMarkdownSource();
+    const renderedHtml = marked.parse(markdownText);
+    return html`${unsafeHTML(renderedHtml)}`;
+  }
+
   generateNewPill() {
     const url = new URL(window.location.href);
     let locale = url.searchParams.get('locale');
@@ -500,6 +541,17 @@ export class ModelLearn extends LitElement {
               <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
             </button> 
           </div >  
+
+          <hr />
+          <h5 class="title is-5">${msg("Validation")}</h5>
+          <div class="field">
+            <label class="label">${msg("Percentage of samples for validation:")}</label>
+            <div class="control">
+              <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
+            </div>
+          </div>
+          <div id="confusionMatrix"></div>
+
           ${this.modelHasBeenTrained
         ? html`
               <p class="mt-3">${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
@@ -512,14 +564,8 @@ export class ModelLearn extends LitElement {
       </div>
       <div class="column">
         <div class="box">
-          <h5 class="title is-5">${msg("Validation")}</h5>
-          <div class="field">
-            <label class="label">${msg("Percentage of samples for validation:")}</label>
-            <div class="control">
-              <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
-            </div>
-          </div>
-          <div id="confusionMatrix"></div>
+          <h5 class="title is-5">${msg("Algorithm help")}</h5>
+          ${this.templateAlgorithmExplanation()}
         </div>
       </div>
       
