@@ -15,7 +15,7 @@ git clone git@gitlab.com:lml-corp/lml-algorithms.git
 3. Construir una imagen para el desarrollo
 ```bash
 cd lml-editor-lit
-docker build -t lml-editor:dev . -f Dockerfile-dev
+docker build -t lml-editor . 
 ```
 
 4. Arrancar un contenedor de desarrollo
@@ -28,7 +28,7 @@ docker run -v ${PWD}/src:/app/src \
     -v ${PWD}/.env:/app/.env \
     -v ${PWD}/../lml-algorithms:/app/node_modules/lml-algorithms \
     -p 5173:5173 \
-    --rm -d lml-editor:dev
+    --rm -d lml-editor
 ```
 
 Se accede a través de `http://localhost:5173`
@@ -51,8 +51,8 @@ git clone git@gitlab.com:lml-corp/lml-algorithms.git
 
 ```bash
 cd lml-algorithms.git
-npm install
-npm link
+bun install
+bun link
 cd ..
 ```
 
@@ -60,14 +60,14 @@ cd ..
 
 ```bash
 cd lml-editor-lit.git
-npm install
-npm link lml-algorithms (opcional)
+bun install
+bun link lml-algorithms (opcional)
 ```
 
 3. Levantar servidor de desarrollo
 
 ```
-vite
+bun run dev
 ```
 
 Con esto se tiene la aplicación corriendo en http://localhost:5173
@@ -90,13 +90,13 @@ Por defecto, el editor usa algoritmos locales (`LML_ALGO_MODE=client`).
 Para ejecutar los algoritmos en el servidor:
 
 ```bash
-LML_ALGO_MODE=server LML_ALGO_BASE_URL=http://localhost:3000 npm run dev
+LML_ALGO_MODE=server LML_ALGO_BASE_URL=http://localhost:3000 bun run dev
 ```
 
 Para forzar el modo local:
 
 ```bash
-LML_ALGO_MODE=client npm run dev
+LML_ALGO_MODE=client bun run dev
 ```
 
 ## Construcción de un desplegable de producción
@@ -143,7 +143,7 @@ Ejemplo de build con `BASE_URL` para desplegar en subpath:
 ```bash
 BASE_URL=/lml-editor/ \
 URL_SCRATCH=https://learningml-education.github.io/scratch/? \
-npm run build
+bun run build
 ```
 
 
@@ -154,7 +154,7 @@ En el archivo `lit-localize.json` se configura el sistema de traducción. Lo imp
 Para construir los archivos xliff se ejecuta el comando:
 ```
 
-./node_modules/.bin/lit-localize extract
+bunx lit-localize extract
 
 ```
 Que genera la carpeta `xliff` con los archivos de traducción. Se editan estos ficheros con las traducciones correspondientes.
@@ -162,7 +162,7 @@ Que genera la carpeta `xliff` con los archivos de traducción. Se editan estos f
 A continuación se generan los archivos javascript que usa la aplicación para traducir lanzando el comando:
 ```
 
-./node_modules/.bin/lit-localize build
+bunx lit-localize build
 
 ```
 Referencia: https://lit.dev/docs/localization/overview/

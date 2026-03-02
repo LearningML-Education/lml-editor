@@ -1,4 +1,4 @@
-FROM node:20.11.0 AS builder
+FROM oven/bun:1.3.6 AS builder
 
 ARG INIT_MESSAGE_SHOW=false
 ARG INIT_MESSAGE_TITLE=Atención
@@ -9,7 +9,7 @@ ARG URL_SCRATCH=https://v2.learningml.org/scratch/?
 
 WORKDIR /app
 COPY . /app
-RUN npm install -g vite && npm install && vite build
+RUN bun install && bun run build
 
 FROM nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
