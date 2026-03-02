@@ -173,6 +173,9 @@ export const collectExample = (...args) => client.collectExample(...args);
 export const playRawAudio = (...args) => client.playRawAudio(...args);
 
 export const confusionMatrix = async (validationDataset, model) => {
+  if (model?.getAlgorithmName?.() === 'NaiveBayes') {
+    return client.confusionMatrix(validationDataset, model);
+  }
   if (mode !== 'server') {
     return client.confusionMatrix(validationDataset, model);
   }
@@ -398,3 +401,4 @@ class ServerKNN {
 
 export const LMLSequential = mode === 'server' ? ServerSequential : client.LMLSequential;
 export const KNN = mode === 'server' ? ServerKNN : client.KNN;
+export const NaiveBayes = client.NaiveBayes;

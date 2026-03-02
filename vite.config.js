@@ -34,6 +34,9 @@ export default defineConfig(({ command, mode }) => {
                     rewrite: (path) => path.replace(/^\/scratch/, '')
                 }
             }
+        },
+        optimizeDeps: {
+            exclude: ['lml-algorithms']
         }
     };
 });

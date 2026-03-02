@@ -115,7 +115,11 @@ export class ModelLearn extends LitElement {
         params["epochs"] = parseInt(this.querySelector("#epochs").value);
         break;
       case "knn":
-        params['K'] = this.querySelector("#numofneighbours").value;
+        params['K'] = parseInt(this.querySelector("#numofneighbours").value);
+        break;
+      case "nb":
+        params['varianceSmoothing'] = parseFloat(this.querySelector("#variancesmoothing").value);
+        params['classPriorSmoothing'] = parseFloat(this.querySelector("#classpriorsmoothing").value);
         break;
     }
     return params;
@@ -210,18 +214,21 @@ export class ModelLearn extends LitElement {
         return total;
       }
 
-      let batchPerEpoch = totalElementsInDataset(this._datasetConsumer.value) / this._modelConsumer.value.hyperparams.batchSize;
-      let totalIterations = batchPerEpoch * this._modelConsumer.value.hyperparams.epochs;
-      let iteration = 0;
-      let onBatchEnd = (batch, logs) => {
-        iteration++;
-        this.learningPercentage = parseInt(100 * (iteration / totalIterations));
-        this.batch = batch;
-        this.loss = Math.trunc(logs.loss * 1000) / 1000;
-        this.acc = Math.trunc(logs.acc * 1000) / 1000;
+      let onBatchEnd = null;
+      if (this._modelConsumer.value.getAlgorithmName() === 'LMLSequential') {
+        let batchPerEpoch = totalElementsInDataset(this._datasetConsumer.value) / this._modelConsumer.value.hyperparams.batchSize;
+        let totalIterations = batchPerEpoch * this._modelConsumer.value.hyperparams.epochs;
+        let iteration = 0;
+        onBatchEnd = (batch, logs) => {
+          iteration++;
+          this.learningPercentage = parseInt(100 * (iteration / totalIterations));
+          this.batch = batch;
+          this.loss = Math.trunc(logs.loss * 1000) / 1000;
+          this.acc = Math.trunc(logs.acc * 1000) / 1000;
 
-        console.log('Batch:', batch);
-        console.log('logs', logs);
+          console.log('Batch:', batch);
+          console.log('logs', logs);
+        };
       }
 
       this._modelConsumer.value.train(this._featuresConsumer.value, this.percentageForValidation, onBatchEnd).then(result => {
@@ -348,6 +355,28 @@ export class ModelLearn extends LitElement {
 </div>`
   }
 
+  templateNaiveBayesParams() {
+    return html`
+<div class="columns">
+  <div class="column">
+    <div class="field">
+      <label class="label">${msg("Variance smoothing:")}</label>
+      <div class="control">
+        <input class="input" type="number" id="variancesmoothing" name="variancesmoothing" min="0" step="0.000000001" value="0.000000001" />
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="field">
+      <label class="label">${msg("Class prior smoothing:")}</label>
+      <div class="control">
+        <input class="input" type="number" id="classpriorsmoothing" name="classpriorsmoothing" min="0" step="0.1" value="1" />
+      </div>
+    </div>
+  </div>
+</div>`;
+  }
+
   generateNewPill() {
     const url = new URL(window.location.href);
     let locale = url.searchParams.get('locale');
@@ -450,18 +479,20 @@ export class ModelLearn extends LitElement {
             <label class="label">${msg("Choose Machine Learning Algorithm:")}</label>
             <div class="control">
               <div @click=${this.chooseAlgorithm} class="select">
-                <select>
+                <select .value=${this.algorithm}>
                   <option value="ann">${msg("Neural network")}</option>
                   <option value="knn">${msg("KNN")}</option>
+                  <option value="nb">${msg("Naive-Bayes")}</option>
                 </select>
               </div>
             </div>
           </div>
           
-          ${this.algorithm == 'ann' ?
-        this.templateANNParams()
-        :
-        this.templateKNNParams()}
+          ${this.algorithm == 'ann'
+        ? this.templateANNParams()
+        : this.algorithm == 'knn'
+          ? this.templateKNNParams()
+          : this.templateNaiveBayesParams()}
 
           <div class="block mt-2">
             <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.showModalLearn })}>

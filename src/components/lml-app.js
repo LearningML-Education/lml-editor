@@ -23,7 +23,8 @@ import {
     numericalEncoder,
     audioEncoder,
     LMLSequential,
-    KNN
+    KNN,
+    NaiveBayes
 } from '../services/lml-algorithms-bridge.js';
 import * as tf from '@tensorflow/tfjs';
 
@@ -131,6 +132,14 @@ class LMLApp extends LitElement {
                 this.modelProvider.setValue(new LMLSequential);
             } else if (e.detail == 'knn' || e.detail == 'KNN') {
                 this.modelProvider.setValue(new KNN);
+            } else if (e.detail == 'naive-bayes' || e.detail == 'nb' || e.detail == 'NaiveBayes') {
+                if (!NaiveBayes) {
+                    window.dispatchEvent(new CustomEvent('lml-api-error', {
+                        detail: { message: 'No se puede usar Naive Bayes: la version de lml-algorithms instalada no lo incluye.' }
+                    }));
+                    throw new Error('NaiveBayes export is missing from lml-algorithms');
+                }
+                this.modelProvider.setValue(new NaiveBayes);
             }
             this.requestUpdate();
         });
