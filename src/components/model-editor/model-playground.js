@@ -662,12 +662,18 @@ export class ModelPlayground extends LitElement {
               </button>
             </div>
             ${this.status ? html`<p class="is-size-7 mt-2">${this.status}</p>` : html``}
+            <p class="is-size-7 has-text-grey mt-3">
+              Based on
+              <a href="https://github.com/josephch405/ML-Playground" target="_blank" rel="noopener noreferrer">ML-Playground</a>
+              by
+              <a href="https://github.com/josephch405" target="_blank" rel="noopener noreferrer">Jo Chuang</a>.
+            </p>
           </div>
         </div>
 
         <div class="column is-8">
           <div class="box">
-            <div id="playgroundChart" style="min-height: 520px;"></div>
+            <div id="playgroundChart" style="height: clamp(520px, 74vh, 920px);"></div>
           </div>
         </div>
       </div>

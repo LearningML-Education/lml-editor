@@ -15,7 +15,6 @@ import {
   modelContext
 } from '../../contexts.js';
 
-import * as pills from './pills/pills.json';
 
 const algorithmHelpMdModules = import.meta.glob('./algorithm-help/*.md', {
   query: '?raw',
@@ -69,7 +68,6 @@ export class ModelLearn extends LitElement {
     this.loss = 0;
     this.learningPercentage = 0;
     this.learningTime = 0;
-    this.pill = null;
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -181,7 +179,6 @@ export class ModelLearn extends LitElement {
       this.percentageForValidation = 0;
     }
 
-    this.generateNewPill();
     let type = this._dataTypeConsumer.value.type;
     let encode = this._encoderComsumer.value[type]
     this.showModalLearn = true;
@@ -434,34 +431,16 @@ export class ModelLearn extends LitElement {
     }));
   }
 
-  generateNewPill() {
-    const url = new URL(window.location.href);
-    let locale = url.searchParams.get('locale');
-
-    locale = (locale == null) ? 'en' : locale;
-
-    function getRandomInt(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const tipIndex = getRandomInt(1, 100);
-
-    this.pill = (locale in pills)
-      ? pills[locale]['machine_learning_tips'][tipIndex]['description']
-      : pills['en']['machine_learning_tips'][tipIndex]['description'];
-  }
-
   templatePill() {
-
     return html`
-      <div class="notification">
-        <p class="is-size-5"> ${msg('Did you know that...?')}</p>
-        <p>${this.pill}</p>
+      <div class="has-text-centered" style="display:flex;justify-content:center;align-items:center;min-height:320px;">
+        <img
+          src="images/modern-times.gif"
+          alt="Worker inside gears from Modern Times"
+          style="max-width:100%;max-height:360px;width:auto;height:auto;object-fit:contain;"
+        />
       </div>
-      `;
-
+    `;
   }
 
   templateModalLearn() {
@@ -505,15 +484,6 @@ export class ModelLearn extends LitElement {
         : html``
       }
 
-          
-          ${this._modelConsumer.value.getAlgorithmName() == 'LMLSequential'
-        ? html`
-              <div class="has-text-centered">
-                <img src="images/modern-times.gif" alt="Procesando modelo" />
-              </div>
-              `
-        : html``
-      }    
           
           ${this.templatePill()}
         </section>        
