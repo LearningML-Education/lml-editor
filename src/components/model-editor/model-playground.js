@@ -513,17 +513,25 @@ export class ModelPlayground extends LitElement {
       <div class="field">
         <label class="label">${msg('Active class')}</label>
         <div class="buttons">
-          ${classLabels.map((label, index) => html`
+          ${classLabels.map((label, index) => {
+            const isSelected = this.selectedDrawClass === index;
+            const bgColor = this.getClassColor(index);
+            const selectedStyle = isSelected
+              ? 'box-shadow: 0 0 0 3px rgba(7,59,76,0.35); transform: translateY(-1px);'
+              : 'opacity: 0.9;';
+            return html`
             <button
-              class=${classMap({ button: true, 'is-selected': this.selectedDrawClass === index })}
-              style=${`background:${this.getClassColor(index)};color:#ffffff;border-color:${this.getClassColor(index)};`}
+              class=${classMap({ button: true })}
+              style=${`background:${bgColor};color:#ffffff;border:2px solid ${isSelected ? '#073b4c' : bgColor};${selectedStyle}`}
               value=${index}
               @click=${this.onDrawClassSelect}
               type="button"
+              aria-pressed=${isSelected ? 'true' : 'false'}
             >
-              ${label}
+              ${isSelected ? `✓ ${label}` : label}
             </button>
-          `)}
+            `;
+          })}
         </div>
         <button class="button is-light mt-2" type="button" @click=${this.onClearDrawPoints}>
           ${msg('Clear')}
@@ -580,19 +588,6 @@ export class ModelPlayground extends LitElement {
           <div class="box">
             <h5 class="title is-5">${msg('Playground')}</h5>
             <div class="field">
-              <label class="label">${msg('Choose Machine Learning Algorithm:')}</label>
-              <div class="control">
-                <div class="select is-fullwidth">
-                  <select .value=${this.algorithm} @change=${this.onAlgorithmChange}>
-                    <option value="ann">${msg('Neural network')}</option>
-                    <option value="knn">${msg('KNN')}</option>
-                    <option value="nb">${msg('Naive-Bayes')}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="field">
               <label class="label">${msg('Dataset source')}</label>
               <div class="control">
                 <div class="select is-fullwidth">
@@ -637,6 +632,19 @@ export class ModelPlayground extends LitElement {
             </div>
 
             ${this.datasetMode === 'draw' ? this.renderDrawClassButtons() : html``}
+
+            <div class="field mt-3">
+              <label class="label">${msg('Choose Machine Learning Algorithm:')}</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select .value=${this.algorithm} @change=${this.onAlgorithmChange}>
+                    <option value="ann">${msg('Neural network')}</option>
+                    <option value="knn">${msg('KNN')}</option>
+                    <option value="nb">${msg('Naive-Bayes')}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
             ${this.renderAlgorithmHyperparameters()}
 
