@@ -586,7 +586,12 @@ export class ModelPlayground extends LitElement {
       <div class="columns">
         <div class="column is-4">
           <div class="box">
-            <h5 class="title is-5">${msg('Playground')}</h5>
+            <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
+              <h5 class="title is-5 mb-0">${msg('Playground')}</h5>
+              <button class="button is-light is-small" type="button" @click=${this.onBackToEditor}>
+                ${msg('Back')}
+              </button>
+            </div>
             <div class="field">
               <label class="label">${msg('Dataset source')}</label>
               <div class="control">
@@ -671,6 +676,13 @@ export class ModelPlayground extends LitElement {
 
   createRenderRoot() {
     return this;
+  }
+
+  onBackToEditor() {
+    this.dispatchEvent(new CustomEvent('back-to-editor', {
+      bubbles: true,
+      composed: true
+    }));
   }
 }
 

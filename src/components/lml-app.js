@@ -8,7 +8,7 @@ import {
     encodingContext,
     modelContext
 } from '../contexts';
-import { updateWhenLocaleChanges } from '@lit/localize';
+import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { setLocaleFromUrl } from './main-menu/localization';
 import './main-menu/main-menu';
 import './model-selector/model-selector';
@@ -16,6 +16,7 @@ import './footers/footer-copyright';
 import './footers/footer-sponsors';
 import './init-message/init-message';
 import './model-editor/model-editor';
+import './model-editor/model-playground';
 import './loading-message/loading-message';
 import {
     bowEncoder,
@@ -36,7 +37,8 @@ class LMLApp extends LitElement {
     static properties = {
         loading: { type: Boolean },
         page: { type: String },
-        apiErrorMessage: { type: String }
+        apiErrorMessage: { type: String },
+        playgroundAlgorithm: { type: String }
     };
 
     constructor() {
@@ -51,6 +53,7 @@ class LMLApp extends LitElement {
         this.loading = true;
         this.page = 'home';
         this.apiErrorMessage = '';
+        this.playgroundAlgorithm = 'ann';
         this.advancedMode = false;
         //this.page = 'model-editor';
         this.dataTypeProvider = new ContextProvider(this, { context: dataTypeContext });
@@ -124,7 +127,25 @@ class LMLApp extends LitElement {
 
         this.addEventListener("toggle-advanced-mode", e => {
             this.advancedMode = !this.advancedMode;
+            if (!this.advancedMode && this.page === 'playground') {
+                this.page = 'model-editor';
+            }
             this.requestUpdate();
+        });
+
+        this.addEventListener('open-playground-page', () => {
+            if (this.advancedMode) {
+                this.page = 'playground';
+                this.requestUpdate();
+            }
+        });
+
+        this.addEventListener('open-playground', (event) => {
+            if (this.advancedMode) {
+                this.playgroundAlgorithm = event?.detail?.algorithm || 'ann';
+                this.page = 'playground';
+                this.requestUpdate();
+            }
         });
 
         this.addEventListener("change-algorithm", e => {
@@ -224,6 +245,21 @@ class LMLApp extends LitElement {
         </div>`;
     }
 
+    playgroundTemplate() {
+        return html`
+        <div class="container is-fluid mb-2">
+            <model-playground
+                .initialAlgorithm=${this.playgroundAlgorithm}
+                @back-to-editor=${this.backToEditorFromPlayground}
+            ></model-playground>
+        </div>`;
+    }
+
+    backToEditorFromPlayground() {
+        this.page = 'model-editor';
+        this.requestUpdate();
+    }
+
     footerCopyrigthTemplate() {
         return html`
         <div class="container is-fluid mb-2">
@@ -263,7 +299,11 @@ class LMLApp extends LitElement {
             ${this.page == 'model-editor'
                     ? this.editorTemplate()
                     : html``
-                }  
+                }
+            ${this.page == 'playground'
+                    ? this.playgroundTemplate()
+                    : html``
+                }
             ${this.apiErrorMessage
                     ? this.apiErrorModalTemplate()
                     : html``

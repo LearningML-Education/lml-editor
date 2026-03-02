@@ -73,7 +73,12 @@ export class MainMenu extends LitElement {
             <file-menu showSaveDataset showSaveModel class="component"></file-menu>  
             <input-menu name="${this.modelName}" class="component"></input-menu>              
             <learn-menu class="component"></learn-menu>
-            <mode-toggle-menu class="component"></mode-toggle-menu> 
+            <mode-toggle-menu class="component"></mode-toggle-menu>
+            ${this.advancedMode?.enabled ? html`
+              <a class="navbar-item" @click=${this.openPlaygroundPage}>
+                ${msg('Playground')}
+              </a>
+            ` : html``}
             
                 <a class="navbar-item" @click="${this.initScratch}">                
                 <img src="${assetUrl('images/scratch_icon.svg')}">
@@ -145,6 +150,13 @@ export class MainMenu extends LitElement {
             </div>
         </nav>
     `
+    }
+
+    openPlaygroundPage() {
+        this.dispatchEvent(new CustomEvent('open-playground-page', {
+            bubbles: true,
+            composed: true
+        }));
     }
 
     createRenderRoot() {
