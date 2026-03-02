@@ -5,14 +5,15 @@ import Plotly from 'plotly.js-dist-min';
 import * as tf from '@tensorflow/tfjs';
 import { LMLSequential, KNN, NaiveBayes } from '../../services/lml-algorithms-bridge.js';
 
-const CLASS_LABELS = ['A', 'B', 'C'];
-const CLASS_COLORS = ['#ef476f', '#06d6a0', '#118ab2'];
+const BASE_CLASS_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+const BASE_CLASS_COLORS = ['#ef476f', '#06d6a0', '#118ab2', '#ffd166', '#073b4c', '#f78c6b', '#8ecae6', '#95d5b2'];
 
 export class ModelPlayground extends LitElement {
   static properties = {
     initialAlgorithm: { type: String, attribute: 'initial-algorithm' },
     algorithm: { type: String },
     pattern: { type: String },
+    classCount: { type: Number },
     samplesPerClass: { type: Number },
     noise: { type: Number },
     status: { type: String },
@@ -24,12 +25,14 @@ export class ModelPlayground extends LitElement {
     this.initialAlgorithm = 'ann';
     this.algorithm = 'ann';
     this.pattern = 'blobs';
+    this.classCount = 3;
     this.samplesPerClass = 60;
     this.noise = 0.12;
     this.status = '';
     this.isTraining = false;
     this.currentModel = null;
     this.datasetPoints = new Map();
+    this.modelVersion = 0;
     updateWhenLocaleChanges(this);
   }
 
@@ -37,6 +40,10 @@ export class ModelPlayground extends LitElement {
     if (changedProperties.has('initialAlgorithm') && this.initialAlgorithm) {
       this.algorithm = this.initialAlgorithm;
     }
+  }
+
+  firstUpdated() {
+    this.updateDatasetPreview();
   }
 
   randomNormal() {
@@ -47,14 +54,41 @@ export class ModelPlayground extends LitElement {
     return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
   }
 
+  getActiveClassLabels() {
+    const count = Math.min(Math.max(this.classCount || 3, 2), BASE_CLASS_LABELS.length);
+    return BASE_CLASS_LABELS.slice(0, count);
+  }
+
+  getClassColor(index) {
+    return BASE_CLASS_COLORS[index % BASE_CLASS_COLORS.length];
+  }
+
+  getDiscreteColorscale(classLabels) {
+    if (classLabels.length === 1) {
+      const color = this.getClassColor(0);
+      return [[0, color], [1, color]];
+    }
+
+    const scale = [];
+    classLabels.forEach((_, index) => {
+      const color = this.getClassColor(index);
+      const start = index / classLabels.length;
+      const end = (index + 1) / classLabels.length;
+      scale.push([start, color]);
+      scale.push([Math.max(start, end - Number.EPSILON), color]);
+    });
+    return scale;
+  }
+
   generateBlobs() {
-    const centers = [
-      [-0.65, -0.5],
-      [0.65, -0.5],
-      [0, 0.65]
-    ];
+    const classLabels = this.getActiveClassLabels();
+    const centers = classLabels.map((_, index) => {
+      const angle = (index * 2 * Math.PI) / classLabels.length;
+      const radius = 0.75;
+      return [radius * Math.cos(angle), radius * Math.sin(angle)];
+    });
     const byLabel = new Map();
-    CLASS_LABELS.forEach((label, index) => {
+    classLabels.forEach((label, index) => {
       const points = [];
       const [cx, cy] = centers[index];
       for (let i = 0; i < this.samplesPerClass; i++) {
@@ -68,15 +102,15 @@ export class ModelPlayground extends LitElement {
   }
 
   generateCircles() {
-    const radii = [
-      [0.15, 0.4],
-      [0.5, 0.75],
-      [0.85, 1.1]
-    ];
+    const classLabels = this.getActiveClassLabels();
+    const minRadius = 0.15;
+    const maxRadius = 1.1;
+    const radiusStep = (maxRadius - minRadius) / classLabels.length;
     const byLabel = new Map();
-    CLASS_LABELS.forEach((label, index) => {
+    classLabels.forEach((label, index) => {
       const points = [];
-      const [rMin, rMax] = radii[index];
+      const rMin = minRadius + (radiusStep * index);
+      const rMax = rMin + radiusStep;
       for (let i = 0; i < this.samplesPerClass; i++) {
         const angle = Math.random() * Math.PI * 2;
         const radius = rMin + Math.random() * (rMax - rMin);
@@ -90,13 +124,14 @@ export class ModelPlayground extends LitElement {
   }
 
   generateSpirals() {
+    const classLabels = this.getActiveClassLabels();
     const byLabel = new Map();
-    CLASS_LABELS.forEach((label, index) => {
+    classLabels.forEach((label, index) => {
       const points = [];
       for (let i = 0; i < this.samplesPerClass; i++) {
         const t = i / Math.max(this.samplesPerClass - 1, 1);
         const r = 0.1 + t * 1.0;
-        const baseAngle = t * Math.PI * 4 + (index * 2 * Math.PI / CLASS_LABELS.length);
+        const baseAngle = t * Math.PI * 4 + (index * 2 * Math.PI / classLabels.length);
         const angle = baseAngle + this.randomNormal() * this.noise * 1.8;
         const x = r * Math.cos(angle);
         const y = r * Math.sin(angle);
@@ -151,56 +186,9 @@ export class ModelPlayground extends LitElement {
     });
   }
 
-  async renderPlot() {
-    const container = this.querySelector('#playgroundChart');
-    if (!container || !this.currentModel) {
-      return;
-    }
-
-    const gridSize = parseInt(this.querySelector('#pgGridSize').value);
-    const min = -1.3;
-    const max = 1.3;
-    const step = (max - min) / (gridSize - 1);
-
-    const gridX = [];
-    const gridY = [];
-    const gridClass = [];
-
-    for (let yi = 0; yi < gridSize; yi++) {
-      for (let xi = 0; xi < gridSize; xi++) {
-        const x = min + (xi * step);
-        const y = min + (yi * step);
-        const prediction = await this.currentModel.classify(tf.tensor2d([[x, y]]));
-        const topLabel = prediction[0]?.[0];
-        const classIndex = Math.max(CLASS_LABELS.indexOf(topLabel), 0);
-        gridX.push(x);
-        gridY.push(y);
-        gridClass.push(classIndex);
-      }
-    }
-
-    const backgroundTrace = {
-      x: gridX,
-      y: gridY,
-      mode: 'markers',
-      type: 'scattergl',
-      hoverinfo: 'skip',
-      marker: {
-        size: 9,
-        opacity: 0.16,
-        color: gridClass,
-        colorscale: [
-          [0, CLASS_COLORS[0]],
-          [0.5, CLASS_COLORS[1]],
-          [1, CLASS_COLORS[2]]
-        ],
-        cmin: 0,
-        cmax: 2
-      },
-      showlegend: false
-    };
-
-    const dataTraces = CLASS_LABELS.map((label, index) => {
+  getPointTraces() {
+    const classLabels = this.getActiveClassLabels();
+    return classLabels.map((label, index) => {
       const points = this.datasetPoints.get(label) || [];
       return {
         x: points.map((point) => point[0]),
@@ -210,7 +198,7 @@ export class ModelPlayground extends LitElement {
         name: label,
         marker: {
           size: 7,
-          color: CLASS_COLORS[index],
+          color: this.getClassColor(index),
           line: {
             width: 1,
             color: '#ffffff'
@@ -218,15 +206,160 @@ export class ModelPlayground extends LitElement {
         }
       };
     });
+  }
 
-    const layout = {
+  getBaseLayout(min = -1.3, max = 1.3) {
+    return {
       margin: { t: 16, r: 10, b: 40, l: 40 },
       xaxis: { range: [min, max], title: 'x' },
       yaxis: { range: [min, max], title: 'y', scaleanchor: 'x', scaleratio: 1 },
       legend: { orientation: 'h' }
     };
+  }
 
-    await Plotly.newPlot(container, [backgroundTrace, ...dataTraces], layout, { responsive: true });
+  async renderDatasetPreview() {
+    const container = this.querySelector('#playgroundChart');
+    if (!container) {
+      return;
+    }
+    await Plotly.newPlot(container, this.getPointTraces(), this.getBaseLayout(), { responsive: true });
+  }
+
+  async updateDatasetPreview() {
+    this.currentModel = null;
+    this.datasetPoints = this.generateDataset();
+    await this.renderDatasetPreview();
+  }
+
+  async renderPlot() {
+    const container = this.querySelector('#playgroundChart');
+    if (!container || !this.currentModel) {
+      return;
+    }
+    const classLabels = this.currentModel?.labels || this.getActiveClassLabels();
+    const colorscale = this.getDiscreteColorscale(classLabels);
+
+    const gridSize = this.algorithm === 'knn' ? 50 : 72;
+    const min = -1.3;
+    const max = 1.3;
+    const step = (max - min) / (gridSize - 1);
+    const axisValues = Array.from({ length: gridSize }, (_, i) => min + (i * step));
+    const gridPoints = [];
+    for (let yi = 0; yi < gridSize; yi++) {
+      for (let xi = 0; xi < gridSize; xi++) {
+        const x = min + (xi * step);
+        const y = min + (yi * step);
+        gridPoints.push([x, y]);
+      }
+    }
+    const flatDecisionZones = await this.predictGridClassIndexes(gridPoints);
+    const decisionZones = [];
+    for (let yi = 0; yi < gridSize; yi++) {
+      const start = yi * gridSize;
+      decisionZones.push(flatDecisionZones.slice(start, start + gridSize));
+    }
+
+    const zoneTrace = {
+      x: axisValues,
+      y: axisValues,
+      z: decisionZones,
+      type: 'heatmap',
+      hoverinfo: 'skip',
+      zmin: 0,
+      zmax: classLabels.length - 1,
+      opacity: 0.35,
+      showscale: false,
+      colorscale
+    };
+
+    const boundaryTrace = {
+      x: axisValues,
+      y: axisValues,
+      z: decisionZones,
+      type: 'contour',
+      hoverinfo: 'skip',
+      showscale: false,
+      contours: {
+        coloring: 'none',
+        showlines: true,
+        start: 0.5,
+        end: classLabels.length - 1.5,
+        size: 1
+      },
+      line: {
+        width: 2,
+        color: '#073b4c'
+      }
+    };
+
+    await Plotly.newPlot(container, [zoneTrace, boundaryTrace, ...this.getPointTraces()], this.getBaseLayout(min, max), { responsive: true });
+  }
+
+  predictNaiveBayesClassIndex(point) {
+    const modelData = this.currentModel?.model;
+    if (!modelData) return 0;
+    const labels = this.currentModel?.labels || this.getActiveClassLabels();
+    const classCount = labels.length;
+    const varianceSmoothing = Number(this.currentModel?.hyperparams?.varianceSmoothing) || 0;
+    const classPriorSmoothing = Number(this.currentModel?.hyperparams?.classPriorSmoothing) || 0;
+    const denominatorPrior = modelData.totalExamples + (classPriorSmoothing * classCount);
+    const logScores = new Array(classCount).fill(0);
+
+    for (let c = 0; c < classCount; c++) {
+      const priorNumerator = modelData.counts[c] + classPriorSmoothing;
+      const prior = denominatorPrior > 0 ? priorNumerator / denominatorPrior : 0;
+      let logScore = Math.log(prior || Number.EPSILON);
+      for (let d = 0; d < modelData.featureDim; d++) {
+        const mean = modelData.means[c][d];
+        const variance = modelData.variances[c][d] + varianceSmoothing + Number.EPSILON;
+        const diff = point[d] - mean;
+        logScore += -0.5 * Math.log(2 * Math.PI * variance) - ((diff * diff) / (2 * variance));
+      }
+      logScores[c] = logScore;
+    }
+
+    let bestIndex = 0;
+    let bestScore = logScores[0];
+    for (let i = 1; i < logScores.length; i++) {
+      if (logScores[i] > bestScore) {
+        bestScore = logScores[i];
+        bestIndex = i;
+      }
+    }
+    return bestIndex;
+  }
+
+  async predictGridClassIndexes(gridPoints) {
+    const labelSet = this.currentModel?.labels || this.getActiveClassLabels();
+    const labelToIndex = new Map(labelSet.map((label, index) => [label, index]));
+
+    if (this.currentModel?.getAlgorithmName?.() === 'LMLSequential' && this.currentModel?.model?.predict) {
+      return tf.tidy(() => {
+        const input = tf.tensor2d(gridPoints);
+        const prediction = this.currentModel.model.predict(input);
+        return Array.from(prediction.argMax(-1).dataSync());
+      });
+    }
+
+    if (this.currentModel?.getAlgorithmName?.() === 'NaiveBayes') {
+      return gridPoints.map((point) => this.predictNaiveBayesClassIndex(point));
+    }
+
+    const results = new Array(gridPoints.length).fill(0);
+    const chunkSize = 120;
+    for (let offset = 0; offset < gridPoints.length; offset += chunkSize) {
+      const chunk = gridPoints.slice(offset, offset + chunkSize);
+      const chunkPromises = chunk.map(async (point) => {
+        const prediction = await this.currentModel.classify(tf.tensor2d([point]));
+        const topLabel = prediction[0]?.[0];
+        return labelToIndex.has(topLabel) ? labelToIndex.get(topLabel) : 0;
+      });
+      const chunkResults = await Promise.all(chunkPromises);
+      for (let i = 0; i < chunkResults.length; i++) {
+        results[offset + i] = chunkResults[i];
+      }
+    }
+    return results;
   }
 
   async trainPlaygroundModel() {
@@ -235,7 +368,6 @@ export class ModelPlayground extends LitElement {
     this.requestUpdate();
 
     try {
-      this.datasetPoints = this.generateDataset();
       const features = new Map();
       this.datasetPoints.forEach((points, label) => {
         features.set(label, tf.tensor2d(points));
@@ -244,6 +376,7 @@ export class ModelPlayground extends LitElement {
       this.currentModel = this.createModelInstance();
       this.applyHyperparameters(this.currentModel);
       await this.currentModel.train(features, 0);
+      this.modelVersion += 1;
       await this.renderPlot();
 
       this.status = msg('Playground model trained');
@@ -262,6 +395,22 @@ export class ModelPlayground extends LitElement {
 
   onPatternChange(event) {
     this.pattern = event.target.value;
+    this.updateDatasetPreview();
+  }
+
+  onSamplesPerClassInput(event) {
+    this.samplesPerClass = parseInt(event.target.value || '60');
+    this.updateDatasetPreview();
+  }
+
+  onNoiseInput(event) {
+    this.noise = parseFloat(event.target.value || '0.12');
+    this.updateDatasetPreview();
+  }
+
+  onClassCountInput(event) {
+    this.classCount = parseInt(event.target.value || '3');
+    this.updateDatasetPreview();
   }
 
   renderAlgorithmHyperparameters() {
@@ -339,20 +488,17 @@ export class ModelPlayground extends LitElement {
 
             <div class="columns">
               <div class="column">
+                <label class="label">${msg('Number of classes')}</label>
+                <input class="input" type="number" min="2" max="8" .value=${String(this.classCount)} @input=${this.onClassCountInput} />
+              </div>
+              <div class="column">
                 <label class="label">${msg('Samples per class')}</label>
-                <input class="input" type="number" min="10" max="300" .value=${String(this.samplesPerClass)}
-                  @input=${(e) => { this.samplesPerClass = parseInt(e.target.value || '60'); }} />
+                <input class="input" type="number" min="10" max="300" .value=${String(this.samplesPerClass)} @input=${this.onSamplesPerClassInput} />
               </div>
               <div class="column">
                 <label class="label">${msg('Noise')}</label>
-                <input class="input" type="number" min="0" max="1" step="0.01" .value=${String(this.noise)}
-                  @input=${(e) => { this.noise = parseFloat(e.target.value || '0.12'); }} />
+                <input class="input" type="number" min="0" max="1" step="0.01" .value=${String(this.noise)} @input=${this.onNoiseInput} />
               </div>
-            </div>
-
-            <div class="field">
-              <label class="label">${msg('Grid resolution')}</label>
-              <input id="pgGridSize" class="input" type="number" min="15" max="80" value="34" />
             </div>
 
             ${this.renderAlgorithmHyperparameters()}
