@@ -12,8 +12,10 @@ export class ModelPlayground extends LitElement {
   static properties = {
     initialAlgorithm: { type: String, attribute: 'initial-algorithm' },
     algorithm: { type: String },
+    datasetMode: { type: String },
     pattern: { type: String },
     classCount: { type: Number },
+    selectedDrawClass: { type: Number },
     samplesPerClass: { type: Number },
     noise: { type: Number },
     status: { type: String },
@@ -24,8 +26,10 @@ export class ModelPlayground extends LitElement {
     super();
     this.initialAlgorithm = 'ann';
     this.algorithm = 'ann';
+    this.datasetMode = 'auto';
     this.pattern = 'blobs';
     this.classCount = 3;
+    this.selectedDrawClass = 0;
     this.samplesPerClass = 60;
     this.noise = 0.12;
     this.status = '';
@@ -33,6 +37,7 @@ export class ModelPlayground extends LitElement {
     this.currentModel = null;
     this.datasetPoints = new Map();
     this.modelVersion = 0;
+    this.plotClickListener = this.onPlotClick.bind(this);
     updateWhenLocaleChanges(this);
   }
 
@@ -61,6 +66,12 @@ export class ModelPlayground extends LitElement {
 
   getClassColor(index) {
     return BASE_CLASS_COLORS[index % BASE_CLASS_COLORS.length];
+  }
+
+  getEmptyDataset() {
+    const byLabel = new Map();
+    this.getActiveClassLabels().forEach((label) => byLabel.set(label, []));
+    return byLabel;
   }
 
   getDiscreteColorscale(classLabels) {
@@ -222,13 +233,68 @@ export class ModelPlayground extends LitElement {
     if (!container) {
       return;
     }
-    await Plotly.newPlot(container, this.getPointTraces(), this.getBaseLayout(), { responsive: true });
+    const layout = this.getBaseLayout();
+    layout.dragmode = false;
+    await Plotly.newPlot(container, this.getPointTraces(), layout, { responsive: true, displayModeBar: false });
+    this.bindDrawingEvents(container);
   }
 
   async updateDatasetPreview() {
     this.currentModel = null;
-    this.datasetPoints = this.generateDataset();
+    if (this.datasetMode === 'draw') {
+      this.datasetPoints = this.getEmptyDataset();
+    } else {
+      this.datasetPoints = this.generateDataset();
+    }
     await this.renderDatasetPreview();
+  }
+
+  bindDrawingEvents(container) {
+    container.removeEventListener('click', this.plotClickListener);
+    if (this.datasetMode === 'draw') {
+      container.addEventListener('click', this.plotClickListener);
+    }
+  }
+
+  onPlotClick(event) {
+    if (this.datasetMode !== 'draw') {
+      return;
+    }
+
+    const container = this.querySelector('#playgroundChart');
+    const fullLayout = container?._fullLayout;
+    const xAxis = fullLayout?.xaxis;
+    const yAxis = fullLayout?.yaxis;
+    if (!container || !xAxis || !yAxis) {
+      return;
+    }
+
+    const rect = container.getBoundingClientRect();
+    const px = event.clientX - rect.left;
+    const py = event.clientY - rect.top;
+    const left = xAxis._offset;
+    const right = left + xAxis._length;
+    const top = yAxis._offset;
+    const bottom = top + yAxis._length;
+    if (px < left || px > right || py < top || py > bottom) {
+      return;
+    }
+
+    const x = xAxis.p2l(px - xAxis._offset);
+    const y = yAxis.p2l(py - yAxis._offset);
+    const labels = this.getActiveClassLabels();
+    const selectedIndex = Math.min(Math.max(this.selectedDrawClass, 0), labels.length - 1);
+    const selectedLabel = labels[selectedIndex];
+    if (!selectedLabel) {
+      return;
+    }
+
+    const nextDataset = new Map(this.datasetPoints);
+    const currentPoints = nextDataset.get(selectedLabel) || [];
+    nextDataset.set(selectedLabel, [...currentPoints, [x, y]]);
+    this.datasetPoints = nextDataset;
+    this.currentModel = null;
+    this.renderDatasetPreview();
   }
 
   async renderPlot() {
@@ -368,6 +434,13 @@ export class ModelPlayground extends LitElement {
     this.requestUpdate();
 
     try {
+      if (this.datasetMode === 'draw') {
+        const missingClass = this.getActiveClassLabels().find((label) => (this.datasetPoints.get(label) || []).length === 0);
+        if (missingClass) {
+          throw new Error(`Class ${missingClass} has no samples`);
+        }
+      }
+
       const features = new Map();
       this.datasetPoints.forEach((points, label) => {
         features.set(label, tf.tensor2d(points));
@@ -398,19 +471,65 @@ export class ModelPlayground extends LitElement {
     this.updateDatasetPreview();
   }
 
+  onDatasetModeChange(event) {
+    this.datasetMode = event.target.value;
+    this.selectedDrawClass = 0;
+    this.updateDatasetPreview();
+  }
+
   onSamplesPerClassInput(event) {
     this.samplesPerClass = parseInt(event.target.value || '60');
-    this.updateDatasetPreview();
+    if (this.datasetMode === 'auto') {
+      this.updateDatasetPreview();
+    }
   }
 
   onNoiseInput(event) {
     this.noise = parseFloat(event.target.value || '0.12');
-    this.updateDatasetPreview();
+    if (this.datasetMode === 'auto') {
+      this.updateDatasetPreview();
+    }
   }
 
   onClassCountInput(event) {
     this.classCount = parseInt(event.target.value || '3');
+    this.selectedDrawClass = 0;
     this.updateDatasetPreview();
+  }
+
+  onDrawClassSelect(event) {
+    this.selectedDrawClass = parseInt(event.target.value);
+  }
+
+  onClearDrawPoints() {
+    this.datasetPoints = this.getEmptyDataset();
+    this.currentModel = null;
+    this.renderDatasetPreview();
+  }
+
+  renderDrawClassButtons() {
+    const classLabels = this.getActiveClassLabels();
+    return html`
+      <div class="field">
+        <label class="label">${msg('Active class')}</label>
+        <div class="buttons">
+          ${classLabels.map((label, index) => html`
+            <button
+              class=${classMap({ button: true, 'is-selected': this.selectedDrawClass === index })}
+              style=${`background:${this.getClassColor(index)};color:#ffffff;border-color:${this.getClassColor(index)};`}
+              value=${index}
+              @click=${this.onDrawClassSelect}
+              type="button"
+            >
+              ${label}
+            </button>
+          `)}
+        </div>
+        <button class="button is-light mt-2" type="button" @click=${this.onClearDrawPoints}>
+          ${msg('Clear')}
+        </button>
+      </div>
+    `;
   }
 
   renderAlgorithmHyperparameters() {
@@ -474,6 +593,19 @@ export class ModelPlayground extends LitElement {
             </div>
 
             <div class="field">
+              <label class="label">${msg('Dataset source')}</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select .value=${this.datasetMode} @change=${this.onDatasetModeChange}>
+                    <option value="auto">${msg('Generate automatically')}</option>
+                    <option value="draw">${msg('Draw data')}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            ${this.datasetMode === 'auto' ? html`
+            <div class="field">
               <label class="label">${msg('Dataset pattern')}</label>
               <div class="control">
                 <div class="select is-fullwidth">
@@ -485,12 +617,14 @@ export class ModelPlayground extends LitElement {
                 </div>
               </div>
             </div>
+            ` : html``}
 
             <div class="columns">
               <div class="column">
                 <label class="label">${msg('Number of classes')}</label>
                 <input class="input" type="number" min="2" max="8" .value=${String(this.classCount)} @input=${this.onClassCountInput} />
               </div>
+              ${this.datasetMode === 'auto' ? html`
               <div class="column">
                 <label class="label">${msg('Samples per class')}</label>
                 <input class="input" type="number" min="10" max="300" .value=${String(this.samplesPerClass)} @input=${this.onSamplesPerClassInput} />
@@ -499,7 +633,10 @@ export class ModelPlayground extends LitElement {
                 <label class="label">${msg('Noise')}</label>
                 <input class="input" type="number" min="0" max="1" step="0.01" .value=${String(this.noise)} @input=${this.onNoiseInput} />
               </div>
+              ` : html``}
             </div>
+
+            ${this.datasetMode === 'draw' ? this.renderDrawClassButtons() : html``}
 
             ${this.renderAlgorithmHyperparameters()}
 
