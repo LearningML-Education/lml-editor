@@ -39,7 +39,9 @@ export class ModelPlayground extends LitElement {
     noise: { type: Number },
     status: { type: String },
     isTraining: { type: Boolean },
-    showTheoryModal: { type: Boolean }
+    showTheoryModal: { type: Boolean },
+    showTrainingHistoryOverlay: { type: Boolean },
+    trainingHistory: { type: Object }
   };
 
   constructor() {
@@ -55,6 +57,8 @@ export class ModelPlayground extends LitElement {
     this.status = '';
     this.isTraining = false;
     this.showTheoryModal = false;
+    this.showTrainingHistoryOverlay = false;
+    this.trainingHistory = null;
     this.currentModel = null;
     this.datasetPoints = new Map();
     this.modelVersion = 0;
@@ -65,6 +69,13 @@ export class ModelPlayground extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has('initialAlgorithm') && this.initialAlgorithm) {
       this.algorithm = this.initialAlgorithm;
+    }
+    if (
+      (changedProperties.has('showTrainingHistoryOverlay') || changedProperties.has('trainingHistory'))
+      && this.showTrainingHistoryOverlay
+      && this.trainingHistory
+    ) {
+      this.renderTrainingHistoryOverlayPlots();
     }
   }
 
@@ -262,6 +273,8 @@ export class ModelPlayground extends LitElement {
 
   async updateDatasetPreview() {
     this.currentModel = null;
+    this.showTrainingHistoryOverlay = false;
+    this.trainingHistory = null;
     if (this.datasetMode === 'draw') {
       this.datasetPoints = this.getEmptyDataset();
     } else {
@@ -382,6 +395,82 @@ export class ModelPlayground extends LitElement {
     await Plotly.newPlot(container, [zoneTrace, boundaryTrace, ...this.getPointTraces()], this.getBaseLayout(min, max), { responsive: true });
   }
 
+  getTrainingHistoryFromResult(trainResult) {
+    const info = trainResult?.info || this.currentModel?.info;
+    const history = info?.history;
+    if (!history) return null;
+
+    const lossSeries = history.loss || history.train_loss || [];
+    const accSeries = history.acc || history.accuracy || history.train_acc || [];
+    if (!lossSeries.length && !accSeries.length) return null;
+
+    const maxLen = Math.max(lossSeries.length, accSeries.length);
+    const epochSeries = Array.isArray(info?.epoch) && info.epoch.length
+      ? info.epoch
+      : Array.from({ length: maxLen }, (_, idx) => idx + 1);
+    const errorSeries = accSeries.map((accValue) => {
+      const n = Number(accValue);
+      if (Number.isNaN(n)) return null;
+      return Math.max(0, 1 - n);
+    });
+
+    return {
+      epoch: epochSeries,
+      loss: lossSeries,
+      accuracy: accSeries,
+      error: errorSeries
+    };
+  }
+
+  async renderTrainingMetricPlot(containerId, yValues, title, color, maxValue) {
+    const container = this.querySelector(containerId);
+    if (!container || !Array.isArray(yValues) || !yValues.length) return;
+    await Plotly.newPlot(container, [{
+      x: this.trainingHistory.epoch,
+      y: yValues,
+      type: 'scatter',
+      mode: 'lines+markers',
+      marker: { size: 3 },
+      line: { width: 2, color },
+      hovertemplate: '%{y:.4f}<extra></extra>'
+    }], {
+      margin: { t: 20, r: 8, b: 24, l: 40 },
+      paper_bgcolor: '#ffffff',
+      plot_bgcolor: '#ffffff',
+      xaxis: { title: msg('Epochs'), tickfont: { size: 9 }, titlefont: { size: 10 } },
+      yaxis: {
+        title,
+        range: [0, Math.max(0.1, maxValue * 1.05)],
+        tickfont: { size: 9 },
+        titlefont: { size: 10 },
+        zeroline: true
+      }
+    }, {
+      responsive: true,
+      displayModeBar: false
+    });
+  }
+
+  async renderTrainingHistoryOverlayPlots() {
+    if (!this.trainingHistory) return;
+
+    const maxLoss = this.trainingHistory.loss?.length
+      ? Math.max(...this.trainingHistory.loss.map((v) => Number(v) || 0))
+      : 0;
+    const maxError = this.trainingHistory.error?.length
+      ? Math.max(...this.trainingHistory.error.map((v) => Number(v) || 0))
+      : 0;
+    const maxAccuracy = this.trainingHistory.accuracy?.length
+      ? Math.max(...this.trainingHistory.accuracy.map((v) => Number(v) || 0))
+      : 0;
+
+    await Promise.all([
+      this.renderTrainingMetricPlot('#playgroundHistoryLossChart', this.trainingHistory.loss, msg('Loss'), '#ef476f', maxLoss),
+      this.renderTrainingMetricPlot('#playgroundHistoryErrorChart', this.trainingHistory.error, msg('Error'), '#118ab2', maxError),
+      this.renderTrainingMetricPlot('#playgroundHistoryAccChart', this.trainingHistory.accuracy, msg('Accuracy'), '#06d6a0', maxAccuracy)
+    ]);
+  }
+
   predictNaiveBayesClassIndex(point) {
     const modelData = this.currentModel?.model;
     if (!modelData) return 0;
@@ -469,7 +558,14 @@ export class ModelPlayground extends LitElement {
 
       this.currentModel = this.createModelInstance();
       this.applyHyperparameters(this.currentModel);
-      await this.currentModel.train(features, 0);
+      const trainResult = await this.currentModel.train(features, 0);
+      if (this.algorithm === 'ann') {
+        this.trainingHistory = this.getTrainingHistoryFromResult(trainResult);
+        this.showTrainingHistoryOverlay = Boolean(this.trainingHistory);
+      } else {
+        this.trainingHistory = null;
+        this.showTrainingHistoryOverlay = false;
+      }
       this.modelVersion += 1;
       await this.renderPlot();
 
@@ -477,6 +573,8 @@ export class ModelPlayground extends LitElement {
     } catch (error) {
       console.error(error);
       this.status = msg('Could not train playground model');
+      this.trainingHistory = null;
+      this.showTrainingHistoryOverlay = false;
     } finally {
       this.isTraining = false;
       this.requestUpdate();
@@ -485,6 +583,10 @@ export class ModelPlayground extends LitElement {
 
   onAlgorithmChange(event) {
     this.algorithm = event.target.value;
+    if (this.algorithm !== 'ann') {
+      this.showTrainingHistoryOverlay = false;
+      this.trainingHistory = null;
+    }
   }
 
   currentAlgorithmName() {
@@ -553,7 +655,13 @@ export class ModelPlayground extends LitElement {
   onClearDrawPoints() {
     this.datasetPoints = this.getEmptyDataset();
     this.currentModel = null;
+    this.showTrainingHistoryOverlay = false;
+    this.trainingHistory = null;
     this.renderDatasetPreview();
+  }
+
+  closeTrainingHistoryOverlay() {
+    this.showTrainingHistoryOverlay = false;
   }
 
   renderDrawClassButtons() {
@@ -744,7 +852,29 @@ export class ModelPlayground extends LitElement {
 
         <div class="column is-8">
           <div class="box">
-            <div id="playgroundChart" style="height: clamp(520px, 74vh, 920px);"></div>
+            <div style="position:relative;">
+              <div id="playgroundChart" style="height: clamp(520px, 74vh, 920px);"></div>
+              ${this.showTrainingHistoryOverlay ? html`
+              <div style="position:absolute;top:12px;left:12px;width:min(380px,52%);height:360px;background:#ffffff;border:1px solid #dbe3ef;border-radius:10px;box-shadow:0 6px 16px rgba(15,23,42,0.16);z-index:20;">
+                <div style="display:flex;justify-content:flex-end;align-items:center;height:26px;padding:4px 6px 0 6px;">
+                  <button
+                    class="button is-small is-light"
+                    type="button"
+                    style="min-width:28px;height:22px;padding:0 8px;line-height:1;"
+                    @click=${this.closeTrainingHistoryOverlay}
+                    aria-label=${msg('Close')}
+                  >
+                    X
+                  </button>
+                </div>
+                <div style="height:calc(100% - 26px);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1.15fr 1fr;gap:4px;padding:2px 6px 6px 6px;">
+                  <div id="playgroundHistoryLossChart" style="grid-column:1 / span 2;"></div>
+                  <div id="playgroundHistoryErrorChart"></div>
+                  <div id="playgroundHistoryAccChart"></div>
+                </div>
+              </div>
+              ` : html``}
+            </div>
           </div>
         </div>
       </div>
