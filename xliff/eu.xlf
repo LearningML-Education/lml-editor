@@ -446,13 +446,17 @@
   <source>Noise</source>
   <target>Zarata</target>
 </trans-unit>
-<trans-unit id="s7d2821de22796f83">
-  <source>Train playground model</source>
-  <target>Probaguneko eredua entrenatu</target>
-</trans-unit>
 <trans-unit id="hb081ea6ce699fe7d">
   <source>Learn about <x id="0" equiv-text="${algorithmName}"/> on ML playground</source>
   <target>Learn about <x id="0" equiv-text="${algorithmName}"/> on ML playground</target>
+</trans-unit>
+<trans-unit id="s35e90a08decf0bbd">
+  <source>Build ML model</source>
+  <target>Eraiki ML eredua</target>
+</trans-unit>
+<trans-unit id="se20cf8bda27c9cdd">
+  <source>The theory about this algorithm</source>
+  <target>Algoritmo honi buruzko teoria</target>
 </trans-unit>
       
      

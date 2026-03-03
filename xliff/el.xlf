@@ -447,13 +447,17 @@
   <source>Noise</source>
   <target>Θόρυβος</target>
 </trans-unit>
-<trans-unit id="s7d2821de22796f83">
-  <source>Train playground model</source>
-  <target>Εκπαίδευση μοντέλου πεδίου δοκιμών</target>
-</trans-unit>
 <trans-unit id="hb081ea6ce699fe7d">
   <source>Learn about <x id="0" equiv-text="${algorithmName}"/> on ML playground</source>
   <target>Learn about <x id="0" equiv-text="${algorithmName}"/> on ML playground</target>
+</trans-unit>
+<trans-unit id="s35e90a08decf0bbd">
+  <source>Build ML model</source>
+  <target>Δημιουργία μοντέλου ML</target>
+</trans-unit>
+<trans-unit id="se20cf8bda27c9cdd">
+  <source>The theory about this algorithm</source>
+  <target>Η θεωρία για αυτόν τον αλγόριθμο</target>
 </trans-unit>
       
                 

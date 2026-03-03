@@ -446,13 +446,17 @@
   <source>Noise</source>
   <target>Ruido</target>
 </trans-unit>
-<trans-unit id="s7d2821de22796f83">
-  <source>Train playground model</source>
-  <target>Entrenar modelo de zona de pruebas</target>
-</trans-unit>
 <trans-unit id="hb081ea6ce699fe7d">
   <source>Learn about <x id="0" equiv-text="${algorithmName}"/> on ML playground</source>
   <target>Aprende sobre <x id="0" equiv-text="${algorithmName}"/> en el laboratorio de ML</target>
+</trans-unit>
+<trans-unit id="s35e90a08decf0bbd">
+  <source>Build ML model</source>
+  <target>Construir modelo de ML</target>
+</trans-unit>
+<trans-unit id="se20cf8bda27c9cdd">
+  <source>The theory about this algorithm</source>
+  <target>La teoría sobre este algoritmo</target>
 </trans-unit>
       
      

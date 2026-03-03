@@ -1,12 +1,31 @@
 import { LitElement, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import Plotly from 'plotly.js-dist-min';
 import * as tf from '@tensorflow/tfjs';
+import { marked } from 'marked';
 import { LMLSequential, KNN, NaiveBayes } from '../../services/lml-algorithms-bridge.js';
 
 const BASE_CLASS_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const BASE_CLASS_COLORS = ['#ef476f', '#06d6a0', '#118ab2', '#ffd166', '#073b4c', '#f78c6b', '#8ecae6', '#95d5b2'];
+const algorithmTheoryMdModules = import.meta.glob('./algorithm-theory/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
+const DEFAULT_THEORY_LOCALE = 'en';
+const SUPPORTED_THEORY_LOCALES = ['ca', 'de', 'el', 'en', 'es', 'eu', 'fr', 'gl', 'it', 'nl', 'pt'];
+const THEORY_ALGORITHM_KEYS = {
+  ann: 'neural-network',
+  knn: 'knn',
+  nb: 'naive-bayes'
+};
+
+marked.setOptions({
+  gfm: true,
+  breaks: false
+});
 
 export class ModelPlayground extends LitElement {
   static properties = {
@@ -19,7 +38,8 @@ export class ModelPlayground extends LitElement {
     samplesPerClass: { type: Number },
     noise: { type: Number },
     status: { type: String },
-    isTraining: { type: Boolean }
+    isTraining: { type: Boolean },
+    showTheoryModal: { type: Boolean }
   };
 
   constructor() {
@@ -34,6 +54,7 @@ export class ModelPlayground extends LitElement {
     this.noise = 0.12;
     this.status = '';
     this.isTraining = false;
+    this.showTheoryModal = false;
     this.currentModel = null;
     this.datasetPoints = new Map();
     this.modelVersion = 0;
@@ -466,6 +487,34 @@ export class ModelPlayground extends LitElement {
     this.algorithm = event.target.value;
   }
 
+  currentAlgorithmName() {
+    if (this.algorithm === 'knn') return msg('KNN');
+    if (this.algorithm === 'nb') return msg('Naive-Bayes');
+    return msg('Neural network');
+  }
+
+  getCurrentTheoryLocale() {
+    const url = new URL(window.location.href);
+    const locale = (url.searchParams.get('locale') || DEFAULT_THEORY_LOCALE).toLowerCase();
+    return SUPPORTED_THEORY_LOCALES.includes(locale) ? locale : DEFAULT_THEORY_LOCALE;
+  }
+
+  getTheoryMarkdownSource() {
+    const algorithmKey = THEORY_ALGORITHM_KEYS[this.algorithm] || THEORY_ALGORITHM_KEYS.ann;
+    const locale = this.getCurrentTheoryLocale();
+    const localizedPath = `./algorithm-theory/${algorithmKey}.${locale}.md`;
+    const defaultPath = `./algorithm-theory/${algorithmKey}.${DEFAULT_THEORY_LOCALE}.md`;
+    return algorithmTheoryMdModules[localizedPath] || algorithmTheoryMdModules[defaultPath] || '';
+  }
+
+  openTheoryModal() {
+    this.showTheoryModal = true;
+  }
+
+  closeTheoryModal() {
+    this.showTheoryModal = false;
+  }
+
   onPatternChange(event) {
     this.pattern = event.target.value;
     this.updateDatasetPreview();
@@ -582,7 +631,24 @@ export class ModelPlayground extends LitElement {
   }
 
   render() {
+    const theoryHtml = marked.parse(this.getTheoryMarkdownSource());
     return html`
+      <div class=${classMap({ modal: true, 'is-active': this.showTheoryModal })}>
+        <div class="modal-background" @click=${this.closeTheoryModal}></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">${this.currentAlgorithmName()}</p>
+            <button class="delete" aria-label="close" @click=${this.closeTheoryModal}></button>
+          </header>
+          <section class="modal-card-body">
+            <div class="content">${unsafeHTML(theoryHtml)}</div>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button" @click=${this.closeTheoryModal}>${msg('Close')}</button>
+          </footer>
+        </div>
+      </div>
+
       <div class="columns">
         <div class="column is-4">
           <div class="box">
@@ -654,12 +720,17 @@ export class ModelPlayground extends LitElement {
             ${this.renderAlgorithmHyperparameters()}
 
             <div class="field mt-4">
-              <button
-                class=${classMap({ button: true, 'is-primary': true, 'is-loading': this.isTraining })}
-                @click=${this.trainPlaygroundModel}
-              >
-                ${msg('Train playground model')}
-              </button>
+              <div class="buttons">
+                <button class="button is-light" @click=${this.openTheoryModal}>
+                  ${msg('The theory about this algorithm')}
+                </button>
+                <button
+                  class=${classMap({ button: true, 'is-primary': true, 'is-loading': this.isTraining })}
+                  @click=${this.trainPlaygroundModel}
+                >
+                  ${msg('Build ML model')}
+                </button>
+              </div>
             </div>
             ${this.status ? html`<p class="is-size-7 mt-2">${this.status}</p>` : html``}
             <p class="is-size-7 has-text-grey mt-3">
