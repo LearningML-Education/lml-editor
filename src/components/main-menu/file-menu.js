@@ -44,15 +44,21 @@ export class FileMenu extends LitElement {
     updateWhenLocaleChanges(this);
     this.dropdownOpen = false;
     this.handleExternalToggle = this.handleExternalToggle.bind(this);
+    this.handleDocumentPointerDown = this.handleDocumentPointerDown.bind(this);
+    this.handleDocumentKeydown = this.handleDocumentKeydown.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('lml-menu-toggle', this.handleExternalToggle);
+    document.addEventListener('pointerdown', this.handleDocumentPointerDown, true);
+    document.addEventListener('keydown', this.handleDocumentKeydown);
   }
 
   disconnectedCallback() {
     window.removeEventListener('lml-menu-toggle', this.handleExternalToggle);
+    document.removeEventListener('pointerdown', this.handleDocumentPointerDown, true);
+    document.removeEventListener('keydown', this.handleDocumentKeydown);
     super.disconnectedCallback();
   }
 
@@ -60,6 +66,31 @@ export class FileMenu extends LitElement {
     if (event?.detail?.menu !== 'file' && event?.detail?.open) {
       this.dropdownOpen = false;
     }
+  }
+
+  handleDocumentPointerDown(event) {
+    if (!this.dropdownOpen) return;
+    if (!this.contains(event.target)) {
+      this.closeDropdown();
+    }
+  }
+
+  handleDocumentKeydown(event) {
+    if (event.key === 'Escape' && this.dropdownOpen) {
+      this.closeDropdown();
+    }
+  }
+
+  setDropdownOpen(nextOpen) {
+    if (this.dropdownOpen === nextOpen) return;
+    this.dropdownOpen = nextOpen;
+    window.dispatchEvent(new CustomEvent('lml-menu-toggle', {
+      detail: { menu: 'file', open: this.dropdownOpen }
+    }));
+  }
+
+  closeDropdown() {
+    this.setDropdownOpen(false);
   }
 
   saveDataset(e) {
@@ -209,11 +240,13 @@ export class FileMenu extends LitElement {
   }
 
   openFileBrowser(){
+    this.closeDropdown();
     document.getElementById('fileInput').click();
   }
 
   loadExampleDataset(example) {
     if (!example) return;
+    this.closeDropdown();
     const inputDataName = example.name;
     this._dataTypeConsumer.value.name = inputDataName;
 
@@ -228,10 +261,7 @@ export class FileMenu extends LitElement {
   toggleDropdown(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.dropdownOpen = !this.dropdownOpen;
-    window.dispatchEvent(new CustomEvent('lml-menu-toggle', {
-      detail: { menu: 'file', open: this.dropdownOpen }
-    }));
+    this.setDropdownOpen(!this.dropdownOpen);
   }
 
   render() {
@@ -290,7 +320,6 @@ export class FileMenu extends LitElement {
     <div class=${classMap({
       'navbar-item': true,
       'has-dropdown': true,
-      'is-hoverable': true,
       'is-active': this.dropdownOpen
     })}>
         <a class="navbar-link" href="#" @click=${this.toggleDropdown}>
@@ -299,14 +328,14 @@ export class FileMenu extends LitElement {
     
         <div class="navbar-dropdown">
           
-          <a href="" class="navbar-item">${msg("New")}</a>
+          <a href="" class="navbar-item" @click=${this.closeDropdown}>${msg("New")}</a>
           <a @click=${this.openFileBrowser} class="navbar-item">${msg("Upload dataset from your computer")}</a>
           ${this.showSaveDataset
-        ? html`<a @click=${this.saveDataset}  class="navbar-item">${msg("Save dataset to your computer")}</a>`
+        ? html`<a @click=${(e) => { this.closeDropdown(); this.saveDataset(e); }} class="navbar-item">${msg("Save dataset to your computer")}</a>`
         : html``
           }
           ${this.showSaveModel
-        ? html`<a @click=${this.saveModel}  class="navbar-item">${msg("Save model to your computer")}</a>`
+        ? html`<a @click=${(e) => { this.closeDropdown(); this.saveModel(e); }} class="navbar-item">${msg("Save model to your computer")}</a>`
         : html``
           }
 
