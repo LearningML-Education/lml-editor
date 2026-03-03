@@ -70,7 +70,9 @@ export class FileMenu extends LitElement {
 
   handleDocumentPointerDown(event) {
     if (!this.dropdownOpen) return;
-    if (!this.contains(event.target)) {
+    const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+    const clickedInside = path.includes(this);
+    if (!clickedInside) {
       this.closeDropdown();
     }
   }
@@ -241,7 +243,7 @@ export class FileMenu extends LitElement {
 
   openFileBrowser(){
     this.closeDropdown();
-    document.getElementById('fileInput').click();
+    this.querySelector('#fileInput')?.click();
   }
 
   loadExampleDataset(example) {
@@ -356,7 +358,12 @@ export class FileMenu extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    const root = super.createRenderRoot();
+    const initShadow = globalThis.__lmlInitShadowRoot;
+    if (typeof initShadow === 'function') {
+      initShadow(this, root);
+    }
+    return root;
   }
 }
 

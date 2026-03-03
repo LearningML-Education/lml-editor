@@ -95,7 +95,12 @@ export class LanguageMenu extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    const root = super.createRenderRoot();
+    const initShadow = globalThis.__lmlInitShadowRoot;
+    if (typeof initShadow === 'function') {
+      initShadow(this, root);
+    }
+    return root;
   }
 }
 

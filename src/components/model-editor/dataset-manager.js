@@ -172,7 +172,7 @@ export class DatasetManager extends LitElement {
   }
 
   _uploadTexts() {
-    document.getElementById(`textFileInput_${this.labelName}`).click();
+    this.querySelector(`#textFileInput_${this.labelName}`)?.click();
   }
 
   onLoadedText(event) {
@@ -208,7 +208,7 @@ export class DatasetManager extends LitElement {
   }
 
   _uploadImages() {
-    document.getElementById(`imageFileInput_${this.labelName}`).click();
+    this.querySelector(`#imageFileInput_${this.labelName}`)?.click();
   }
 
   onLoaded(event) {
@@ -296,8 +296,9 @@ export class DatasetManager extends LitElement {
   }
 
   collectAudioSample() {
-    const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
-    const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
+    const recordButton = this.querySelector(`#recordButton_${this.labelName}`);
+    const stopButton = this.querySelector(`#stopButton_${this.labelName}`);
+    if (!recordButton || !stopButton) return;
     recordButton.disabled = true;
     stopButton.disabled = false;
 
@@ -307,8 +308,9 @@ export class DatasetManager extends LitElement {
 
   stopRecording() {
     this.stopCollecting = true;
-    const recordButton = document.querySelector(`#recordButton_${this.labelName}`);
-    const stopButton = document.querySelector(`#stopButton_${this.labelName}`);
+    const recordButton = this.querySelector(`#recordButton_${this.labelName}`);
+    const stopButton = this.querySelector(`#stopButton_${this.labelName}`);
+    if (!recordButton || !stopButton) return;
     recordButton.disabled = false;
     stopButton.disabled = true;
   }
@@ -700,7 +702,12 @@ export class DatasetManager extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    const root = super.createRenderRoot();
+    const initShadow = globalThis.__lmlInitShadowRoot;
+    if (typeof initShadow === 'function') {
+      initShadow(this, root);
+    }
+    return root;
   }
 }
 

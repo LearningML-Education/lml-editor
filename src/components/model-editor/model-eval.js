@@ -110,7 +110,7 @@ export class ModelEval extends LitElement {
   }
 
   _uploadImage() {
-    document.getElementById('evalImageFileInput').click();
+    this.querySelector('#evalImageFileInput')?.click();
   }
 
   onLoaded(event) {
@@ -186,7 +186,8 @@ export class ModelEval extends LitElement {
   }
 
   startRecording() {
-    const recordButton = document.querySelector('#recordButton');
+    const recordButton = this.querySelector('#recordButton');
+    if (!recordButton) return;
     recordButton.disabled = true;
 
     collectExample("test").then(result => {
@@ -375,7 +376,12 @@ ${this.templateFormEval(this._dataTypeConsumer.value.type)}
   }
 
   createRenderRoot() {
-    return this;
+    const root = super.createRenderRoot();
+    const initShadow = globalThis.__lmlInitShadowRoot;
+    if (typeof initShadow === 'function') {
+      initShadow(this, root);
+    }
+    return root;
   }
 }
 

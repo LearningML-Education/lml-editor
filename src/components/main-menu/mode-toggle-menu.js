@@ -6,7 +6,7 @@ import { classMap } from 'lit/directives/class-map.js';
 export class ModeToggleMenu extends LitElement {
 
   static properties = {
-    advanced: { Boolean },
+    advanced: { type: Boolean },
   }
 
   constructor() {
@@ -23,7 +23,9 @@ export class ModeToggleMenu extends LitElement {
     this.advanced = !this.advanced;
 
     this.dispatchEvent(new CustomEvent('toggle-advanced-mode', {
-      bubbles: true
+      bubbles: true,
+      composed: true,
+      detail: { advanced: this.advanced }
     }));
   }
 
@@ -43,7 +45,12 @@ export class ModeToggleMenu extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    const root = super.createRenderRoot();
+    const initShadow = globalThis.__lmlInitShadowRoot;
+    if (typeof initShadow === 'function') {
+      initShadow(this, root);
+    }
+    return root;
   }
 }
 

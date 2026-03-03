@@ -29,6 +29,97 @@ import {
 } from '../services/lml-algorithms-bridge.js';
 import * as tf from '@tensorflow/tfjs';
 
+const SHARED_SHADOW_STYLES = `
+  .is-clickable {
+    cursor: pointer;
+  }
+  .component {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .navbar-item {
+    height: 100%;
+  }
+  .truncate {
+    display: inline-block;
+    vertical-align: middle;
+    width: 350px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1;
+  }
+  .itemdata {
+    max-height: 300px;
+    overflow: auto;
+  }
+  .image-item {
+    height: 75px;
+  }
+  .audio-container {
+    position: relative;
+    display: inline-block;
+  }
+  .sample-text {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  .play-button {
+    position: absolute;
+    bottom: 10px;
+    left: 5px;
+    font-size: 10px;
+    padding: 5px;
+    width: 25px;
+    height: 25px;
+  }
+  .delete-button {
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    font-size: 10px;
+    padding: 5px;
+    width: 25px;
+    height: 25px;
+  }
+`;
+
+if (typeof globalThis.__lmlInitShadowRoot !== 'function') {
+    globalThis.__lmlInitShadowRoot = (host, root) => {
+        if (!root || root.__lmlSharedStylesApplied) return;
+        root.__lmlSharedStylesApplied = true;
+
+        const links = [
+            'https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
+        ];
+
+        for (const href of links) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+            root.appendChild(link);
+        }
+
+        const style = document.createElement('style');
+        style.textContent = SHARED_SHADOW_STYLES;
+        root.appendChild(style);
+
+        if (!host.__lmlPatchedQueries) {
+            host.__lmlPatchedQueries = true;
+            host.querySelector = (selector) => root.querySelector(selector);
+            host.querySelectorAll = (selector) => root.querySelectorAll(selector);
+        }
+    };
+}
+
 window.__lmlV2BundleLoaded = true;
 
 
@@ -319,8 +410,13 @@ class LMLApp extends LitElement {
     }
 
     createRenderRoot() {
-        return this;
+    const root = super.createRenderRoot();
+    const initShadow = globalThis.__lmlInitShadowRoot;
+    if (typeof initShadow === 'function') {
+      initShadow(this, root);
     }
+    return root;
+  }
 
 }
 customElements.define('lml-app', LMLApp);

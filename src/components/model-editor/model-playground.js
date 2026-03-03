@@ -63,7 +63,18 @@ export class ModelPlayground extends LitElement {
     this.datasetPoints = new Map();
     this.modelVersion = 0;
     this.plotClickListener = this.onPlotClick.bind(this);
+    this.resizeOverlayCharts = this.resizeOverlayCharts.bind(this);
     updateWhenLocaleChanges(this);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('resize', this.resizeOverlayCharts);
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('resize', this.resizeOverlayCharts);
+    super.disconnectedCallback();
   }
 
   updated(changedProperties) {
@@ -425,6 +436,8 @@ export class ModelPlayground extends LitElement {
   async renderTrainingMetricPlot(containerId, yValues, title, color, maxValue) {
     const container = this.querySelector(containerId);
     if (!container || !Array.isArray(yValues) || !yValues.length) return;
+    const chartHeight = Math.max(70, container.clientHeight || 90);
+    const chartWidth = Math.max(120, container.clientWidth || 180);
     await Plotly.newPlot(container, [{
       x: this.trainingHistory.epoch,
       y: yValues,
@@ -434,21 +447,23 @@ export class ModelPlayground extends LitElement {
       line: { width: 2, color },
       hovertemplate: '%{y:.4f}<extra></extra>'
     }], {
-      margin: { t: 20, r: 8, b: 24, l: 40 },
+      width: chartWidth,
+      height: chartHeight,
+      autosize: false,
+      margin: { t: 8, r: 8, b: 24, l: 40 },
       paper_bgcolor: '#ffffff',
       plot_bgcolor: '#ffffff',
-      xaxis: { title: msg('Epochs'), tickfont: { size: 9 }, titlefont: { size: 10 } },
+      xaxis: { title: msg('Epochs'), tickfont: { size: 9 }, titlefont: { size: 9 } },
       yaxis: {
-        title,
         range: [0, Math.max(0.1, maxValue * 1.05)],
         tickfont: { size: 9 },
-        titlefont: { size: 10 },
         zeroline: true
       }
     }, {
       responsive: true,
       displayModeBar: false
     });
+    Plotly.Plots.resize(container);
   }
 
   async renderTrainingHistoryOverlayPlots() {
@@ -469,6 +484,18 @@ export class ModelPlayground extends LitElement {
       this.renderTrainingMetricPlot('#playgroundHistoryErrorChart', this.trainingHistory.error, msg('Error'), '#118ab2', maxError),
       this.renderTrainingMetricPlot('#playgroundHistoryAccChart', this.trainingHistory.accuracy, msg('Accuracy'), '#06d6a0', maxAccuracy)
     ]);
+    requestAnimationFrame(this.resizeOverlayCharts);
+  }
+
+  resizeOverlayCharts() {
+    if (!this.showTrainingHistoryOverlay) return;
+    const ids = ['#playgroundHistoryLossChart', '#playgroundHistoryErrorChart', '#playgroundHistoryAccChart'];
+    for (const id of ids) {
+      const el = this.querySelector(id);
+      if (el) {
+        Plotly.Plots.resize(el);
+      }
+    }
   }
 
   predictNaiveBayesClassIndex(point) {
@@ -751,6 +778,59 @@ export class ModelPlayground extends LitElement {
           line-height: 1.15;
           display: block;
         }
+        .history-overlay {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          width: clamp(260px, 46%, 360px);
+          height: clamp(180px, 30vh, 240px);
+          background: #ffffff;
+          border: 1px solid #dbe3ef;
+          border-radius: 10px;
+          box-shadow: 0 6px 16px rgba(15, 23, 42, 0.16);
+          z-index: 20;
+        }
+        .history-overlay-grid {
+          height: calc(100% - 26px);
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: 1.15fr 1fr;
+          gap: 4px;
+          padding: 2px 6px 6px 6px;
+        }
+        .history-overlay-loss {
+          grid-column: 1 / span 2;
+        }
+        .history-metric {
+          display: flex;
+          flex-direction: column;
+          min-height: 0;
+        }
+        .history-metric-title {
+          font-size: 0.7rem;
+          line-height: 1;
+          color: #334155;
+          padding: 0 0 2px 2px;
+          font-weight: 600;
+        }
+        .history-metric-chart {
+          flex: 1;
+          min-height: 0;
+        }
+        @media (max-width: 1023px) {
+          .history-overlay {
+            width: calc(100% - 24px);
+            height: clamp(170px, 28vh, 220px);
+          }
+        }
+        @media (max-width: 640px) {
+          .history-overlay {
+            left: 8px;
+            top: 8px;
+            width: calc(100% - 16px);
+            height: clamp(160px, 26vh, 200px);
+          }
+        }
       </style>
       <div class=${classMap({ modal: true, 'is-active': this.showTheoryModal })}>
         <div class="modal-background" @click=${this.closeTheoryModal}></div>
@@ -866,7 +946,7 @@ export class ModelPlayground extends LitElement {
             <div style="position:relative;">
               <div id="playgroundChart" style="height: clamp(520px, 74vh, 920px);"></div>
               ${this.showTrainingHistoryOverlay ? html`
-              <div style="position:absolute;top:12px;left:12px;width:min(380px,52%);height:360px;background:#ffffff;border:1px solid #dbe3ef;border-radius:10px;box-shadow:0 6px 16px rgba(15,23,42,0.16);z-index:20;">
+              <div class="history-overlay">
                 <div style="display:flex;justify-content:flex-end;align-items:center;height:26px;padding:4px 6px 0 6px;">
                   <button
                     class="button is-small is-light"
@@ -878,10 +958,19 @@ export class ModelPlayground extends LitElement {
                     X
                   </button>
                 </div>
-                <div style="height:calc(100% - 26px);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1.15fr 1fr;gap:4px;padding:2px 6px 6px 6px;">
-                  <div id="playgroundHistoryLossChart" style="grid-column:1 / span 2;"></div>
-                  <div id="playgroundHistoryErrorChart"></div>
-                  <div id="playgroundHistoryAccChart"></div>
+                <div class="history-overlay-grid">
+                  <div class="history-metric history-overlay-loss">
+                    <div class="history-metric-title">${msg('Loss')}</div>
+                    <div id="playgroundHistoryLossChart" class="history-metric-chart"></div>
+                  </div>
+                  <div class="history-metric">
+                    <div class="history-metric-title">${msg('Error')}</div>
+                    <div id="playgroundHistoryErrorChart" class="history-metric-chart"></div>
+                  </div>
+                  <div class="history-metric">
+                    <div class="history-metric-title">${msg('Accuracy')}</div>
+                    <div id="playgroundHistoryAccChart" class="history-metric-chart"></div>
+                  </div>
                 </div>
               </div>
               ` : html``}
@@ -893,7 +982,12 @@ export class ModelPlayground extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    const root = super.createRenderRoot();
+    const initShadow = globalThis.__lmlInitShadowRoot;
+    if (typeof initShadow === 'function') {
+      initShadow(this, root);
+    }
+    return root;
   }
 
   onBackToEditor() {
