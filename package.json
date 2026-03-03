@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage",
     "preview": "vite preview",
     "translate-extract": "lit-localize extract",
     "translate-build": "lit-localize build"
