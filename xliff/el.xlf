@@ -283,10 +283,6 @@
         <source>Advanced</source>
         <target>Προχωρημένο</target>
       </trans-unit>
-      <trans-unit id="sfbfac884c01f1002">
-        <source>Did you know that...?</source>
-        <target>Γνωρίζατε ότι...;</target>
-      </trans-unit>
       <trans-unit id="scc4d8ca49d0bb4bf">
         <source>Great! The model has been trained!</source>
         <target>Τέλεια! Το μοντέλο έχει εκπαιδευτεί!</target>
@@ -343,6 +339,122 @@
         <source>Introduce new sound and checks they are correctly classified </source>
         <target>Εισαγάγετε νέους ήχους και ελέγξτε εάν ταξινομούνται σωστά</target>
       </trans-unit>
+<trans-unit id="s1311c2f640bf372c">
+  <source>Playground</source>
+  <target>Πεδίο δοκιμών</target>
+</trans-unit>
+<trans-unit id="sb497281bc400154a">
+  <source>Variance smoothing:</source>
+  <target>Εξομάλυνση διακύμανσης:</target>
+</trans-unit>
+<trans-unit id="s904eda9bf780d891">
+  <source>Class prior smoothing:</source>
+  <target>Εξομάλυνση εκ των προτέρων πιθανότητας κλάσης:</target>
+</trans-unit>
+<trans-unit id="s0baf345d9c6876b3">
+  <source>Naive-Bayes</source>
+  <target>Naive-Bayes</target>
+</trans-unit>
+<trans-unit id="seca89e2e6a969dc1">
+  <source>Algorithm help</source>
+  <target>Βοήθεια αλγορίθμου</target>
+</trans-unit>
+<trans-unit id="s64aa2fc294d4d9b8">
+  <source>Training model...</source>
+  <target>Εκπαίδευση μοντέλου...</target>
+</trans-unit>
+<trans-unit id="scf615aad1145e8e2">
+  <source>Playground model trained</source>
+  <target>Το μοντέλο πεδίου δοκιμών εκπαιδεύτηκε</target>
+</trans-unit>
+<trans-unit id="sb31131b96afb5e43">
+  <source>Could not train playground model</source>
+  <target>Δεν ήταν δυνατή η εκπαίδευση του μοντέλου πεδίου δοκιμών</target>
+</trans-unit>
+<trans-unit id="s8d675bdb850fc257">
+  <source>Active class</source>
+  <target>Ενεργή κλάση</target>
+</trans-unit>
+<trans-unit id="sb4f1dffbb6be6302">
+  <source>Clear</source>
+  <target>Καθαρισμός</target>
+</trans-unit>
+<trans-unit id="s900c980bdb200fcf">
+  <source>Epochs</source>
+  <target>Εποχές</target>
+</trans-unit>
+<trans-unit id="sd674ba4ce23f2290">
+  <source>Batch size</source>
+  <target>Μέγεθος παρτίδας</target>
+</trans-unit>
+<trans-unit id="sa4aa72be4b18da23">
+  <source>Learning rate</source>
+  <target>Ρυθμός μάθησης</target>
+</trans-unit>
+<trans-unit id="s0c79b0c08b500c87">
+  <source>Number of neighbours</source>
+  <target>Αριθμός γειτόνων</target>
+</trans-unit>
+<trans-unit id="secad3133438a4cb4">
+  <source>Variance smoothing</source>
+  <target>Εξομάλυνση διακύμανσης</target>
+</trans-unit>
+<trans-unit id="sde9da320234a7291">
+  <source>Class prior smoothing</source>
+  <target>Εξομάλυνση εκ των προτέρων πιθανότητας κλάσης</target>
+</trans-unit>
+<trans-unit id="sc16e00a7a8b2fde2">
+  <source>Back</source>
+  <target>Πίσω</target>
+</trans-unit>
+<trans-unit id="sd403f030dcd9c064">
+  <source>Dataset source</source>
+  <target>Πηγή συνόλου δεδομένων</target>
+</trans-unit>
+<trans-unit id="sdcabf5054961c0cb">
+  <source>Generate automatically</source>
+  <target>Αυτόματη δημιουργία</target>
+</trans-unit>
+<trans-unit id="s0f4d56dc08e2aed9">
+  <source>Draw data</source>
+  <target>Σχεδίαση δεδομένων</target>
+</trans-unit>
+<trans-unit id="s73c7d8ba99304d85">
+  <source>Dataset pattern</source>
+  <target>Μοτίβο συνόλου δεδομένων</target>
+</trans-unit>
+<trans-unit id="s2b27d20d26f539bb">
+  <source>Blobs</source>
+  <target>Blobs</target>
+</trans-unit>
+<trans-unit id="s5a801360c0e7cc6e">
+  <source>Circles</source>
+  <target>Κύκλοι</target>
+</trans-unit>
+<trans-unit id="sbf120e651a2bec91">
+  <source>Spirals</source>
+  <target>Σπείρες</target>
+</trans-unit>
+<trans-unit id="s8e4d8a2ae278e469">
+  <source>Number of classes</source>
+  <target>Αριθμός κλάσεων</target>
+</trans-unit>
+<trans-unit id="s11d97061dd23d92b">
+  <source>Samples per class</source>
+  <target>Δείγματα ανά κλάση</target>
+</trans-unit>
+<trans-unit id="s2bc80ed8441b0831">
+  <source>Noise</source>
+  <target>Θόρυβος</target>
+</trans-unit>
+<trans-unit id="s7d2821de22796f83">
+  <source>Train playground model</source>
+  <target>Εκπαίδευση μοντέλου πεδίου δοκιμών</target>
+</trans-unit>
+<trans-unit id="hb081ea6ce699fe7d">
+  <source>Learn about <x id="0" equiv-text="${algorithmName}"/> on ML playground</source>
+  <target>Learn about <x id="0" equiv-text="${algorithmName}"/> on ML playground</target>
+</trans-unit>
       
                 
     </body>

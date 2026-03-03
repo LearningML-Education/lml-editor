@@ -412,12 +412,19 @@ export class ModelLearn extends LitElement {
   templateAlgorithmExplanation() {
     const markdownText = this.getHelpMarkdownSource();
     const renderedHtml = marked.parse(markdownText);
+    const algorithmName = this.currentAlgorithmName();
     return html`
       <div class="content">${unsafeHTML(renderedHtml)}</div>
       <p class="mt-4">
-        <a href="#" @click=${this.openPlayground}>playground</a>
+        <a href="#" @click=${this.openPlayground}>${msg(html`Learn about ${algorithmName} on ML playground`)}</a>
       </p>
     `;
+  }
+
+  currentAlgorithmName() {
+    if (this.algorithm === 'knn') return msg("KNN");
+    if (this.algorithm === 'nb') return msg("Naive-Bayes");
+    return msg("Neural network");
   }
 
   openPlayground(event) {
