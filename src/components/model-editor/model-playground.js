@@ -635,13 +635,13 @@ export class ModelPlayground extends LitElement {
     return html`
       <div class=${classMap({ modal: true, 'is-active': this.showTheoryModal })}>
         <div class="modal-background" @click=${this.closeTheoryModal}></div>
-        <div class="modal-card">
+        <div class="modal-card" style="width:min(1100px,96vw);max-width:min(1100px,96vw);">
           <header class="modal-card-head">
             <p class="modal-card-title">${this.currentAlgorithmName()}</p>
             <button class="delete" aria-label="close" @click=${this.closeTheoryModal}></button>
           </header>
           <section class="modal-card-body">
-            <div class="content">${unsafeHTML(theoryHtml)}</div>
+            <div class="content" style="overflow-x:auto;">${unsafeHTML(theoryHtml)}</div>
           </section>
           <footer class="modal-card-foot">
             <button class="button" @click=${this.closeTheoryModal}>${msg('Close')}</button>
