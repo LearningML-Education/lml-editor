@@ -700,7 +700,7 @@ export class ModelPlayground extends LitElement {
   renderAlgorithmHyperparameters() {
     if (this.algorithm === 'ann') {
       return html`
-        <div class="columns">
+        <div class="columns aligned-fields">
           <div class="column">
             <label class="label">${msg('Epochs')}</label>
             <input id="pgEpochs" class="input" type="number" min="1" value="35" />
@@ -741,6 +741,17 @@ export class ModelPlayground extends LitElement {
   render() {
     const theoryHtml = marked.parse(this.getTheoryMarkdownSource());
     return html`
+      <style>
+        .playground-form .label {
+          font-size: 0.82rem;
+          margin-bottom: 0.25rem;
+        }
+        .playground-form .aligned-fields .label {
+          min-height: 2.6rem;
+          line-height: 1.15;
+          display: block;
+        }
+      </style>
       <div class=${classMap({ modal: true, 'is-active': this.showTheoryModal })}>
         <div class="modal-background" @click=${this.closeTheoryModal}></div>
         <div class="modal-card" style="width:min(1100px,96vw);max-width:min(1100px,96vw);">
@@ -758,7 +769,7 @@ export class ModelPlayground extends LitElement {
       </div>
 
       <div class="columns">
-        <div class="column is-4">
+        <div class="column is-4 playground-form">
           <div class="box">
             <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
               <h5 class="title is-5 mb-0">${msg('Playground')}</h5>
@@ -793,7 +804,7 @@ export class ModelPlayground extends LitElement {
             </div>
             ` : html``}
 
-            <div class="columns">
+            <div class="columns aligned-fields">
               <div class="column">
                 <label class="label">${msg('Number of classes')}</label>
                 <input class="input" type="number" min="2" max="8" .value=${String(this.classCount)} @input=${this.onClassCountInput} />
