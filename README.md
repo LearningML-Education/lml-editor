@@ -147,6 +147,64 @@ URL_SCRATCH=https://learningml-education.github.io/scratch/? \
 bun run build
 ```
 
+## Tests
+
+El proyecto usa dos tipos de ejecución de tests:
+
+- `bun test` para unitarios, componentes e integración ligera.
+- `playwright` para tests E2E en navegador real.
+
+### Ejecutar tests unitarios e integración
+
+Ejecutar toda la suite de `bun:test`:
+
+```bash
+bun test
+```
+
+Con cobertura:
+
+```bash
+bun test --coverage
+```
+
+También se puede usar el script de `package.json`:
+
+```bash
+npm run test
+npm run test:coverage
+```
+
+### Ejecutar tests E2E con Playwright
+
+1. Instalar dependencias del proyecto:
+
+```bash
+bun install
+```
+
+2. Instalar navegadores de Playwright (una sola vez por entorno):
+
+```bash
+npx playwright install chromium
+```
+
+3. Ejecutar E2E:
+
+```bash
+bun run test:e2e
+```
+
+Modo visible (headed):
+
+```bash
+bun run test:e2e:headed
+```
+
+Notas:
+- La configuración está en `playwright.config.js`.
+- Los tests E2E están en `tests/e2e/`.
+
 
 ## Traducciones
 

@@ -9,6 +9,8 @@
     "build": "vite build",
     "test": "bun test",
     "test:coverage": "bun test --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "preview": "vite preview",
     "translate-extract": "lit-localize extract",
     "translate-build": "lit-localize build"
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.7.1",
+    "@playwright/test": "^1.54.2",
     "jsdoc": "^4.0.2",
     "vite": "^5.0.0"
   }
