@@ -55,6 +55,7 @@ export class ModelLearn extends LitElement {
     acc: { type: Number },
     loss: { type: Number },
     learningPercentage: { type: Number },
+    percentageForValidation: { type: Number },
     learningTime: { type: Number },
     showMetricsModal: { type: Boolean },
     historyLegendItems: { type: Array },
@@ -72,6 +73,7 @@ export class ModelLearn extends LitElement {
     this.acc = 0;
     this.loss = 0;
     this.learningPercentage = 0;
+    this.percentageForValidation = 0;
     this.learningTime = 0;
     this.showMetricsModal = false;
     this.historyLegendItems = [];
@@ -875,8 +877,19 @@ export class ModelLearn extends LitElement {
           <div class="field">
             <label class="label">${msg("Percentage of samples for validation:")}</label>
             <div class="control">
-              <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
+              <input
+                id="percentageforvalidation"
+                name="percentageforvalidation"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                .value=${String(this.percentageForValidation)}
+                @input=${(e) => { this.percentageForValidation = e.target.valueAsNumber; }}
+                style="width:100%;"
+              />
             </div>
+            <p class="help">${this.percentageForValidation}%</p>
           </div>
 
           <div class="block mt-2">
