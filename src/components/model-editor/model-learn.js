@@ -801,15 +801,15 @@ export class ModelLearn extends LitElement {
               ${this.percentageForValidation != 0 ? html`
                 <div>
                   <h6 class="title is-6 mb-2">${msg("Confusion matrix")}</h6>
-                  <div style="display:flex;align-items:stretch;gap:0.65rem;">
+                  <div style="display:flex;align-items:flex-start;gap:0.65rem;">
                     <iframe
                       id="confusionMatrixModalFrame"
                       title="${msg("Confusion matrix")}"
                       style="flex:1;width:auto;height:min(44vh,400px);border:0;background:#fff;"
                     ></iframe>
-                    <div style="width:34px;display:flex;align-items:center;justify-content:center;gap:0.2rem;">
-                      <div style="width:12px;height:min(36vh,320px);border:1px solid #9ca3af;background:linear-gradient(to top,#005a32 0%,#238b45 45%,#74c476 70%,#e5f5e0 100%);"></div>
-                      <div style="height:min(36vh,320px);display:flex;flex-direction:column;justify-content:space-between;font-size:0.72rem;color:#374151;">
+                    <div style="width:34px;display:flex;align-items:flex-start;justify-content:center;gap:0.2rem;padding-top:12px;">
+                      <div style="width:12px;height:calc(min(44vh,400px) - 88px);border:1px solid #9ca3af;background:linear-gradient(to top,#005a32 0%,#238b45 45%,#74c476 70%,#e5f5e0 100%);"></div>
+                      <div style="height:calc(min(44vh,400px) - 88px);display:flex;flex-direction:column;justify-content:space-between;font-size:0.72rem;color:#374151;">
                         <span>${this.formatScaleValue(this.confusionScaleMax)}</span>
                         <span>${this.formatScaleValue(this.confusionScaleMid)}</span>
                         <span>${this.formatScaleValue(this.confusionScaleMin)}</span>
