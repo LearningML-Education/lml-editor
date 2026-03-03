@@ -55,7 +55,12 @@ export class ModelLearn extends LitElement {
     acc: { type: Number },
     loss: { type: Number },
     learningPercentage: { type: Number },
-    learningTime: { type: Number }
+    learningTime: { type: Number },
+    showMetricsModal: { type: Boolean },
+    historyLegendItems: { type: Array },
+    confusionScaleMin: { type: Number },
+    confusionScaleMid: { type: Number },
+    confusionScaleMax: { type: Number }
   }
 
   constructor() {
@@ -68,6 +73,11 @@ export class ModelLearn extends LitElement {
     this.loss = 0;
     this.learningPercentage = 0;
     this.learningTime = 0;
+    this.showMetricsModal = false;
+    this.historyLegendItems = [];
+    this.confusionScaleMin = 0;
+    this.confusionScaleMid = 0;
+    this.confusionScaleMax = 0;
     updateWhenLocaleChanges(this);
 
     this.bc = new BroadcastChannel('lml-internal');
@@ -182,6 +192,7 @@ export class ModelLearn extends LitElement {
     let type = this._dataTypeConsumer.value.type;
     let encode = this._encoderComsumer.value[type]
     this.showModalLearn = true;
+    this.showMetricsModal = false;
     this.modelHasBeenTrained = false;
     this._featuresConsumer.value.clear();
     let vocabulary;
@@ -223,6 +234,9 @@ export class ModelLearn extends LitElement {
 
     const startTime = new Date().getTime();
 
+    let learningHistoryPayload = null;
+    let confusionMatrixPayload = null;
+
     extractWithFallback().then(() => {
       function totalElementsInDataset(map) {
         let total = 0;
@@ -254,12 +268,12 @@ export class ModelLearn extends LitElement {
         return result;
       }).then(r => {
         if (this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential') {
-          let learningHistory = this.querySelector("#learningHistory");
-          learningHistory.style.display = 'block';
-          let d = this._modelConsumer.value.dataForHistoryPlotly();
-          Plotly.newPlot(learningHistory, d.data, d.layout);
+          learningHistoryPayload = this._modelConsumer.value.dataForHistoryPlotly();
+          learningHistoryPayload.data = this.getReadableHistoryData(learningHistoryPayload.data || []);
+          this.historyLegendItems = this.buildHistoryLegendItems(learningHistoryPayload.data);
         } else if (this.advancedMode.enabled) {
-          this.querySelector("#learningHistory").style.display = 'none';
+          learningHistoryPayload = null;
+          this.historyLegendItems = [];
         }
 
         return r;
@@ -268,9 +282,17 @@ export class ModelLearn extends LitElement {
         return dataForPlotly;
       }).then(d => {
         console.log(d);
-        let confusionMatrixElem = this.querySelector("#confusionMatrix");
         if (this.advancedMode.enabled && this.percentageForValidation != 0) {
-          Plotly.newPlot(confusionMatrixElem, d.data, d.layout);
+          confusionMatrixPayload = {
+            data: this.getReadableConfusionMatrixData(d.data || []),
+            layout: this.getReadableConfusionMatrixLayout(d.layout || {})
+          };
+          this.extractConfusionScaleFromData(confusionMatrixPayload.data);
+        } else if (this.advancedMode.enabled) {
+          confusionMatrixPayload = null;
+          this.confusionScaleMin = 0;
+          this.confusionScaleMid = 0;
+          this.confusionScaleMax = 0;
         }
 
         let encoder = {
@@ -295,9 +317,46 @@ export class ModelLearn extends LitElement {
         console.log(`Training completed in ${this.learningTime} seconds.`);
         this.showModalLearn = false;
         this.requestUpdate();
+        if (this.advancedMode.enabled && (learningHistoryPayload || confusionMatrixPayload)) {
+          this.showMetricsModal = true;
+          this.requestUpdate();
+          this.updateComplete.then(() => {
+            if (learningHistoryPayload?.data?.length) {
+              const learningHistoryFrame = this.querySelector("#learningHistoryModalFrame");
+              if (learningHistoryFrame) {
+                const historyLayout = this.applyLayoutSizeToContainer(
+                  this.getResponsiveLearningHistoryLayout(learningHistoryPayload.layout || {}),
+                  learningHistoryFrame,
+                  300
+                );
+                this.renderPlotInIframe(
+                  learningHistoryFrame,
+                  learningHistoryPayload.data,
+                  historyLayout
+                );
+              }
+            }
+            if (confusionMatrixPayload?.data?.length) {
+              const confusionMatrixFrame = this.querySelector("#confusionMatrixModalFrame");
+              if (confusionMatrixFrame) {
+                const confusionLayout = this.applyLayoutSizeToContainer(
+                  confusionMatrixPayload.layout,
+                  confusionMatrixFrame,
+                  340
+                );
+                this.renderPlotInIframe(
+                  confusionMatrixFrame,
+                  confusionMatrixPayload.data,
+                  confusionLayout
+                );
+              }
+            }
+          });
+        }
       }).catch(error => {
         console.error('Training failed', error);
         this.showModalLearn = false;
+        this.showMetricsModal = false;
         this.modelHasBeenTrained = false;
         this.learningPercentage = 0;
         this.batch = 0;
@@ -309,6 +368,7 @@ export class ModelLearn extends LitElement {
     }).catch(error => {
       console.error('Feature extraction failed', error);
       this.showModalLearn = false;
+      this.showMetricsModal = false;
       this.modelHasBeenTrained = false;
       this.learningPercentage = 0;
       this.batch = 0;
@@ -318,6 +378,131 @@ export class ModelLearn extends LitElement {
       this.requestUpdate();
     });
 
+  }
+
+  getResponsiveLearningHistoryLayout(baseLayout = {}) {
+    const layout = { ...baseLayout };
+    delete layout.width;
+    delete layout.height;
+    delete layout.title;
+    layout.autosize = false;
+    layout.showlegend = false;
+    layout.margin = { t: 24, r: 18, b: 52, l: 52 };
+    layout.xaxis = { ...(layout.xaxis || {}), title: msg('Epoch'), automargin: true };
+    layout.yaxis = { ...(layout.yaxis || {}), automargin: true };
+    return layout;
+  }
+
+  getReadableHistoryData(data = []) {
+    const colorByName = {
+      acc: '#1f77b4',
+      loss: '#ff7f0e',
+      val_acc: '#2ca02c',
+      val_loss: '#d62728'
+    };
+    return data.map((trace) => {
+      const name = trace?.name || '';
+      const color = colorByName[name] || trace?.line?.color;
+      return {
+        ...trace,
+        line: {
+          ...(trace.line || {}),
+          color,
+          width: 2
+        }
+      };
+    });
+  }
+
+  buildHistoryLegendItems(data = []) {
+    const labelByName = {
+      acc: 'acc',
+      loss: 'loss',
+      val_acc: 'val_acc',
+      val_loss: 'val_loss'
+    };
+    return data
+      .filter((trace) => trace?.name)
+      .map((trace) => ({
+        key: trace.name,
+        label: labelByName[trace.name] || trace.name,
+        color: trace?.line?.color || '#64748b'
+      }));
+  }
+
+  getReadableConfusionMatrixData(data = []) {
+    return data.map((trace) => {
+      if (trace?.type !== 'heatmap') return trace;
+      const cleanedTrace = { ...trace };
+      // Avoid global coloraxis behavior that can place colorbar below in some layouts.
+      delete cleanedTrace.coloraxis;
+      return {
+        ...cleanedTrace,
+        showscale: false,
+        texttemplate: '%{z}',
+        textfont: { size: 13, color: '#0f172a' },
+        hovertemplate: '%{x} / %{y}: %{z}<extra></extra>',
+        xgap: 1,
+        ygap: 1
+      };
+    });
+  }
+
+  getReadableConfusionMatrixLayout(baseLayout = {}) {
+    const layout = { ...baseLayout };
+    for (const key of Object.keys(layout)) {
+      if (/^(xaxis|yaxis)\d+$/.test(key)) {
+        delete layout[key];
+      }
+    }
+    delete layout.width;
+    delete layout.height;
+    delete layout.title;
+    delete layout.grid;
+    layout.autosize = false;
+    layout.margin = { t: 12, r: 92, b: 48, l: 60 };
+    layout.xaxis = {
+      ...(layout.xaxis || {}),
+      domain: [0, 0.9],
+      automargin: true,
+      constrain: 'domain'
+    };
+    layout.yaxis = {
+      ...(layout.yaxis || {}),
+      domain: [0, 1],
+      automargin: true,
+      constrain: 'domain'
+    };
+    delete layout.coloraxis;
+    // We use heatmap texttemplate for in-cell values to avoid duplicated labels.
+    layout.annotations = [];
+    return layout;
+  }
+
+  extractConfusionScaleFromData(data = []) {
+    const heatmap = data.find((trace) => trace?.type === 'heatmap');
+    const z = heatmap?.z || [];
+    const values = z
+      .flat()
+      .map((v) => Number(v))
+      .filter((v) => Number.isFinite(v));
+    if (!values.length) {
+      this.confusionScaleMin = 0;
+      this.confusionScaleMid = 0;
+      this.confusionScaleMax = 0;
+      return;
+    }
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    this.confusionScaleMin = min;
+    this.confusionScaleMax = max;
+    this.confusionScaleMid = (min + max) / 2;
+  }
+
+  formatScaleValue(value) {
+    if (!Number.isFinite(value)) return '0';
+    if (Number.isInteger(value)) return String(value);
+    return value.toFixed(2).replace(/\.00$/, '');
   }
 
   chooseAlgorithm(e) {
@@ -499,9 +684,168 @@ export class ModelLearn extends LitElement {
     `
   }
 
+  closeMetricsModal() {
+    this.showMetricsModal = false;
+  }
+
+  serializeForIframeScript(value) {
+    return JSON.stringify(value).replace(/</g, '\\u003c');
+  }
+
+  buildPlotIframeDoc(data, layout) {
+    const dataJson = this.serializeForIframeScript(data);
+    const layoutJson = this.serializeForIframeScript(layout);
+    return `
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #fff;
+      }
+      #plot {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="plot"></div>
+    <script>
+      (function () {
+        const Plotly = parent.__lmlPlotly;
+        const plot = document.getElementById('plot');
+        const data = ${dataJson};
+        const layout = ${layoutJson};
+        if (!Plotly || !plot) return;
+
+        function draw() {
+          const width = Math.max(320, Math.floor(plot.clientWidth || 640));
+          const height = Math.max(220, Math.floor(plot.clientHeight || 300));
+          const sizedLayout = Object.assign({}, layout, { width, height, autosize: false });
+          Plotly.newPlot(plot, data, sizedLayout, { responsive: true, displayModeBar: false });
+        }
+
+        draw();
+        if (window.ResizeObserver) {
+          const ro = new ResizeObserver(function () {
+            Plotly.Plots.resize(plot);
+          });
+          ro.observe(document.body);
+        } else {
+          window.addEventListener('resize', function () { Plotly.Plots.resize(plot); });
+        }
+      })();
+    </script>
+  </body>
+</html>`;
+  }
+
+  renderPlotInIframe(iframe, data, layout) {
+    if (!iframe) return;
+    window.__lmlPlotly = Plotly;
+    iframe.srcdoc = this.buildPlotIframeDoc(data, layout);
+  }
+
+  applyLayoutSizeToContainer(layout, container, fallbackHeight = 260) {
+    if (!container) return layout;
+    const rect = container.getBoundingClientRect();
+    const sizedLayout = { ...layout };
+    const width = Math.floor(rect.width);
+    const height = Math.floor(rect.height);
+    sizedLayout.width = width > 0 ? width : 640;
+    sizedLayout.height = height > 0 ? height : fallbackHeight;
+    sizedLayout.autosize = false;
+    return sizedLayout;
+  }
+
+  templateMetricsModal() {
+    return html`
+      <div class=${classMap({ "modal": true, "is-active": this.showMetricsModal })}>
+        <div class="modal-background" @click=${this.closeMetricsModal}></div>
+        <div class="modal-card" style="width:min(1200px,96vw);max-width:min(1200px,96vw);">
+          <header class="modal-card-head">
+            <p class="modal-card-title">${msg("Training charts")}</p>
+            <button class="delete" aria-label="close" @click=${this.closeMetricsModal}></button>
+          </header>
+          <section class="modal-card-body">
+            <div style="display:flex;flex-direction:column;gap:1.25rem;">
+              ${this._modelConsumer.value?.constructor?.name === 'LMLSequential' ? html`
+                <div>
+                  <h6 class="title is-6 mb-2">${msg("Learning curves")}</h6>
+                  <iframe
+                    id="learningHistoryModalFrame"
+                    title="${msg("Learning curves")}"
+                    style="width:100%;height:min(42vh,360px);border:0;background:#fff;"
+                  ></iframe>
+                  ${this.historyLegendItems.length
+                    ? html`
+                      <div style="display:flex;gap:0.9rem;flex-wrap:wrap;align-items:center;font-size:0.78rem;line-height:1.2;margin-top:0.35rem;">
+                        ${this.historyLegendItems.map((item) => html`
+                          <span style="display:inline-flex;align-items:center;gap:0.35rem;">
+                            <span style="width:14px;height:3px;background:${item.color};border-radius:3px;"></span>
+                            <span>${item.label}</span>
+                          </span>
+                        `)}
+                      </div>
+                    `
+                    : html``}
+                </div>
+              ` : html``}
+              ${this.percentageForValidation != 0 ? html`
+                <div>
+                  <h6 class="title is-6 mb-2">${msg("Confusion matrix")}</h6>
+                  <div style="display:flex;align-items:stretch;gap:0.65rem;">
+                    <iframe
+                      id="confusionMatrixModalFrame"
+                      title="${msg("Confusion matrix")}"
+                      style="flex:1;width:auto;height:min(44vh,400px);border:0;background:#fff;"
+                    ></iframe>
+                    <div style="width:34px;display:flex;align-items:center;justify-content:center;gap:0.2rem;">
+                      <div style="width:12px;height:min(36vh,320px);border:1px solid #9ca3af;background:linear-gradient(to top,#005a32 0%,#238b45 45%,#74c476 70%,#e5f5e0 100%);"></div>
+                      <div style="height:min(36vh,320px);display:flex;flex-direction:column;justify-content:space-between;font-size:0.72rem;color:#374151;">
+                        <span>${this.formatScaleValue(this.confusionScaleMax)}</span>
+                        <span>${this.formatScaleValue(this.confusionScaleMid)}</span>
+                        <span>${this.formatScaleValue(this.confusionScaleMin)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ` : html``}
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button" @click=${this.closeMetricsModal}>${msg("Close")}</button>
+          </footer>
+        </div>
+      </div>
+    `;
+  }
+
   templateAdvanced() {
     return html`
+    <style>
+      .advanced-learn-section {
+        margin-top: 1rem;
+      }
+      .advanced-chart {
+        width: 100%;
+        min-height: 320px;
+      }
+      .advanced-summary {
+        margin-top: 1rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid #e5e7eb;
+      }
+    </style>
     ${this.templateModalLearn()}
+    ${this.templateMetricsModal()}
 
     <h6 class="subtitle is-6">${this.learningText(this._dataTypeConsumer.value.type)}</h6>
         
@@ -528,6 +872,13 @@ export class ModelLearn extends LitElement {
           ? this.templateKNNParams()
           : this.templateNaiveBayesParams()}
 
+          <div class="field">
+            <label class="label">${msg("Percentage of samples for validation:")}</label>
+            <div class="control">
+              <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
+            </div>
+          </div>
+
           <div class="block mt-2">
             <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.showModalLearn })}>
               <span class="icon"><i class="fa-solid fa-gears"></i></span>
@@ -536,24 +887,22 @@ export class ModelLearn extends LitElement {
           </div >  
 
           <hr />
-          <h5 class="title is-5">${msg("Validation")}</h5>
-          <div class="field">
-            <label class="label">${msg("Percentage of samples for validation:")}</label>
-            <div class="control">
-              <input class="input" type="number" id="percentageforvalidation" name="percentageforvalidation" min="0" value="0" />            
-            </div>
-          </div>
-          <div id="confusionMatrix"></div>
 
           ${this.modelHasBeenTrained
-        ? html`
-              <p class="mt-3">${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
-              <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+            ? html`
+              <div class="advanced-summary">
+                <p>${msg(html`The model took <b>${this.learningTime}</b> seconds to build.`)}</p>
+                <p>${msg("Now you can test it and use it in a Scratch program.")}</p>
+                <div class="mt-3">
+                  <button class="button is-light is-small" @click=${() => { this.showMetricsModal = true; }}>
+                    ${msg("View training charts")}
+                  </button>
+                </div>
+              </div>
             `
-        : html``
-      }
+            : html``
+          }
         </div>
-        <div id="learningHistory"></div>
       </div>
       <div class="column">
         <div class="box">
@@ -606,12 +955,9 @@ export class ModelLearn extends LitElement {
   }
 
   createRenderRoot() {
-    const root = super.createRenderRoot();
-    const initShadow = globalThis.__lmlInitShadowRoot;
-    if (typeof initShadow === 'function') {
-      initShadow(this, root);
-    }
-    return root;
+    // Keep this component in Light DOM because Plotly autosize/legend/colorbar
+    // rendering is significantly more stable outside Shadow DOM.
+    return this;
   }
 }
 
