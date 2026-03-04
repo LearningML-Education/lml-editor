@@ -7,13 +7,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "bun test",
+    "test": "bun run test:unit && bun run test:integration",
     "test:coverage": "bun test --coverage",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test tests/e2e",
     "test:e2e:headed": "playwright test --headed",
     "preview": "vite preview",
     "translate-extract": "lit-localize extract",
-    "translate-build": "lit-localize build"
+    "translate-build": "lit-localize build",
+    "test:unit": "bun test tests/unit tests/components",
+    "test:integration": "bun test tests/integration"
   },
   "dependencies": {
     "@lit/context": "^1.1.0",
