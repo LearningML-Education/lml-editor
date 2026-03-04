@@ -22,12 +22,12 @@
     "@lit/localize": "^0.12.1",
     "@tensorflow/tfjs": "^4.21.0",
     "blueimp-md5": "^2.19.0",
+    "dotenv": "^16.4.5",
     "file-saver-es": "^2.0.5",
     "lit": "^3.0.2",
-    "lml-algorithms": "^1.0.34",
+    "lml-algorithms": "^1.0.38",
     "marked": "^12.0.2",
-    "plotly.js-dist-min": "^2.30.1",
-    "dotenv": "^16.4.5"
+    "plotly.js-dist-min": "^2.30.1"
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.7.1",

@@ -36,7 +36,15 @@ export default defineConfig(({ command, mode }) => {
             }
         },
         optimizeDeps: {
-            exclude: ['lml-algorithms']
+            // Force pre-bundling of CJS deps pulled by lml-algorithms/lml-speech-commands
+            // to avoid runtime browser errors such as "module is not defined".
+            include: [
+                'lml-algorithms',
+                'lml-speech-commands',
+                'long',
+                'jszip',
+                'file-saver'
+            ]
         }
     };
 });
