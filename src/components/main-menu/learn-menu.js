@@ -54,7 +54,7 @@ export class LearnMenu extends LitElement {
     
         <div class="navbar-dropdown">
           <a class="navbar-item" target="_blank" href="https://web.learningml.org/actividades/">${msg("Tutorials")}</a>
-          <a class="navbar-item" target="_blank" href="https://learningml.org/manual/">${msg("LearningML Manual")}</a>      
+          <a class="navbar-item" target="_blank" href="https://learningml.org/lml-doc/">${msg("LearningML Manual")}</a>      
         </div>
     </div>
         `
