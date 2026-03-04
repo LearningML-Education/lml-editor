@@ -195,6 +195,18 @@ npx playwright install chromium
 bun run test:e2e
 ```
 
+Ejecutar un test E2E concreto (por archivo):
+
+```bash
+bun run test:e2e -- tests/e2e/quadrants-learn-and-try.spec.js
+```
+
+Ejecutar un caso concreto por nombre del test (`--grep`):
+
+```bash
+bun run test:e2e -- -g "classify \"1,-4\" as \"IV\""
+```
+
 Modo visible (headed):
 
 ```bash
