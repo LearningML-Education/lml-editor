@@ -112,6 +112,35 @@ if (typeof globalThis.__lmlInitShadowRoot !== 'function') {
         style.textContent = SHARED_SHADOW_STYLES;
         root.appendChild(style);
 
+        // Font Awesome kit (loaded in index.html) does not auto-scan Shadow DOM.
+        // Force conversion of <i class="fa-..."> nodes inside each shadow root.
+        const renderShadowIcons = () => {
+            const fontAwesome = globalThis.FontAwesome;
+            if (fontAwesome?.dom?.i2svg) {
+                fontAwesome.dom.i2svg({ node: root });
+                return true;
+            }
+            return false;
+        };
+
+        if (!renderShadowIcons()) {
+            let retries = 20;
+            const retryTimer = setInterval(() => {
+                retries -= 1;
+                if (renderShadowIcons() || retries <= 0) {
+                    clearInterval(retryTimer);
+                }
+            }, 250);
+        }
+
+        if (!root.__lmlFaObserver) {
+            const observer = new MutationObserver(() => {
+                renderShadowIcons();
+            });
+            observer.observe(root, { childList: true, subtree: true });
+            root.__lmlFaObserver = observer;
+        }
+
         if (!host.__lmlPatchedQueries) {
             host.__lmlPatchedQueries = true;
             host.querySelector = (selector) => root.querySelector(selector);
