@@ -35,6 +35,7 @@ export const installDomShim = ({ href = 'http://localhost/' } = {}) => {
 
   const win = new EventTarget();
   win.location = { href };
+  win.navigator = { userAgent: 'bun-test' };
   win.customElements = globalThis.customElements;
   win.HTMLElement = globalThis.HTMLElement;
   win.dispatchEvent = EventTarget.prototype.dispatchEvent.bind(win);
@@ -64,5 +65,6 @@ export const installDomShim = ({ href = 'http://localhost/' } = {}) => {
   }
 
   globalThis.window = win;
+  globalThis.self = win;
   return win;
 };

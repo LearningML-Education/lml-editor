@@ -14,6 +14,7 @@ import {
   featuresContext,
   modelContext
 } from '../../contexts.js';
+import { isSequentialModel as isSequentialModelUtil } from '../../utils/model-kind.js';
 
 
 const algorithmHelpMdModules = import.meta.glob('./algorithm-help/*.md', {
@@ -269,7 +270,7 @@ export class ModelLearn extends LitElement {
         console.log(result);
         return result;
       }).then(r => {
-        if (this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential') {
+        if (this.advancedMode.enabled && this.isSequentialModel()) {
           learningHistoryPayload = this._modelConsumer.value.dataForHistoryPlotly();
           learningHistoryPayload.data = this.getReadableHistoryData(learningHistoryPayload.data || []);
           this.historyLegendItems = this.buildHistoryLegendItems(learningHistoryPayload.data);
@@ -519,6 +520,10 @@ export class ModelLearn extends LitElement {
     this.dispatchEvent(event);
   }
 
+  isSequentialModel() {
+    return isSequentialModelUtil(this._modelConsumer.value);
+  }
+
   templateANNParams() {
     return html`
 <div class="columns">
@@ -661,7 +666,7 @@ export class ModelLearn extends LitElement {
         </header>
         <section class="modal-card-body">
               
-          ${(this.advancedMode.enabled && this._modelConsumer.value.constructor.name == 'LMLSequential')
+          ${(this.advancedMode.enabled && this.isSequentialModel())
         ? html`
               <div class="columns">
                 <div class="column">
@@ -778,7 +783,7 @@ export class ModelLearn extends LitElement {
           </header>
           <section class="modal-card-body">
             <div style="display:flex;flex-direction:column;gap:1.25rem;">
-              ${this._modelConsumer.value?.constructor?.name === 'LMLSequential' ? html`
+              ${this.isSequentialModel() ? html`
                 <div>
                   <h6 class="title is-6 mb-2">${msg("Learning curves")}</h6>
                   <iframe
