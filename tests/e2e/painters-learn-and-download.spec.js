@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { waitForTrainingToFinish } from './helpers/training.js';
 
 test.describe('Painters download flow', () => {
   test('File -> Sample datasets -> pintores -> Learn -> Save dataset and model downloads', async ({ page }) => {
@@ -35,7 +36,7 @@ test.describe('Painters download flow', () => {
 
     await expect(learnButton).toBeVisible();
     await learnButton.click();
-    await expect(learnButton).not.toHaveClass(/is-loading/);
+    await waitForTrainingToFinish(page);
 
     const modelNameInput = page.locator('input-menu input.input');
     await expect(modelNameInput).toBeVisible();

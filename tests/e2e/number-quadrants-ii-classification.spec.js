@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
+import { waitForTrainingToFinish } from './helpers/training.js';
 
 const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -78,7 +79,7 @@ test.describe('Number recognition quadrants flow', () => {
 
     await expect(learnButton).toBeVisible();
     await learnButton.click();
-    await expect(learnButton).not.toHaveClass(/is-loading/);
+    await waitForTrainingToFinish(page);
 
     const evalInput = page.locator('model-eval #numberInput');
     await expect(evalInput).toBeVisible();

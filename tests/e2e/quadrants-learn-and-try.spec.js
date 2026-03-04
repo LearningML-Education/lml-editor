@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { waitForTrainingToFinish } from './helpers/training.js';
 
 test.describe('Quadrants flow', () => {
   test('File -> Sample dataset -> cuadrantes -> Learn -> classify "1,-4" as "IV"', async ({ page }) => {
@@ -33,7 +34,7 @@ test.describe('Quadrants flow', () => {
 
     await expect(learnButton).toBeVisible();
     await learnButton.click();
-    await expect(learnButton).not.toHaveClass(/is-loading/);
+    await waitForTrainingToFinish(page);
 
     const numberInput = page.locator('model-eval #numberInput');
     await expect(numberInput).toBeVisible();

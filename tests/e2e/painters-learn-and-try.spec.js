@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
+import { waitForTrainingToFinish } from './helpers/training.js';
 
 test.describe('Painters flow', () => {
   test('File -> Sample dataset -> painters -> Learn -> Try with picasso image', async ({ page }) => {
@@ -33,7 +34,7 @@ test.describe('Painters flow', () => {
 
     await expect(learnButton).toBeVisible();
     await learnButton.click();
-    await expect(learnButton).not.toHaveClass(/is-loading/);
+    await waitForTrainingToFinish(page);
 
     const evalInput = page.locator('model-eval #evalImageFileInput');
     await evalInput.setInputFiles(fixturePath);

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { waitForTrainingToFinish } from './helpers/training.js';
 
 test.describe('Virtual assistant flow', () => {
   test('File -> Sample dataset -> asistente virtual -> Learn -> classify "apaga la luz, por favor" as "apagar luz"', async ({ page }) => {
@@ -33,7 +34,7 @@ test.describe('Virtual assistant flow', () => {
 
     await expect(learnButton).toBeVisible();
     await learnButton.click();
-    await expect(learnButton).not.toHaveClass(/is-loading/);
+    await waitForTrainingToFinish(page);
 
     const evalInput = page.locator('model-eval #textInput');
     await expect(evalInput).toBeVisible();
