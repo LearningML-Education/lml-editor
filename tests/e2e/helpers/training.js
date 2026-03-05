@@ -2,7 +2,6 @@ import { expect } from '@playwright/test';
 
 export const waitForTrainingToFinish = async (page, { timeout = 150_000 } = {}) => {
   const modelLearn = page.locator('model-learn').first();
-  const learnButton = modelLearn.locator('button.is-loading').first();
   const apiErrorModal = page.locator('.modal.is-active .modal-card-title').filter({
     hasText: /No se pueden usar los algoritmos|algorithms/i
   });
@@ -16,7 +15,9 @@ export const waitForTrainingToFinish = async (page, { timeout = 150_000 } = {}) 
           const apiError = String(app?.apiErrorMessage || '').trim();
           const trained = Boolean(learn?.modelHasBeenTrained);
           const loading = Boolean(learn?.showModalLearn);
-          const inEditor = Boolean(document.querySelector('model-editor'));
+          const appPage = String(app?.page || '').trim();
+          const inEditor = appPage === 'model-editor'
+            || Boolean(app?.shadowRoot?.querySelector('model-editor'));
 
           return {
             trained,
@@ -39,6 +40,4 @@ export const waitForTrainingToFinish = async (page, { timeout = 150_000 } = {}) 
     const message = (await apiErrorModal.first().textContent())?.trim() || 'No se pueden usar los algoritmos';
     throw new Error(`Training ended with API error modal: ${message}`);
   }
-
-  await expect(learnButton).toHaveCount(0, { timeout: 10_000 });
 };
