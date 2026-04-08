@@ -24,6 +24,8 @@ bun.lock
 *.sln
 *.sw?
 .aider*
+.codex
+test-results/
 
 
 .env

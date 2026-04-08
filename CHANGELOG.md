@@ -3,6 +3,27 @@
 Este archivo resume los cambios entre versiones taggeadas.
 Formato basado en Keep a Changelog.
 
+## [v2.0.0-beta13]
+
+Rango: `v2.0.0-beta12..HEAD`
+
+### Añadido
+- Nueva skill `release-manager` para guiar el proceso de releases del repositorio.
+
+### Cambiado
+- Documentación y configuración de tests alineadas con la separación real entre Bun y Playwright.
+- `.codex` y `test-results/` pasan a ignorarse en git para no interferir con el flujo de release.
+
+### Corregido
+- Renderizado de iconos Font Awesome migrado a dependencias locales sin depender de CDNs externos.
+- Mayor robustez en la espera de entrenamiento E2E y en el comportamiento del comando `test:e2e`.
+
+### Commits destacados
+- `6c4909b` Fix E2E training wait robustness and align test:e2e CLI behavior
+- `50ad32f` Migrate Font Awesome to local packages
+- `c299355` Clarify test runner documentation
+- `953e70d` Add release manager skill
+
 ## [v2.0.0-beta8] 
 
 Rango: `v2.0.0-beta7..HEAD`
