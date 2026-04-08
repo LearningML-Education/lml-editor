@@ -3,6 +3,16 @@
 Este archivo resume los cambios entre versiones taggeadas.
 Formato basado en Keep a Changelog.
 
+## [v2.0.0-beta14]
+
+Rango: `v2.0.0-beta13..HEAD`
+
+### Corregido
+- La skill `release-manager` refleja el orden real del proceso de release: primero push de `main` y después creación y push de la tag.
+
+### Commits destacados
+- `4e7f4a0` Fix release manager skill flow
+
 ## [v2.0.0-beta13]
 
 Rango: `v2.0.0-beta12..HEAD`
