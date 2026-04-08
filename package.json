@@ -18,6 +18,9 @@
     "test:integration": "bun test tests/integration"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/free-regular-svg-icons": "^7.2.0",
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
     "@lit/context": "^1.1.0",
     "@lit/localize": "^0.12.1",
     "@tensorflow/tfjs": "^4.21.0",

@@ -236,7 +236,7 @@ export class ModelEval extends LitElement {
         <p class="control">      
           <button @click=${this._uploadImage} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
-            <i class="fa-solid fa-images"></i>
+            <i class="fas fa-images"></i>
             </span>
             <span>${msg('Upload images')}</span>
           </button>
@@ -244,7 +244,7 @@ export class ModelEval extends LitElement {
         <p class="control"> 
           <button @click=${this.openCamera} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
-            <i class="fa-solid fa-camera"></i>
+            <i class="fas fa-camera"></i>
             </span>
             <span>${msg('Take from camera')}</span>
           </button>
@@ -254,7 +254,7 @@ export class ModelEval extends LitElement {
         <p class="control"> 
           <button @click=${this.takePictureFromCamera} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
-              <i class="fa-solid fa-camera"></i>
+              <i class="fas fa-camera"></i>
             </span>
             <span>${msg('Take picture')}</span>
           </button>
@@ -262,7 +262,7 @@ export class ModelEval extends LitElement {
         <p class="control"> 
           <button @click=${this.closeCamera} class="button mr-1 is-primary is-fullwidth">
             <span class="icon">
-              <i class="fa-solid fa-xmark"></i>
+              <i class="fas fa-xmark"></i>
             </span>
             <span>${msg('Close camera')}</span>
           </button>

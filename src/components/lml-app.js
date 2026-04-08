@@ -28,6 +28,13 @@ import {
     NaiveBayes
 } from '../services/lml-algorithms-bridge.js';
 import * as tf from '@tensorflow/tfjs';
+import {
+    appendFontAwesomeStyles,
+    renderFontAwesomeIcons,
+    setupFontAwesome
+} from '../utils/fontawesome.js';
+
+setupFontAwesome();
 
 const SHARED_SHADOW_STYLES = `
   .is-clickable {
@@ -97,8 +104,7 @@ if (typeof globalThis.__lmlInitShadowRoot !== 'function') {
         root.__lmlSharedStylesApplied = true;
 
         const links = [
-            'https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css',
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
+            'https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css'
         ];
 
         for (const href of links) {
@@ -112,15 +118,10 @@ if (typeof globalThis.__lmlInitShadowRoot !== 'function') {
         style.textContent = SHARED_SHADOW_STYLES;
         root.appendChild(style);
 
-        // Font Awesome kit (loaded in index.html) does not auto-scan Shadow DOM.
-        // Force conversion of <i class="fa-..."> nodes inside each shadow root.
+        appendFontAwesomeStyles(root);
+
         const renderShadowIcons = () => {
-            const fontAwesome = globalThis.FontAwesome;
-            if (fontAwesome?.dom?.i2svg) {
-                fontAwesome.dom.i2svg({ node: root });
-                return true;
-            }
-            return false;
+            return renderFontAwesomeIcons(root);
         };
 
         if (!renderShadowIcons()) {
@@ -133,7 +134,7 @@ if (typeof globalThis.__lmlInitShadowRoot !== 'function') {
             }, 250);
         }
 
-        if (!root.__lmlFaObserver) {
+        if (!root.__lmlFaObserver && typeof MutationObserver !== 'undefined') {
             const observer = new MutationObserver(() => {
                 renderShadowIcons();
             });

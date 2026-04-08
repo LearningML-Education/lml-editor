@@ -88,7 +88,7 @@ export class ModelTrain extends LitElement {
       <div class="control">
         <button @click=${this.addNewLabel} class="button is-primary is-fullwidth mb-4">
           <span class="icon">
-          <i class="fa-solid fa-plus"></i>
+          <i class="fas fa-plus"></i>
           </span>
           <span>${msg('Add new class')}</span>
         </button>

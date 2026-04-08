@@ -899,7 +899,7 @@ export class ModelLearn extends LitElement {
 
           <div class="block mt-2">
             <button @click=${this.learn} class=${classMap({ "button": true, "is-primary": true, "is-loading": this.showModalLearn })}>
-              <span class="icon"><i class="fa-solid fa-gears"></i></span>
+              <span class="icon"><i class="fas fa-gears"></i></span>
               <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
             </button> 
           </div >  
@@ -947,7 +947,7 @@ export class ModelLearn extends LitElement {
 
       <div class="block mt-2">
         <button @click=${this.learn} class=${classMap({ "button": true, "is-fullwidth": true, "is-primary": true, "is-loading": this.showModalLearn })}>
-        <span class="icon"><i class="fa-solid fa-gears"></i></span>
+        <span class="icon"><i class="fas fa-gears"></i></span>
         <span>${this.learnButtonText(this._dataTypeConsumer.value.type)}</span>
       </button> 
     </div >

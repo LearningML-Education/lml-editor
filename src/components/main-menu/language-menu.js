@@ -76,7 +76,7 @@ export class LanguageMenu extends LitElement {
 })}>
     <a class="navbar-link" href="#" @click=${this.toggleDropdown}>
       <span class="icon">
-        <i class="fa-solid fa-globe"></i>
+        <i class="fas fa-globe"></i>
       </span>
     </a>
 

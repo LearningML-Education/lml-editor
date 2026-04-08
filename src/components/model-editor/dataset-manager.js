@@ -355,7 +355,7 @@ export class DatasetManager extends LitElement {
         <p class="control">      
           <button @click=${this.openAddTextWindow} class="button  is-primary is-fullwidth">
             <span class="icon">
-            <i class="fa-regular fa-keyboard"></i>
+            <i class="far fa-keyboard"></i>
             </span>
             <span>${msg('Add')}</span>
           </button>
@@ -363,7 +363,7 @@ export class DatasetManager extends LitElement {
         <p class="control">
           <button @click=${this._uploadTexts} class="button  is-primary is-fullwidth">
             <span class="icon">
-            <i class="fa-solid fa-upload"></i>
+            <i class="fas fa-upload"></i>
             </span>
             <span>${msg('Load')}</span>
           </button>
@@ -390,7 +390,7 @@ export class DatasetManager extends LitElement {
           <p class="control">      
             <button @click=${this._uploadImages} class="button mr-1 is-primary is-fullwidth">
               <span class="icon">
-              <i class="fa-solid fa-images"></i>
+              <i class="fas fa-images"></i>
               </span>
               <span>${msg('Upload')}</span>
             </button>
@@ -398,7 +398,7 @@ export class DatasetManager extends LitElement {
           <p class="control"> 
             <button @click=${this.openCamera} class="button mr-1 is-primary is-fullwidth">
               <span class="icon">
-              <i class="fa-solid fa-camera"></i>
+              <i class="fas fa-camera"></i>
               </span>
               <span>${msg('Camera')}</span>
             </button>
@@ -408,7 +408,7 @@ export class DatasetManager extends LitElement {
           <p class="control"> 
             <button @click=${this.takePictureFromCamera} class="button mr-1 is-primary is-fullwidth">
               <span class="icon">
-                <i class="fa-solid fa-camera"></i>
+                <i class="fas fa-camera"></i>
               </span>
               <span>${msg('Shot')}</span>
             </button>
@@ -416,7 +416,7 @@ export class DatasetManager extends LitElement {
           <p class="control"> 
             <button @click=${this.closeCamera} class="button mr-1 is-primary is-fullwidth">
               <span class="icon">
-                <i class="fa-solid fa-xmark"></i>
+                <i class="fas fa-xmark"></i>
               </span>
               <span>${msg('Close')}</span>
             </button>
@@ -442,7 +442,7 @@ export class DatasetManager extends LitElement {
         <p class="control">
           <button @click="${this.openAddTextWindow}" class="button is-primary is-fullwidth">
             <span class="icon">
-            <i class="fa-regular fa-keyboard"></i>
+            <i class="far fa-keyboard"></i>
             </span>
             <span>${msg('Add')}</span>
           </button>
@@ -450,7 +450,7 @@ export class DatasetManager extends LitElement {
         <p class="control">
           <button @click="${this._uploadTexts}" class="button  is-primary is-fullwidth">
             <span class="icon">
-            <i class="fa-solid fa-upload"></i>
+            <i class="fas fa-upload"></i>
             </span>
             <span>${msg('Load')}</span>
           </button>
@@ -470,7 +470,7 @@ export class DatasetManager extends LitElement {
         <p class="control">
           <button id="recordButton_${this.labelName}" @click="${this.collectAudioSample}" class="button is-primary is-fullwidth">
             <span class="icon">
-              <i class="fa-solid fa-microphone"></i>
+              <i class="fas fa-microphone"></i>
             </span>
             <span>${msg('Record')}</span>
           </button>
@@ -478,7 +478,7 @@ export class DatasetManager extends LitElement {
         <p class="control">
           <button id="stopButton_${this.labelName}" @click="${this.stopRecording}" disabled class="button  is-primary is-fullwidth">
             <span class="icon">
-              <i class="fa-solid fa-circle-stop"></i>
+              <i class="fas fa-circle-stop"></i>
             </span>
             <span>${msg('Stop')}</span>
           </button>
@@ -499,10 +499,10 @@ export class DatasetManager extends LitElement {
           html`
           <div class="panel-block">
             <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2">
-              <i class="fa-solid fa-pen-to-square"></i>
+              <i class="fas fa-pen-to-square"></i>
             </span>
             <span @click=${this.removeTextEntry} text-entry=${entry} class="panel-icon is-clickable">
-              <i class="fa-solid fa-trash-can"></i>
+              <i class="fas fa-trash-can"></i>
             </span>
             <p> <span class="truncate">${entry}</p>
           </div>
@@ -585,10 +585,10 @@ export class DatasetManager extends LitElement {
                   <td>
                     <div class="panel-block">
                       <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2 is-clickable">
-                        <i class="fa-solid fa-pen-to-square"></i>
+                        <i class="fas fa-pen-to-square"></i>
                       </span>
                       <span @click=${this.removeTextEntry} text-entry=${entry} class="is-clickable">
-                        <i class="fa-solid fa-trash-can"></i>
+                        <i class="fas fa-trash-can"></i>
                       </span> 
                     </div>
                   </td>
@@ -659,10 +659,10 @@ export class DatasetManager extends LitElement {
               <img src="${assetUrl('images/sound-70.png')}" class="sound-image">
               <div class="sample-text">sample-${index}</div>
               <button @click=${play} class="button is-primary play-button">
-                <i class="fa-solid fa-play" aria-hidden="true"></i>
+                <i class="fas fa-play" aria-hidden="true"></i>
               </button>
               <button @click=${remove} class="button is-danger delete-button">
-                <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </div>
               `
@@ -687,9 +687,9 @@ export class DatasetManager extends LitElement {
         : html`<span id="labelName">${this.labelName}</span> <span class="tag is-info">${this._datasetConsumer.value.get(this.labelName).size}</span>`
       }
 
-      <a @click=${this.editlabelName} class="m-2 has-text-white"><i class=${classMap({ "fa-solid": true, "fa-check": this.editinglabelName, "fa-pen-to-square": !this.editinglabelName })}></i></a>
+      <a @click=${this.editlabelName} class="m-2 has-text-white"><i class=${classMap({ "fas": true, "fa-check": this.editinglabelName, "fa-pen-to-square": !this.editinglabelName })}></i></a>
       
-      <a @click=${this.removeClass} class="m-2 has-text-white"><i class="fa-regular fa-trash-can"></i></a> 
+      <a @click=${this.removeClass} class="m-2 has-text-white"><i class="far fa-trash-can"></i></a> 
         
   </p>
   
