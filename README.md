@@ -149,30 +149,42 @@ bun run build
 
 ## Tests
 
-El proyecto usa dos tipos de ejecución de tests:
+El proyecto usa dos runners de tests:
 
-- `bun test` para unitarios, componentes e integración ligera.
-- `playwright` para tests E2E en navegador real.
+- `bun:test` para unitarios, de componentes y de integración ligera.
+- `Playwright` para tests E2E en navegador real.
 
 ### Ejecutar tests unitarios e integración
 
-Ejecutar toda la suite de `bun:test`:
+La forma recomendada de ejecutar la suite de Bun es:
+
+```bash
+bun run test
+```
+
+Ese script encadena:
+
+- `bun run test:unit` para `tests/unit` y `tests/components`
+- `bun run test:integration` para `tests/integration`
+
+Si se quiere lanzar toda la suite de `bun:test` directamente:
 
 ```bash
 bun test
 ```
 
+`bun test` ignora `tests/e2e` mediante `bunfig.toml`, por lo que no intenta ejecutar los tests de Playwright.
+
 Con cobertura:
 
 ```bash
-bun test --coverage
+bun run test:coverage
 ```
 
-También se puede usar el script de `package.json`:
+Equivalente directo:
 
 ```bash
-npm run test
-npm run test:coverage
+bun test --coverage
 ```
 
 ### Ejecutar tests E2E con Playwright
@@ -195,6 +207,12 @@ npx playwright install chromium
 bun run test:e2e
 ```
 
+La configuración E2E está en `playwright.config.js`:
+
+- Directorio de tests: `tests/e2e/`
+- Navegador configurado: `chromium`
+- El servidor de desarrollo se levanta automáticamente antes de ejecutar la suite
+
 Ejecutar un test E2E concreto (por archivo):
 
 ```bash
@@ -212,10 +230,6 @@ Modo visible (headed):
 ```bash
 bun run test:e2e:headed
 ```
-
-Notas:
-- La configuración está en `playwright.config.js`.
-- Los tests E2E están en `tests/e2e/`.
 
 
 ## Traducciones
