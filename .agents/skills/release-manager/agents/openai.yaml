@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Manager"
+  short_description: "Create and publish project releases"
+  default_prompt: "Use $release-manager to prepare and publish a tagged release for this repository."
