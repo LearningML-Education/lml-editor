@@ -3,6 +3,16 @@
 Este archivo resume los cambios entre versiones taggeadas.
 Formato basado en Keep a Changelog.
 
+## [v2.0.0-beta15]
+
+Rango: `v2.0.0-beta14..HEAD`
+
+### Corregido
+- El selector de modo del menú principal pasa a un interruptor compacto de dos posiciones `Basic | Advanced`, más claro y menos intrusivo.
+
+### Commits destacados
+- `bda031b` Clarify advanced mode switch
+
 ## [v2.0.0-beta14]
 
 Rango: `v2.0.0-beta13..HEAD`
