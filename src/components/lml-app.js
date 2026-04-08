@@ -247,7 +247,7 @@ class LMLApp extends LitElement {
         });
 
         this.addEventListener("toggle-advanced-mode", e => {
-            this.advancedMode = !this.advancedMode;
+            this.advancedMode = Boolean(e?.detail?.advanced);
             if (!this.advancedMode && this.page === 'playground') {
                 this.page = 'model-editor';
             }

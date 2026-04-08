@@ -18,7 +18,7 @@ describe('mode-toggle-menu', () => {
     expect(el.advanced).toBe(false);
   });
 
-  test('toggles advanced mode and emits composed+bubbling event', async () => {
+  test('switches to advanced mode and emits composed+bubbling event', async () => {
     const el = new ModeToggleMenu();
     let receivedEvent = null;
     Object.defineProperty(el, 'updateComplete', { value: Promise.resolve(true) });
@@ -27,7 +27,7 @@ describe('mode-toggle-menu', () => {
       receivedEvent = event;
     });
 
-    el.handleToggleClick();
+    el.setAdvancedMode(true);
     await el.updateComplete;
 
     expect(el.advanced).toBe(true);
@@ -37,15 +37,28 @@ describe('mode-toggle-menu', () => {
     expect(receivedEvent.detail).toEqual({ advanced: true });
   });
 
-  test('second click returns to basic mode', async () => {
+  test('switches back to basic mode', async () => {
     const el = new ModeToggleMenu();
     Object.defineProperty(el, 'updateComplete', { value: Promise.resolve(true) });
 
-    el.handleToggleClick();
+    el.setAdvancedMode(true);
     await el.updateComplete;
-    el.handleToggleClick();
+    el.setAdvancedMode(false);
     await el.updateComplete;
 
     expect(el.advanced).toBe(false);
+  });
+
+  test('does not emit an event when selecting the already active mode', () => {
+    const el = new ModeToggleMenu();
+    let emitted = false;
+
+    el.addEventListener('toggle-advanced-mode', () => {
+      emitted = true;
+    });
+
+    el.setAdvancedMode(false);
+
+    expect(emitted).toBe(false);
   });
 });

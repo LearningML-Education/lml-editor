@@ -73,7 +73,7 @@ export class MainMenu extends LitElement {
             <file-menu showSaveDataset showSaveModel class="component"></file-menu>  
             <input-menu name="${this.modelName}" class="component"></input-menu>              
             <learn-menu class="component"></learn-menu>
-            <mode-toggle-menu class="component"></mode-toggle-menu>
+            <mode-toggle-menu .advanced=${Boolean(this.advancedMode?.enabled)} class="component"></mode-toggle-menu>
             ${this.advancedMode?.enabled ? html`
               <a class="navbar-item" @click=${this.openPlaygroundPage}>
                 ${msg('Playground')}

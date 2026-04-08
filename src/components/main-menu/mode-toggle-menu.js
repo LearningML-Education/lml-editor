@@ -19,8 +19,12 @@ export class ModeToggleMenu extends LitElement {
     super.connectedCallback();
   }
 
-  handleToggleClick() {
-    this.advanced = !this.advanced;
+  setAdvancedMode(advanced) {
+    if (this.advanced === advanced) {
+      return;
+    }
+
+    this.advanced = advanced;
 
     this.dispatchEvent(new CustomEvent('toggle-advanced-mode', {
       bubbles: true,
@@ -30,16 +34,86 @@ export class ModeToggleMenu extends LitElement {
   }
 
   render() {
-
     return html`
+    <style>
+      .mode-toggle-menu {
+        display: flex;
+        align-items: center;
+      }
+
+      .mode-switch {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        padding: 0.2rem;
+        gap: 0.2rem;
+      }
+
+      .mode-switch__option {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+      }
+
+      .mode-switch__option.is-active {
+        background: white;
+        color: #363636;
+      }
+
+      .mode-switch__option:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.85);
+        outline-offset: 2px;
+      }
+
+      @media screen and (max-width: 1023px) {
+        .mode-toggle-menu {
+          width: 100%;
+        }
+
+        .mode-switch {
+          width: 100%;
+        }
+
+        .mode-switch__option {
+          flex: 1;
+          justify-content: center;
+        }
+      }
+    </style>
 
     <div class="navbar-item">
-      <button class="button is-primary" @click="${this.handleToggleClick}">
-        <span class="icon">
-          <i class=${classMap({ "fas": true, "fa-toggle-off": !this.advanced, "fa-toggle-on": this.advanced })}></i>
-        </span>
-        <span>${msg("Advanced")}</span>
-      </button>
+      <div class="mode-toggle-menu">
+        <div class="mode-switch" role="group" aria-label=${msg('Mode')}>
+          <button
+            class=${classMap({
+              'mode-switch__option': true,
+              'is-active': !this.advanced
+            })}
+            aria-pressed=${String(!this.advanced)}
+            @click=${() => this.setAdvancedMode(false)}
+          >
+            <span>${msg('Basic')}</span>
+          </button>
+
+          <button
+            class=${classMap({
+              'mode-switch__option': true,
+              'is-active': this.advanced
+            })}
+            aria-pressed=${String(this.advanced)}
+            @click=${() => this.setAdvancedMode(true)}
+          >
+            <span>${msg('Advanced')}</span>
+          </button>
+        </div>
+      </div>
     </div>
         `
   }
