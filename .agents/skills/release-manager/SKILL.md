@@ -1,6 +1,6 @@
 ---
 name: release-manager
-description: Create and publish repository releases by validating tests, updating the project version, editing CHANGELOG.md, creating a matching git tag prefixed with v, and pushing the tag to trigger deployment. Use when the user asks things like "crea la release v2.0.1" or "crea una nueva release" for this repository.
+description: Create and publish repository releases by validating tests, updating the project version, editing CHANGELOG.md, committing the release, pushing main, creating a matching git tag prefixed with v on the published main commit, and pushing the tag to trigger deployment. Use when the user asks things like "crea la release v2.0.1" or "crea una nueva release" for this repository.
 ---
 
 # Release Manager
@@ -23,9 +23,11 @@ Follow this workflow to create a release for this repository.
 5. Update `CHANGELOG.md` with a new top entry for `vX.Y.Z` that matches the repository style.
 6. Re-run the relevant tests if the release edits changed tracked files.
 7. Create a dedicated commit for the release changes if `package.json` or `CHANGELOG.md` were modified and not already committed.
-8. Create an annotated git tag named `vX.Y.Z` on the release commit.
-9. Push the tag to origin so the deployment pipeline starts.
-10. Report the exact commit and tag pushed.
+8. Push the release commit to `origin/main`.
+9. Verify that the commit to be tagged is already present on `origin/main`.
+10. Create an annotated git tag named `vX.Y.Z` on that published commit.
+11. Push the tag to origin so the deployment pipeline starts.
+12. Report the exact commit and tag pushed.
 
 ## Test Policy
 
@@ -39,13 +41,15 @@ Follow this workflow to create a release for this repository.
 - `package.json`: `version` must equal `X.Y.Z`.
 - `CHANGELOG.md`: top release heading must be `## [vX.Y.Z]`.
 - The tag name must exactly match the changelog heading version.
+- The tagged commit must already exist on `origin/main`.
 
 ## Git Rules
 
 - Do not move or recreate an existing release tag unless the user explicitly asks.
 - Prefer annotated tags.
+- Push `main` before creating the release tag.
 - Push only the intended release tag, not all tags.
-- If the release commit is required, make sure the tag points to that commit, not to a dirty working tree state.
+- If the release commit is required, make sure the tag points to the published release commit on `origin/main`, not to a dirty working tree state or a local-only commit.
 
 ## Output
 
