@@ -3,6 +3,16 @@
 Este archivo resume los cambios entre versiones taggeadas.
 Formato basado en Keep a Changelog.
 
+## [v2.0.0-beta16]
+
+Rango: `v2.0.0-beta15..HEAD`
+
+### Cambiado
+- El bloque de sponsors del footer muestra el logo y enlace de Fundación Cruzando.
+
+### Añadido
+- Test de componente para verificar el sponsor visible configurado en el pie.
+
 ## [v2.0.0-beta15]
 
 Rango: `v2.0.0-beta14..HEAD`

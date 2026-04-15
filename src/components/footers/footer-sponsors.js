@@ -23,9 +23,9 @@ export class FooterSponsors extends LitElement {
           
           <!-- Patrocinador Oro -->
           <div class="column is-3 has-text-centered">
-            <a href="https://www.aprendemaniadocente.com" target="_blank">
+            <a href="https://fundacioncruzando.org/" target="_blank">
               <figure class="image">
-                <img src="${assetUrl('images/logo-aprendemania.svg')}" alt="Logo Aprendemanía docente">
+                <img src="${assetUrl('images/logo-fc.jpeg')}" alt="Logo Fundación Cruzando ">
               </figure>
               <p class="has-text-warning">Patrocinador Oro</p>
             </a>
