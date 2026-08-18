@@ -491,6 +491,42 @@ export class DatasetManager extends LitElement {
     `;
   }
 
+  get modalTitle() {
+    const type = this._dataTypeConsumer.value.type;
+    switch(type) {
+      case 'text': return msg("Add one or more text examples");
+      case 'numerical': return msg("Add one or more numeric examples");
+      default: return msg("Add one or more examples");
+    }
+  }
+
+  get modalPlaceholder() {
+    const type = this._dataTypeConsumer.value.type;
+    switch(type) {
+      case 'text': return msg("Separate each text by a line break");
+      case 'numerical': return msg("Separate each number by a line break");
+      default: return msg("Enter the examples below, separated by line breaks");
+    }
+  }
+
+  get addButtonText() {
+    const type = this._dataTypeConsumer.value.type;
+    switch(type) {
+      case 'text': return msg("Add text examples");
+      case 'numerical': return msg("Add numeric examples");
+      default: return msg("Examples to add");
+    }
+  }
+
+  get editTextButtonLabel() {
+    const type = this._dataTypeConsumer.value.type;
+    switch(type) {
+      case 'text': return msg("Edit text examples");
+      case 'numerical': return msg("Edit numeric examples");
+      default: return msg("Edit examples");
+    }
+  }
+
   templateTextData() {
     return html`
       
@@ -518,22 +554,22 @@ export class DatasetManager extends LitElement {
         <div class="modal-content">
           <nav class="panel has-background-warning">
             <p class="panel-heading has-background-warning">
-              ${msg("Add one or more text examples")}
+              ${this.modalTitle}
             </p>
             
             <div class="panel-block">
-              <textarea id="inputTexts" class="textarea" placeholder="${msg("Separate each text by a line break")}" rows="10"></textarea>
+              <textarea id="inputTexts" class="textarea" placeholder="${this.modalPlaceholder}" rows="10"></textarea>
             </div>
             
             <div class="panel-block">
                 ${this.editText
         ? html`
                     <button @click=${this.editTexts} class="button is-primary  is-fullwidth">
-                      ${msg("Edit text examples")}
+                      ${this.editTextButtonLabel}
                     </button>`
         : html`
                     <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
-                      ${msg("Add text examples")}
+                      ${this.addButtonText}
                     </button>`
       }
             </div>
@@ -610,22 +646,22 @@ export class DatasetManager extends LitElement {
         <div class="modal-content">
           <nav class="panel has-background-warning">
             <p class="panel-heading has-background-warning">
-              ${msg("Add one or more text examples")}
+              ${this.modalTitle}
             </p>
             
             <div class="panel-block">
-              <textarea id="inputTexts" class="textarea" placeholder="${msg("Separate each text by a line break")}" rows="10"></textarea>
+              <textarea id="inputTexts" class="textarea" placeholder="${this.modalPlaceholder}" rows="10"></textarea>
             </div>
             
             <div class="panel-block">
                 ${this.editText
         ? html`
                     <button @click=${this.editTexts} class="button is-primary  is-fullwidth">
-                      ${msg("Edit text examples")}
+                      ${this.editTextButtonLabel}
                     </button>`
         : html`
                     <button @click=${this.addTexts} class="button is-primary  is-fullwidth">
-                      ${msg("Add text examples")}
+                      ${this.addButtonText}
                     </button>`
       }
             </div>
