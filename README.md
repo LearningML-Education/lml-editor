@@ -1,3 +1,72 @@
+# lml-editor
+
+Repositorio de referencia del editor LearningML: contiene el código fuente y publica
+directamente en GitHub Pages (`https://learningml.org/lml-editor/`).
+
+## Despliegue en GitHub Pages
+
+La build que se publica en GitHub Pages se construye y despliega en este mismo repo, sin
+depender de ningún otro.
+
+### Flujo automático
+
+1. Se crea y empuja un tag en este repo (`lml-editor`).
+2. El workflow `.github/workflows/deploy.yml` (disparado por `push: tags`):
+   1. Instala dependencias con Bun y ejecuta `bun run test`.
+   2. Construye el editor con `bun run build` (`vite build`).
+   3. Publica `dist/` en GitHub Pages.
+
+### Flujo manual
+
+También se puede lanzar manualmente desde GitHub Actions: `Actions -> Deploy to GitHub Pages ->
+Run workflow`, sobre la rama o tag que se quiera desplegar.
+
+### Variables de entorno usadas en la build de Pages
+
+En el paso `Build editor` de `deploy.yml` se compila con:
+
+- `INIT_MESSAGE_SHOW="false"`
+- `SHOW_FOOTER_SPONSORS="true"`
+- `INIT_MESSAGE_TIMEOUT="0"`
+- `URL_SCRATCH="https://learningml-education.github.io/lml-scratch/?"`
+- `BASE_URL="/lml-editor/"`
+
+Con esto, el build queda preparado para publicarse en el subpath de GitHub Pages correspondiente
+a `lml-editor`.
+
+## Proceso de construcción de `lml-scratch` en GitHub Pages
+
+Aunque este repositorio publica `lml-editor`, el flujo de `lml-scratch` está acoplado porque el
+editor apunta a su URL pública. Este proceso vive en otros repos y no se ve afectado por lo
+anterior.
+
+### Flujo automático
+
+1. Se crea un tag en `lml-scratch-gui`.
+2. La action `lml-scratch-gui/.github/workflows/dispatch-public-deploy.yml` envía un
+   `repository_dispatch` al repo público `lml-scratch` con el evento `lml-scratch-deploy`.
+3. En `lml-scratch/.github/workflows/deploy-from-tag.yml`:
+   1. Se clonan en ese tag: `lml-scratch-l10n`, `lml-scratch-vm` y `lml-scratch-gui`.
+   2. Se construye `l10n`, se enlazan dependencias con `npm link`, y se genera el build de
+      `lml-scratch-gui` con `BUILD_MODE=dist`.
+   3. Se publica `lml-scratch-gui/build` en GitHub Pages.
+
+### Flujo manual
+
+En el repo `lml-scratch`:
+
+1. Ir a `Actions -> Deploy from private tag -> Run workflow`.
+2. Indicar el `tag` a desplegar.
+
+### Variables de entorno relevantes
+
+En la action de `lml-scratch` se usa:
+
+- `MOBILENET_BASE_URL: ${{ vars.MOBILENET_BASE_URL }}`
+
+El job está asociado al environment `github-pages`, por lo que esa variable debe definirse en ese
+environment para que esté disponible en build.
+
 ## Entorno de desarrollo con docker
 
 Requisitos: docker 27.1.1
