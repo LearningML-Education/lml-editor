@@ -3,6 +3,18 @@
 Este archivo resume los cambios entre versiones taggeadas.
 Formato basado en Keep a Changelog.
 
+## [v2.0.0]
+
+Rango: `v2.0.0-beta16..HEAD`
+
+### Corregido
+- Borrado de ejemplo individual desde una clase ya no deja el dato huérfano en el dataset (fix del modal que obtenía null por getAttribute).
+- Modal de agregar ejemplos ahora muestra texto correcto según tipo de modelo (numérico vs texto), en lugar de siempre decir "text examples".
+
+### Commits destacados
+- `1ffeb4b` Fix delete example from class not removing from dataset
+- `6fdb0f4` Dynamic modal text based on data type
+
 ## [v2.0.0-beta16]
 
 Rango: `v2.0.0-beta15..HEAD`
