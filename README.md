@@ -10,8 +10,10 @@ depender de ningún otro.
 
 ### Flujo automático
 
-1. Se crea y empuja un tag en este repo (`lml-editor`).
-2. El workflow `.github/workflows/deploy.yml` (disparado por `push: tags`):
+1. Se crea y empuja un tag de versión con el patrón `vX.Y.Z` (por ejemplo `v2.0.1`) en este repo
+   (`lml-editor`). Tags que no siguen ese patrón exacto (por ejemplo `v2.0.0-beta1` o `latest`)
+   no disparan el despliegue.
+2. El workflow `.github/workflows/deploy.yml` (disparado por `push: tags: v[0-9]+.[0-9]+.[0-9]+`):
    1. Instala dependencias con Bun y ejecuta `bun run test`.
    2. Construye el editor con `bun run build` (`vite build`).
    3. Publica `dist/` en GitHub Pages.
