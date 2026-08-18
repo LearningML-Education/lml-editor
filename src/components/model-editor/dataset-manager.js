@@ -135,7 +135,7 @@ export class DatasetManager extends LitElement {
     // Si el texto ha sido cambiado por el usuario, es decir `texts` no coincide 
     // con el atributo this.textEntry, hay que borrar el valor que tenía ...
     if (this.textEntry != texts) {
-      this.removeTextEntry(this.textEntry, false);
+      this.removeTextEntry(null, this.textEntry);
       this.textEntry = texts;
     }
 
@@ -144,19 +144,20 @@ export class DatasetManager extends LitElement {
     this.addTexts();
   }
 
-  // Si se está editando un texto, se usa esta función sin mostrar la ventana
-  // de diálogo de confirmación.
-  removeTextEntry(e, ask = true) {
+  removeTextEntry(e, entry) {
     this.editText = true;
-    if (ask && confirm(msg("Surely you want to delete this item?")) || !ask) {
-      let entry = e.target == undefined
-        ? e
-        : e.target.parentElement.getAttribute("text-entry")
-      if (this._datasetConsumer.value.has(this.labelName)) {
-        this._datasetConsumer.value.get(this.labelName).delete(entry);
+    let textToDelete;
+    if (typeof entry === 'string') {
+      textToDelete = entry;
+    } else {
+      const sourceEl = e?.target?.closest('[text-entry]');
+      textToDelete = sourceEl ? sourceEl.getAttribute('text-entry') : null;
+    }
+    if (confirm(msg("Surely you want to delete this item?"))) {
+      if (this._datasetConsumer.value.has(this.labelName) && textToDelete !== null) {
+        this._datasetConsumer.value.get(this.labelName).delete(textToDelete);
       }
       console.log(this._datasetConsumer.value);
-
       this.requestUpdate();
     }
   }
@@ -501,7 +502,7 @@ export class DatasetManager extends LitElement {
             <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2">
               <i class="fas fa-pen-to-square"></i>
             </span>
-            <span @click=${this.removeTextEntry} text-entry=${entry} class="panel-icon is-clickable">
+            <span @click=${(e) => this.removeTextEntry(e, entry)} text-entry=${entry} class="panel-icon is-clickable">
               <i class="fas fa-trash-can"></i>
             </span>
             <p> <span class="truncate">${entry}</p>
@@ -587,7 +588,7 @@ export class DatasetManager extends LitElement {
                       <span @click=${this.editTextEntry} text-entry=${entry} class="mr-2 is-clickable">
                         <i class="fas fa-pen-to-square"></i>
                       </span>
-                      <span @click=${this.removeTextEntry} text-entry=${entry} class="is-clickable">
+                      <span @click=${(e) => this.removeTextEntry(e, entry)} text-entry=${entry} class="is-clickable">
                         <i class="fas fa-trash-can"></i>
                       </span> 
                     </div>
