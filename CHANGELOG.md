@@ -3,6 +3,11 @@
 Este archivo resume los cambios entre versiones taggeadas.
 Formato basado en Keep a Changelog.
 
+## [v2.0.2]
+
+### Corregido
+- `URL_SCRATCH` actualizado: el botón de Scratch ("el gatito") apuntaba al repositorio retirado `lml-scratch` (`https://learningml-education.github.io/lml-scratch/`); ahora apunta al repositorio que realmente se despliega, `lml-scratch-gui` (`https://learningml.org/lml-scratch-gui/`). Corregido en `deploy.yml`, `Dockerfile` y `README.md`.
+
 ## [v2.0.1]
 
 Release de prueba sin cambios funcionales respecto a v2.0.0, para verificar el
