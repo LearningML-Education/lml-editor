@@ -38,7 +38,7 @@ jobs:
           INIT_MESSAGE_SHOW: "false"
           SHOW_FOOTER_SPONSORS: "true"
           INIT_MESSAGE_TIMEOUT: "0"
-          URL_SCRATCH: "https://learningml-education.github.io/lml-scratch/?"
+          URL_SCRATCH: "https://learningml.org/lml-scratch-gui/?"
           BASE_URL: "/lml-editor/"
         run: bun run build
 

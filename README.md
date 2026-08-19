@@ -30,7 +30,7 @@ En el paso `Build editor` de `deploy.yml` se compila con:
 - `INIT_MESSAGE_SHOW="false"`
 - `SHOW_FOOTER_SPONSORS="true"`
 - `INIT_MESSAGE_TIMEOUT="0"`
-- `URL_SCRATCH="https://learningml-education.github.io/lml-scratch/?"`
+- `URL_SCRATCH="https://learningml.org/lml-scratch-gui/?"`
 - `BASE_URL="/lml-editor/"`
 
 Con esto, el build queda preparado para publicarse en el subpath de GitHub Pages correspondiente
@@ -214,7 +214,7 @@ Ejemplo de build con `BASE_URL` para desplegar en subpath:
 
 ```bash
 BASE_URL=/lml-editor/ \
-URL_SCRATCH=https://learningml-education.github.io/scratch/? \
+URL_SCRATCH=https://learningml.org/lml-scratch-gui/? \
 bun run build
 ```
 
