@@ -3,6 +3,11 @@
 Este archivo resume los cambios entre versiones taggeadas.
 Formato basado en Keep a Changelog.
 
+## [v2.0.1]
+
+Release de prueba sin cambios funcionales respecto a v2.0.0, para verificar el
+funcionamiento del proceso de publicación (versionado, tag y despliegue).
+
 ## [v2.0.0]
 
 Rango: `v2.0.0-beta16..HEAD`
