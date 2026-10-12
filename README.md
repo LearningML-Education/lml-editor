@@ -75,17 +75,17 @@ Requisitos: docker 27.1.1
 
 1. Clonar el proyecto: 
 ```bash
-git clone git@gitlab.com:lml-corp/lml-editor-lit.git
+git clone https://github.com/LearningML-Education/lml-editor.git
 ```
 
 2. Clonar la dependencia lml-algorithm
 ```bash
-git clone git@gitlab.com:lml-corp/lml-algorithms.git
+git clone https://github.com/LearningML-Education/lml-algorithms.git
 ```
 
 3. Construir una imagen para el desarrollo
 ```bash
-cd lml-editor-lit
+cd lml-editor
 docker build -t lml-editor . 
 ```
 
@@ -110,18 +110,18 @@ Este procedimiento no arranca *lml-scratch*. Si se quiere trabajar con *lml-scra
 
 1. Clonar el proyecto: 
 ```bash
-git clone git@gitlab.com:lml-corp/lml-editor-lit.git
+git clone https://github.com/LearningML-Education/lml-editor.git
 ```
 
 2. Clonar la dependencia lml-algorithm (opcional si se va a tocar código de lml-algorithm)
 ```bash
-git clone git@gitlab.com:lml-corp/lml-algorithms.git
+git clone https://github.com/LearningML-Education/lml-algorithms.git
 ```
 
 2.1 Instalar dependencias lml-algorithms
 
 ```bash
-cd lml-algorithms.git
+cd lml-algorithms
 bun install
 bun link
 cd ..
@@ -130,7 +130,7 @@ cd ..
 2. Instalar dependencias lml-editor-lit
 
 ```bash
-cd lml-editor-lit.git
+cd lml-editor
 bun install
 bun link lml-algorithms (opcional)
 ```
@@ -174,12 +174,12 @@ LML_ALGO_MODE=client bun run dev
 
 1. Clonar el proyecto: 
 ```bash
-git clone git@gitlab.com:lml-corp/lml-editor-lit.git
+git clone https://github.com/LearningML-Education/lml-editor.git
 ```
 
 2. Construir la imagen de producción:
 ```bash
-cd lml-editor-lit
+cd lml-editor
 docker build -t lml-editor:prod .
 ```
 
